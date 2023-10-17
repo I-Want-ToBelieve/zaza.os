@@ -1,0 +1,37 @@
+# nvfetcher.toml
+[manix]
+src.git = "https://github.com/mlvzk/manix"
+fetch.github = "mlvzk/manix"
+
+[swhkd]
+src.git = "https://github.com/waycrate/swhkd"
+fetch.github = "waycrate/swhkd"
+cargo_locks = ["Cargo.lock"]
+
+[aliyunpan]
+src.git = "https://github.com/tickstep/aliyunpan"
+fetch.github = "tickstep/aliyunpan"
+
+[mpv-iptvplus]
+src.git = "https://github.com/pintassilgo/mpv-iptvplus.git"
+fetch.github = "pintassilgo/mpv-iptvplus"
+
+[wallpaper-engine-kde-plugin]
+src.git = "https://github.com/catsout/wallpaper-engine-kde-plugin.git"
+fetch.github = "catsout/wallpaper-engine-kde-plugin"
+git.fetchSubmodules = true
+
+
+[gtk3-nocsd]
+src.git = "https://github.com/ZaWertun/gtk3-nocsd.git"
+fetch.github = "ZaWertun/gtk3-nocsd"
+
+
+[lightly-shaders]
+src.git = "https://github.com/a-parhom/LightlyShaders.git"
+fetch.github = "a-parhom/LightlyShaders"
+
+
+[plasma5-applets-window-appmenu]
+src.git = "https://github.com/psifidotos/applet-window-appmenu.git"
+fetch.github = "psifidotos/applet-window-appmenu"

@@ -1,0 +1,31 @@
+## https://wiki.archlinux.org/title/Intel_GVT-g
+
+### change domain
+```xml
+<domain xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0' type='kvm'>
+```
+
+### add hostdev in <devices></devices>
+
+```xml
+<hostdev mode='subsystem' type='mdev' managed='no' model='vfio-pci' display='off'>
+  <source>
+    <address uuid='179881f8-f4d8-11ed-8914-23e4dfd5da5b'/>
+  </source>
+  <address type='pci' domain='0x0000' bus='0x09' slot='0x00' function='0x0'/>
+</hostdev>
+```
+
+### add qemu:override in <domain xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0' type='kvm'></domain>
+```xml
+ <qemu:override>
+    <qemu:device alias='hostdev0'>
+      <qemu:frontend>
+        <qemu:property name='romfile' type='string' value='/vbios_gvt_uefi.rom'/>
+        <qemu:property name='driver' type='string' value='vfio-pci-nohotplug'/>
+        <qemu:property name='x-igd-opregion' type='bool' value='true'/>
+        <qemu:property name='display' type='string' value='off'/>
+      </qemu:frontend>
+    </qemu:device>
+  </qemu:override>
+```
