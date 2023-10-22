@@ -212,19 +212,7 @@
                   system.stateVersion = "23.05";
                   system.autoUpgrade.enable = false;
                 }
-                inputs.xremap-flake.nixosModules.default
-                {
-                  services.xremap = {
-                    userName = "i.want.to.believe"; # run as a systemd service in alice
-                    serviceMode = "user"; # run xremap as user
-                    config = {
-                      keymap = {
-                        name = "Global";
-                        remap = {"KEY_W" = ["KEY_W" "Shift_R"];};
-                      };
-                    };
-                  };
-                }
+
                 inputs.agenix.nixosModules.default
                 ./hosts/nixos/k99-lite.nix
 
@@ -319,8 +307,6 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
-
-    xremap-flake.url = "github:xremap/nix-flake";
 
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
   };
