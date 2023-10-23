@@ -1,20 +1,29 @@
-{ inputs, pkgs, config, lib, modulesPath, ... }: {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ] ++ [
-    inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
-    inputs.nixos-hardware.nixosModules.common-gpu-intel
-    inputs.nixos-hardware.nixosModules.common-gpu-amd
-  ];
+{
+  inputs,
+  pkgs,
+  config,
+  lib,
+  modulesPath,
+  ...
+}: {
+  imports =
+    [(modulesPath + "/installer/scan/not-detected.nix")]
+    ++ [
+      inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+      inputs.nixos-hardware.nixosModules.common-gpu-intel
+      inputs.nixos-hardware.nixosModules.common-gpu-amd
+    ];
 
   specialisation = {
     gpupass = {
       configuration = {
-        system.nixos.tags = [ "with-gpupass" ];
+        system.nixos.tags = ["with-gpupass"];
         gpupass.enable = true;
       };
     };
   };
 
-  users.groups.input.members = [ "i.want.to.believe" ];
+  users.groups.input.members = ["i.want.to.believe"];
 
   services.udev.extraRules = ''
     Sunshine
@@ -24,7 +33,7 @@
   services.sunshine.enable = true;
 
   # amd gpu
-  boot.blacklistedKernelModules = [ "nouveau" "nvidia" ];
+  boot.blacklistedKernelModules = ["nouveau" "nvidia"];
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.hip-common}"
     "f /dev/shm/looking-glass 0660 i.want.to.believe qemu-libvirtd -"
@@ -41,9 +50,9 @@
       loadInInitrd = true;
     };
 
-    opengl = { enable = true; };
+    opengl = {enable = true;};
 
-    steam-hardware = { enable = true; };
+    steam-hardware = {enable = true;};
 
     bluetooth = {
       enable = true;
@@ -51,11 +60,11 @@
       # https://github.com/NixOS/nixpkgs/blob/2f9286912cb215969ece465147badf6d07aa43fe/nixos/modules/services/hardware/bluetooth.nix#L110
       # https://www.goulin.fr/blog/bluetooth-headset-battery-percentage-ubuntu#:~:text=Edit%20the%20following%20file%20as%20root%3A%20%2Fetc%2Fbluetooth%2Fmain.conf,Add%20Experimental%3Dtrue%20at%20the%20beginning%20of%20the%20file.
       # https://mynixos.com/nixpkgs/option/hardware.bluetooth.settings
-      settings = { General = { Experimental = true; }; };
+      settings = {General = {Experimental = true;};};
     };
 
     # @see https://discourse.nixos.org/t/how-to-enable-ddc-brightness-control-i2c-permissions/20800/12
-    i2c = { enable = true; };
+    i2c = {enable = true;};
 
     enableRedistributableFirmware = true;
     pulseaudio.enable = false;
@@ -81,7 +90,7 @@
       # https://github.com/umlaeute/v4l2loopback
       options v4l2loopback exclusive_caps=1 video_nr=9 card_label="Virtual Camera"
     '';
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "intel_iommu=on"
@@ -93,13 +102,15 @@
       "pcie_aspm=off"
     ];
 
-    supportedFilesystems = [ "btrfs" "ntfs" ];
+    supportedFilesystems = ["btrfs" "ntfs"];
 
     initrd = {
       availableKernelModules =
-        [ "xhci_pci" "ehci_pci" "ahci" "nvme_core" "nvme" "usb_storage" ]
+        ["xhci_pci" "ehci_pci" "ahci" "nvme_core" "nvme" "usb_storage"]
         ++ config.boot.initrd.luks.cryptoModules;
-      kernelModules = [ "dm-snapshot" ] ++
+      kernelModules =
+        ["dm-snapshot"]
+        ++
         # @see https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
         # @see https://viniciusmuller.github.io/blog/NixOS/gpu_passthrough.html#identifying-iommu-devices
         # @see https://nixos.wiki/wiki/IGVT-g
@@ -139,27 +150,25 @@
   fileSystems."/" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options =
-      [ "subvol=root" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=root" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options =
-      [ "subvol=home" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=home" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options = [ "subvol=nix" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=nix" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
   };
 
   fileSystems."/var/log" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options = [ "subvol=log" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=log" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
     neededForBoot = true;
   };
 
@@ -168,7 +177,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [{ device = "/dev/disk/by-label/swap"; }];
+  swapDevices = [{device = "/dev/disk/by-label/swap";}];
 
   fileSystems."/var/lib/libvirt" = {
     device = "/dev/disk/by-label/qemu-kvm";
@@ -183,7 +192,7 @@
   fileSystems."/home/i.want.to.believe/Games" = {
     device = "/dev/disk/by-label/SG";
     fsType = "ext4";
-    options = [ "rw" "nosuid" "nodev" "relatime" "errors=remount-ro" ];
+    options = ["rw" "nosuid" "nodev" "relatime" "errors=remount-ro"];
     noCheck = true;
   };
 
@@ -225,21 +234,20 @@
       enable = true;
       daemon = {
         settings = {
-          registry-mirrors =
-            [ "https://registry.docker-cn.com" "https://hub-mirror.c.163.com" ];
+          registry-mirrors = ["https://registry.docker-cn.com" "https://hub-mirror.c.163.com"];
         };
       };
     };
 
     podman = {
       enable = true;
-      extraPackages = with pkgs; [ skopeo conmon runc ];
+      extraPackages = with pkgs; [skopeo conmon runc];
     };
 
     libvirtd = {
       enable = true;
       qemu = {
-        ovmf = { enable = true; };
+        ovmf = {enable = true;};
         runAsRoot = false;
       };
     };
@@ -248,7 +256,7 @@
       enable = !config.gpupass.enable;
       vgpus = {
         "i915-GVTg_V5_4" = {
-          uuid = [ "179881f8-f4d8-11ed-8914-23e4dfd5da5b" ];
+          uuid = ["179881f8-f4d8-11ed-8914-23e4dfd5da5b"];
         };
       };
     };
@@ -274,17 +282,15 @@
   xdg.portal = {
     enable = true;
     wlr.enable = false;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
   environment = {
     variables = {
       AMD_VULKAN_ICD = "RADV";
       DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1 = "1";
-      VK_ICD_FILENAMES =
-        "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
+      VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
       QT_LOGGING_RULES = "kwin_*.debug=true";
-      ALIYUNPAN_CONFIG_DIR = "$HOME/.config/aliyunpan";
     };
 
     sessionVariables = {

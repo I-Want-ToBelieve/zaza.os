@@ -6,11 +6,7 @@ fetch.github = "mlvzk/manix"
 [swhkd]
 src.git = "https://github.com/waycrate/swhkd"
 fetch.github = "waycrate/swhkd"
-cargo_locks = ["Cargo.lock"]
 
-[aliyunpan]
-src.git = "https://github.com/tickstep/aliyunpan"
-fetch.github = "tickstep/aliyunpan"
 
 [mpv-iptvplus]
 src.git = "https://github.com/pintassilgo/mpv-iptvplus.git"

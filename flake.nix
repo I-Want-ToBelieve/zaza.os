@@ -39,7 +39,7 @@
           ];
 
           # https://devenv.sh/reference/options/
-          packages = [];
+          packages = with pkgs; [nvfetcher];
 
           # https://devenv.sh/basics/
           env = {GREET = "🛠️ Let's hack 🧑🏻‍💻";};
