@@ -1,5 +1,9 @@
-{ config, pkgs, ... }: {
-  home.packages = with pkgs; with inur; [ ];
+{
+  config,
+  pkgs,
+  ...
+}: {
+  home.packages = with pkgs; with inur; [];
 
   services.swhkd = {
     enable = true;

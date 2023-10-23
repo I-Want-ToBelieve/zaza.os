@@ -1,11 +1,11 @@
-{ inputs, pkgs, config, ... }: {
+{pkgs, ...}: {
   home.packages = with pkgs;
     [
       alsa-lib
       alsa-plugins
       alsa-tools
       alsa-utils
-      aliyunpan
+
       archivebox
       ariang
       motrix
@@ -75,7 +75,7 @@
       pavucontrol
       pulseaudio
       (pkgs.python39.withPackages
-        (pythonPackages: with pythonPackages; [ requests websockets ]))
+        (pythonPackages: with pythonPackages; [requests websockets]))
       rsync
       scrcpy
       scream
@@ -108,8 +108,9 @@
       file
       ripgrep
       yt-dlp
-    ] ++ (with pkgs.inur; [ autohide-tdrop krabby leagueoflegends ])
-    ++ (with pkgs.nur.repos; [ xddxdd.baidupcs-go ]);
+    ]
+    ++ (with pkgs.inur; [autohide-tdrop krabby leagueoflegends])
+    ++ (with pkgs.nur.repos; [xddxdd.baidupcs-go]);
 
   programs = {
     eza.enable = true;
@@ -143,6 +144,6 @@
       enableFishIntegration = true;
     };
 
-    bat = { enable = true; };
+    bat = {enable = true;};
   };
 }
