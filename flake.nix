@@ -135,6 +135,7 @@
               mpv
             ];
             shells = with shells; [fish zsh nu.default];
+            wsl = with wsl; [plasma];
             hyprland = with desktop; [
               dunst
               waybar
@@ -296,7 +297,7 @@
                 inputs.stylix.nixosModules.stylix
                 inputs.nix-gaming.nixosModules.steamCompat
                 {
-                  system.stateVersion = "23.11";
+                  system.stateVersion = "23.05";
                   system.autoUpgrade.enable = false;
                 }
 
