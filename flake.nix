@@ -240,6 +240,95 @@
                 }
               ];
           };
+          "k99-lite-wsl" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {
+              suites = self.suites.nixos;
+              inputs = inputs;
+              self = self;
+            };
+            modules =
+              [
+                ({
+                  config,
+                  pkgs,
+                  ...
+                }: {
+                  nixpkgs.overlays = [
+                    (final: prev: {
+                      __dontExport = true;
+                      lib = prev.lib.extend (lfinal: lprev: {our = self.lib;});
+                    })
+                    (final: prev: {
+                      inur = inputs.inur.packages."${prev.system}";
+                    })
+                    (final: _: let
+                      inherit (final) system;
+                    in {
+                      # Packages provided by flake inputs
+                      crane-lib = inputs.crane.lib.${system};
+                    })
+                    inputs.nur.overlay
+                    inputs.agenix.overlays.default
+                    inputs.nvfetcher.overlays.default
+                    inputs.rust-overlay.overlays.default
+                    (import ./pkgs)
+                  ];
+                  nixpkgs.config = {
+                    allowUnfree = true;
+                    permittedInsecurePackages = [
+                      "electron-13.6.9"
+                      "electron-19.0.7"
+                      "openssl-1.1.1v"
+                      "python3.10-django-3.1.14"
+                    ];
+                  };
+                })
+              ]
+              ++ [
+                {
+                  imports = with self.suites.nixos;
+                    nixpkgs.lib.flatten [base misc kde-wayland];
+                }
+              ]
+              ++ [
+                inputs.nixos-wsl.nixosModules.wsl
+                inputs.home-manager.nixosModules.home-manager
+
+                inputs.stylix.nixosModules.stylix
+                inputs.nix-gaming.nixosModules.steamCompat
+                {
+                  system.stateVersion = "23.05";
+                  system.autoUpgrade.enable = false;
+                }
+
+                inputs.agenix.nixosModules.default
+                ./hosts/wsl/k99-lite-wsl.nix
+
+                ./users/root.nix
+
+                ./users/i.want.to.believe.nix
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.extraSpecialArgs = {inputs = inputs;};
+                  home-manager.users."i.want.to.believe" = {
+                    imports =
+                      nixpkgs.lib.attrValues self.homeManagerModules
+                      ++ (with self.suites.home-manager;
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                      ++ [
+                        inputs.nix-index-database.hmModules.nix-index
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        {programs.nix-index-database.comma.enable = true;}
+                      ];
+                    home.stateVersion = "23.05";
+                  };
+                  # Optionally, use home-manager.extraSpecialArgs to pass
+                  # arguments to home.nix
+                }
+              ];
+          };
         };
       };
     });
@@ -309,6 +398,11 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
 
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
