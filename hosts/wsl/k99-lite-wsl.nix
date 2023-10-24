@@ -34,6 +34,7 @@
         environment = {
           variables = {
             DONT_PROMPT_WSL_INSTALL = "1";
+            # LD_LIBRARY_PATH = lib.mkForce "/usr/lib:$LD_LIBRARY_PATH";
           };
 
           sessionVariables = {
