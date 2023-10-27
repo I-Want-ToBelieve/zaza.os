@@ -1,6 +1,5 @@
 {
-  # TODO update me
-  description = "Description for the project";
+  description = "ZazaOS";
 
   outputs = inputs @ {
     self,
@@ -29,8 +28,7 @@
         # module parameters provide easy access to attributes of the same
         # system.
         devenv.shells.default = {
-          # TODO update me
-          name = "Name of the project";
+          name = "zaza.os's devenv";
 
           imports = [
             # This is just like the imports in devenv.nix.
@@ -209,7 +207,7 @@
                 inputs.stylix.nixosModules.stylix
                 inputs.nix-gaming.nixosModules.steamCompat
                 {
-                  system.stateVersion = "23.05";
+                  system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
                 }
 
@@ -298,7 +296,7 @@
                 inputs.stylix.nixosModules.stylix
                 inputs.nix-gaming.nixosModules.steamCompat
                 {
-                  system.stateVersion = "23.05";
+                  system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
                 }
 

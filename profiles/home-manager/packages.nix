@@ -60,7 +60,7 @@
       localsend
       # libreoffice-fresh
       lutris
-      microsoft-edge
+
       netease-cloud-music-gtk
       nil
       nodejs

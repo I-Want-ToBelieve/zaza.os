@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: {
   environment = {
     # set channels (backwards compatibility)
     etc = {
@@ -8,8 +14,8 @@
     };
 
     # we need git for flakes
-    systemPackages = [ pkgs.git ];
-    defaultPackages = [ ];
+    systemPackages = [pkgs.git];
+    defaultPackages = [];
   };
 
   # faster rebuilding
@@ -28,13 +34,10 @@
     };
 
     # pin the registry to avoid downloading and evaling a new nixpkgs version every time
-    registry = lib.mapAttrs (_: v: { flake = v; }) inputs;
+    registry = lib.mapAttrs (_: v: {flake = v;}) inputs;
 
     # set the path for channels compat
-    # nixPath = [
-    #   "nixpkgs=/etc/nix/flake-channels/nixpkgs"
-    #   "home-manager=/etc/nix/flake-channels/home-manager"
-    # ];
+    # nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
 
     # Free up to 1GiB whenever there is less than 100MiB left.
     extraOptions = ''
@@ -53,8 +56,8 @@
       sandbox = true;
       auto-optimise-store = true;
       builders-use-substitutes = true;
-      trusted-users = [ "root" "@wheel" ];
-      allowed-users = [ "@wheel" ];
+      trusted-users = ["root" "@wheel"];
+      allowed-users = ["@wheel"];
       max-jobs = "auto";
       flake-registry = "/etc/nix/registry.json";
 
