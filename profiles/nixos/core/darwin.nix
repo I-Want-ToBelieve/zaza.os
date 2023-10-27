@@ -1,5 +1,11 @@
-{ self, config, lib, pkgs, ... }: {
-  imports = [ ./common.nix ];
+{
+  self,
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [./common.nix];
 
   # Recreate /run/current-system symlink after boot
   services.activate-system.enable = true;
@@ -8,11 +14,11 @@
   users.nix.configureBuildUsers = true;
 
   environment = {
-    systemPackages = with pkgs; [ m-cli terminal-notifier ];
+    systemPackages = with pkgs; [m-cli terminal-notifier];
 
     darwinConfig = "${self}/lib/compat";
 
-    shellAliases = { nrb = "sudo darwin-rebuild switch --flake"; };
+    shellAliases = {nrb = "sudo darwin-rebuild switch --flake";};
   };
 
   nix = {
@@ -33,7 +39,7 @@
     useSandbox = true;
 
     # Give special Nix privileges.
-    trustedUsers = [ "root" "@wheel" "@admin" ];
+    trustedUsers = ["root" "@wheel" "@admin"];
   };
 
   programs.bash = {
