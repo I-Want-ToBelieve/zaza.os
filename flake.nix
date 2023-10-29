@@ -279,7 +279,7 @@
                       "electron-13.6.9"
                       "electron-19.0.7"
                       "openssl-1.1.1v"
-                      "python3.10-django-3.1.14"
+                      "python3.11-django-3.1.14"
                     ];
                   };
                 })
@@ -410,7 +410,7 @@
       "https://nix-gaming.cachix.org"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
       "https://mirrors.ustc.edu.cn/nix-channels/store"
-      # "https://cache.nixos.org"
+      "https://cache.nixos.org"
       "https://nix-community.cachix.org"
       "https://fortuneteller2k.cachix.org"
       "https://nixpkgs-wayland.cachix.org"
@@ -421,7 +421,7 @@
     ];
     extra-trusted-public-keys = [
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "fortuneteller2k.cachix.org-1:kXXNkMV5yheEQwT0I4XYh1MaCSz+qg72k8XAi2PthJI="
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
