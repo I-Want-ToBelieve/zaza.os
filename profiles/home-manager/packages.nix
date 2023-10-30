@@ -6,8 +6,8 @@
       alsa-tools
       alsa-utils
 
-      archivebox
-      ariang
+      # archivebox
+      # ariang
       motrix
       bandwhich
       bc
