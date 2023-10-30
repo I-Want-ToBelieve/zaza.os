@@ -191,7 +191,7 @@
                       "electron-13.6.9"
                       "electron-19.0.7"
                       "openssl-1.1.1v"
-                      "python3.10-django-3.1.14"
+                      "python3.11-django-3.1.14"
                     ];
                   };
                 })
