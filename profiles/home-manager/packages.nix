@@ -74,7 +74,7 @@
       psmisc
       pavucontrol
       pulseaudio
-      (pkgs.python39.withPackages
+      (pkgs.python3Full.withPackages
         (pythonPackages: with pythonPackages; [requests websockets]))
       rsync
       scrcpy
