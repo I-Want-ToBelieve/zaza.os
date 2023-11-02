@@ -11,7 +11,7 @@
     flake-parts.lib.mkFlake {inherit inputs;} ({moduleWithSystem, ...}: {
       imports = [inputs.devenv.flakeModule];
 
-      systems = ["x86_64-linux" "aarch64-linux"];
+      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
 
       debug = true;
 
@@ -100,6 +100,10 @@
             src = ./profiles/home-manager;
             loader = haumea.lib.loaders.path;
           };
+          darwin = haumea.lib.load {
+            src = ./profiles/darwin;
+            loader = haumea.lib.loaders.path;
+          };
         };
 
         suites = {
@@ -136,6 +140,12 @@
             ];
             shells = with shells; [fish zsh nu.default];
             wsl = with wsl; [plasma];
+            darwin = with darwin;
+              [
+                nix
+                packages
+              ]
+              ++ [cli.git cli.direnv cli.ssh shells.fish shells.zsh shells.nu.default];
             hyprland = with desktop; [
               dunst
               waybar
@@ -146,6 +156,10 @@
             ];
             kde-x11 = [desktop.plasma desktop.bismuth desktop.kvantum];
             kde-wayland = [desktop.plasma desktop.bismuth desktop.kvantum];
+          };
+
+          darwin = with self.profiles.darwin; {
+            apps = [apps];
           };
         };
 
@@ -329,6 +343,62 @@
               ];
           };
         };
+        darwinConfigurations = {
+          "k99-lite-darwin" = inputs.darwin.lib.darwinSystem {
+            system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
+            modules =
+              [
+                ({
+                  config,
+                  pkgs,
+                  ...
+                }: {
+                  nixpkgs.overlays = [
+                    (final: prev: {
+                      inur = inputs.inur.packages."${prev.system}";
+                    })
+                    inputs.nur.overlay
+
+                    inputs.nvfetcher.overlays.default
+                    inputs.rust-overlay.overlays.default
+                    (import ./pkgs)
+                  ];
+                  nixpkgs.config = {
+                    allowUnfree = true;
+                    permittedInsecurePackages = [
+                    ];
+                  };
+                })
+              ]
+              ++ [
+                {
+                  imports = with self.suites.darwin;
+                    nixpkgs.lib.flatten [apps];
+                }
+              ]
+              ++ [
+                ./hosts/darwin/k99-lite-darwin.nix
+
+                ./users/i.want.to.believe.nix
+                inputs.home-manager.darwinModules.home-manager
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.extraSpecialArgs = {inputs = inputs;};
+                  home-manager.users."i.want.to.believe" = {
+                    imports =
+                      (with self.suites.home-manager;
+                          nixpkgs.lib.flatten [darwin])
+                      ++ [
+                        inputs.nix-index-database.hmModules.nix-index
+                        {programs.nix-index-database.comma.enable = true;}
+                      ];
+                    home.stateVersion = "23.05";
+                  };
+                }
+              ];
+          };
+        };
       };
     });
 
@@ -400,6 +470,12 @@
 
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
+    darwin = {
+      url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
