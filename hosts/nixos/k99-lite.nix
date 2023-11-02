@@ -143,6 +143,23 @@
         useOSProber = true;
         enableCryptodisk = true;
         configurationLimit = 5;
+
+        extraEntries = ''
+          menuentry "OC & HACKINTOSH" {
+            insmod chain
+            insmod fat
+            insmod part_gpt
+            insmod search_fs_label
+            search --label --no-floppy --set=root DARWIN-BOOT
+            chainloader ($root)/EFI/BOOT/BOOTx64.efi
+          }
+          menuentry "Reboot" {
+            reboot
+          }
+          menuentry "Poweroff" {
+            halt
+          }
+        '';
       };
     };
   };
