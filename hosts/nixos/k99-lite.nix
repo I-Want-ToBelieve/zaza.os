@@ -149,7 +149,6 @@
             insmod chain
             insmod fat
             insmod part_gpt
-            insmod search_fs_label
             search --label --no-floppy --set=root DARWIN-BOOT
             chainloader ($root)/EFI/BOOT/BOOTx64.efi
           }
