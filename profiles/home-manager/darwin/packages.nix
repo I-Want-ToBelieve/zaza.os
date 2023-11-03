@@ -2,26 +2,25 @@
   home.packages = with pkgs;
     [
       aria2
-      motrix
+
       bandwhich
       bc
       btop
       bottom
 
-      cached-nix-shell
       cachix
-      firefox
+ 
       ffmpeg-full
       fzf
       flameshot
 
-      google-chrome
+    
 
       hyperfine
 
       httpie # http client
 
-      insomnia # REST client
+
       iina # video player
 
       lazygit
@@ -32,7 +31,7 @@
       nodejs
       neovim
       nix-init
-      obinskit
+      
       openssl
 
       (pkgs.python3Full.withPackages
