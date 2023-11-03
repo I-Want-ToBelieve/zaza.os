@@ -159,7 +159,7 @@
           };
 
           darwin = with self.profiles.darwin; {
-            apps = [apps];
+            misc = [apps nix];
           };
         };
 
@@ -232,6 +232,7 @@
                 ./users/root.nix
 
                 ./users/i.want.to.believe.nix
+
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
@@ -321,6 +322,7 @@
                 ./users/root.nix
 
                 ./users/i.want.to.believe.nix
+
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
@@ -373,13 +375,13 @@
               ++ [
                 {
                   imports = with self.suites.darwin;
-                    nixpkgs.lib.flatten [apps];
+                    nixpkgs.lib.flatten [misc];
                 }
               ]
               ++ [
                 ./hosts/darwin/k99-lite-darwin.nix
 
-                ./users/i.want.to.believe.nix
+                ./users/darwin/i.want.to.believe.nix
                 inputs.home-manager.darwinModules.home-manager
                 {
                   home-manager.useGlobalPkgs = true;

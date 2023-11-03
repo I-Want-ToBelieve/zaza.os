@@ -52,9 +52,9 @@
     masApps = {
       # TODO Feel free to add your favorite apps here.
 
-      Xcode = 497799835;
-      Wechat = 836500024;
-      NeteaseCloudMusic = 944848654;
+      # Xcode = 497799835;
+      # Wechat = 836500024;
+      # NeteaseCloudMusic = 944848654;
       # QQ = 451108668;
       # WeCom = 1189898970;  # Wechat for Work
       # TecentMetting = 1484048379;
@@ -78,10 +78,10 @@
     # `brew install --cask`
     # TODO Feel free to add your favorite apps here.
     casks = [
-      "openinterminal-lite" # open current folder in terminal
+      # "openinterminal-lite" # open current folder in terminal
 
-      "iglance" # beautiful system monitor
-      "eudic" # 欧路词典
+      # "iglance" # beautiful system monitor
+      # "eudic" # 欧路词典
     ];
   };
 }
