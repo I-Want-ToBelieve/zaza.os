@@ -85,6 +85,7 @@
       "raycast"
       "alt-tab"
       "copyq"
+      "monitorcontrol"
       "easy-move-plus-resize"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
