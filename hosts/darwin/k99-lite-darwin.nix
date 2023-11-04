@@ -128,7 +128,7 @@
 
       loginwindow = {
         GuestEnabled = false; # disable guest user
-        SHOWFULLNAME = true; # show full name in login window
+        SHOWFULLNAME = false; # show full name in login window
       };
     };
 

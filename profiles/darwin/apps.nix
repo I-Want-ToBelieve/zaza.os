@@ -84,6 +84,8 @@
       "firefox"
       "raycast"
       "alt-tab"
+      "copyq"
+      "easy-move-plus-resize"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
