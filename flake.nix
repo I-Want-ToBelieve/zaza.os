@@ -117,7 +117,7 @@
               nix
               locale
               fonts
-              stylixs
+              stylix
               share-via-wifi
               samba
               rescue-boot
@@ -126,7 +126,7 @@
             games = [game.steam game.uudeck.default];
           };
           home-manager = with self.profiles.home-manager; {
-            base = [packages nix misc stylixs fonts];
+            base = [packages nix misc fonts stylix];
             cli = with cli; [direnv git ssh starship joshuto mangohud aria2];
             gui = with gui; [
               firefox.default
@@ -144,8 +144,9 @@
               [
                 nix
                 packages
+                misc
               ]
-              ++ [cli.git cli.direnv cli.ssh cli.starship shells.fish shells.zsh shells.nu.default];
+              ++ [cli.git cli.direnv cli.ssh cli.starship gui.kitty shells.fish shells.zsh shells.nu.default stylix];
             hyprland = with desktop; [
               dunst
               waybar
@@ -159,7 +160,7 @@
           };
 
           darwin = with self.profiles.darwin; {
-            misc = [apps nix];
+            misc = [apps nix stylix];
           };
         };
 
@@ -383,6 +384,7 @@
 
                 ./users/darwin/i.want.to.believe.nix
                 inputs.home-manager.darwinModules.home-manager
+                inputs.stylix.darwinModules.stylix
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
