@@ -87,6 +87,7 @@
       "copyq"
       "monitorcontrol"
       "easy-move-plus-resize"
+      "hammerspoon"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
