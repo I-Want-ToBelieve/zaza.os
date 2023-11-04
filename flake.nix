@@ -145,7 +145,7 @@
                 nix
                 packages
               ]
-              ++ [cli.git cli.direnv cli.ssh shells.fish shells.zsh shells.nu.default];
+              ++ [cli.git cli.direnv cli.ssh cli.starship shells.fish shells.zsh shells.nu.default];
             hyprland = with desktop; [
               dunst
               waybar

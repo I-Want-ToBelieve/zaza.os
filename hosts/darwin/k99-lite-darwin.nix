@@ -28,7 +28,7 @@
 
       # customize dock
       dock = {
-        autohide = true;
+        autohide = false;
         show-recents = false; # disable recent apps
 
         # customize Hot Corners(触发角, 鼠标移动到屏幕角落时触发的动作)
