@@ -66,6 +66,7 @@
       "homebrew/cask-fonts"
       "homebrew/services"
       "homebrew/cask-versions"
+      "v2raya/v2raya"
     ];
 
     # `brew install`
@@ -73,13 +74,16 @@
     brews = [
       "wget" # download tool
       "curl" # no not install curl via nixpkgs, it's not working well on macOS!
+      "v2raya/v2raya/v2raya"
     ];
 
     # `brew install --cask`
     # TODO Feel free to add your favorite apps here.
     casks = [
       # "openinterminal-lite" # open current folder in terminal
-
+      "firefox"
+      "raycast"
+      "alt-tab"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];

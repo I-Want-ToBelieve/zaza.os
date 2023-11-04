@@ -9,17 +9,14 @@
       bottom
 
       cachix
- 
+
       ffmpeg-full
       fzf
       flameshot
 
-    
-
       hyperfine
 
       httpie # http client
-
 
       iina # video player
 
@@ -29,9 +26,8 @@
 
       nil
       nodejs
-      neovim
       nix-init
-      
+
       openssl
 
       (pkgs.python3Full.withPackages
