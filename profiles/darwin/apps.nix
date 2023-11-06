@@ -21,6 +21,7 @@
     git
   ];
   environment.variables.EDITOR = "neovim";
+  environment.shells = [pkgs.fish];
 
   # Homebrew Mirror in China
   # Feel free to remove this if you are not in China.
@@ -67,6 +68,7 @@
       "homebrew/services"
       "homebrew/cask-versions"
       "v2raya/v2raya"
+      "FelixKratz/formulae"
     ];
 
     # `brew install`
@@ -75,6 +77,8 @@
       "wget" # download tool
       "curl" # no not install curl via nixpkgs, it's not working well on macOS!
       "v2raya/v2raya/v2raya"
+      "node"
+      "borders"
     ];
 
     # `brew install --cask`
@@ -87,7 +91,6 @@
       "copyq"
       "monitorcontrol"
       "easy-move-plus-resize"
-      "hammerspoon"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
