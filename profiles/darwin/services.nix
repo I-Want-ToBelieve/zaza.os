@@ -19,15 +19,24 @@
         mouse_follows_focus = "off";
         window_placement = "second_child";
         window_opacity = 0.90;
-        top_padding = 10;
-        bottom_padding = 10;
-        left_padding = 10;
-        right_padding = 10;
-        window_gap = 10;
+        top_padding = 20;
+        bottom_padding = 20;
+        left_padding = 20;
+        right_padding = 20;
+        window_gap = 20;
       };
       extraConfig = ''
+        borders active_color=0xff6eff89 inactive_color=0xff516468 width=12.0 2>/dev/null 1>&2 &
+
         yabai -m rule --add app='System Preferences' manage=off
-        borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 2>/dev/null 1>&2 &
+
+        yabai -m signal --add event=window_created action='ymsp window-created'
+
+        yabai -m signal --add event=application_launched action='ymsp window-created'
+
+        yabai -m signal --add event=window_moved action='ymsp window-moved'
+
+        ymsp on-yabai-start
       '';
     };
   };
