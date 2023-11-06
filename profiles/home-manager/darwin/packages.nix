@@ -25,7 +25,7 @@
       localsend
 
       nil
-      nodejs
+
       nix-init
 
       openssl

@@ -160,7 +160,7 @@
           };
 
           darwin = with self.profiles.darwin; {
-            misc = [apps nix stylix];
+            misc = [apps nix stylix services];
           };
         };
 
