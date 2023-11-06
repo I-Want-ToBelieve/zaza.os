@@ -147,6 +147,20 @@
       #
       # disabled, caused only problems!
       swapLeftCommandAndLeftAlt = false;
+      #  <https://developer.apple.com/library/content/technotes/tn2450/_index.html>.
+      #  <https://hidutil-generator.netlify.app/>
+      # 16 -> 10 https://codepen.io/floatingshuyin-the-bashful/pen/vYbgJzJ.
+      # swapLeftCommandAndLeftCtrl
+      userKeyMapping = [
+        {
+          HIDKeyboardModifierMappingSrc = 30064771296;
+          HIDKeyboardModifierMappingDst = 30064771299;
+        }
+        {
+          HIDKeyboardModifierMappingSrc = 30064771299;
+          HIDKeyboardModifierMappingDst = 30064771296;
+        }
+      ];
     };
   };
 
@@ -156,8 +170,9 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   # this is required if you want to use darwin's default shell - zsh
   programs.zsh.enable = true;
+  programs.fish.enable = true;
   environment.shells = [
-    pkgs.zsh
+    pkgs.fish
   ];
 
   # Set your time zone.
