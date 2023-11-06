@@ -1,3 +1,4 @@
 {
-  "yabaiPath": "/run/current-system/sw/bin/yabai"
+  "yabaiPath": "/run/current-system/sw/bin/yabai",
+  "masterPosition": "left"
 }

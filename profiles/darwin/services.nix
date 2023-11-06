@@ -7,6 +7,17 @@
     skhd = {
       enable = true;
       skhdConfig = ''
+        # focus windows
+        alt + k : ymsp focus-down-window
+        alt + i : ymsp focus-up-window
+
+        # adjust number of master windows
+        alt + shift - i : ymsp increase-master-window-count
+        alt + shift - d : ymsp decrease-master-window-count
+
+        alt + q : ymsp close-focused-window
+
+
         alt + shift - r   :   chunkc quit
       '';
     };

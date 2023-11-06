@@ -91,6 +91,7 @@
       "copyq"
       "monitorcontrol"
       "easy-move-plus-resize"
+      "phoenix"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
