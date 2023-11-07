@@ -7,18 +7,9 @@
     skhd = {
       enable = true;
       skhdConfig = ''
-        # focus windows
-        alt + k : ymsp focus-down-window
-        alt + i : ymsp focus-up-window
-
-        # adjust number of master windows
-        alt + shift - i : ymsp increase-master-window-count
-        alt + shift - d : ymsp decrease-master-window-count
-
-        alt + q : ymsp close-focused-window
-
-
-        alt + shift - r   :   chunkc quit
+        ctrl - return : kitty --single-instance -d ~
+        # https://github.com/koekeishiya/skhd/blob/f88e7ad403ebbee1b8bac988d8b162d595f595c4/src/tokenize.h#L16
+        cmd - delete : skhd -k "ctrl - space"
       '';
     };
 

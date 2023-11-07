@@ -64,6 +64,9 @@
         AppleInterfaceStyle = "Dark"; # dark mode
         AppleKeyboardUIMode = 3; # Mode 3 enables full keyboard control.
         ApplePressAndHoldEnabled = true; # enable press and hold
+        AppleShowAllExtensions = true;
+        AppleShowAllFiles = true;
+        AppleShowScrollBars = "Automatic";
 
         # If you press and hold certain keyboard keys when in a text area, the key’s character begins to repeat.
         # This is very useful for vim users, they use `hjkl` to move cursor.
@@ -178,7 +181,7 @@
   # Set your time zone.
   # comment this due to the issue:
   #   https://githubfast.com/LnL7/nix-darwin/issues/359
-  # time.timeZone = "Asia/shanghai";
+  time.timeZone = "Asia/Shanghai";
 
   # Fonts
   fonts = {

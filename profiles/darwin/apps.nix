@@ -19,6 +19,7 @@
   environment.systemPackages = with pkgs; [
     neovim
     git
+    skhd
   ];
   environment.variables.EDITOR = "neovim";
   environment.shells = [pkgs.fish];
