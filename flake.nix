@@ -164,6 +164,8 @@
           };
         };
 
+        overlays.default = import ./overlays;
+
         nixosConfigurations = {
           "k99-lite" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
@@ -199,6 +201,7 @@
                     inputs.nvfetcher.overlays.default
                     inputs.rust-overlay.overlays.default
                     (import ./pkgs)
+                    self.overlays.default
                   ];
                   nixpkgs.config = {
                     allowUnfree = true;
@@ -288,6 +291,7 @@
                     inputs.nvfetcher.overlays.default
                     inputs.rust-overlay.overlays.default
                     (import ./pkgs)
+                    self.overlays.default
                   ];
                   nixpkgs.config = {
                     allowUnfree = true;
@@ -365,6 +369,7 @@
                     inputs.nvfetcher.overlays.default
                     inputs.rust-overlay.overlays.default
                     (import ./pkgs)
+                    self.overlays.default
                   ];
                   nixpkgs.config = {
                     allowUnfree = true;
