@@ -412,7 +412,8 @@
     });
 
   inputs = {
-    nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
+    # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 

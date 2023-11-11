@@ -93,6 +93,7 @@
       "monitorcontrol"
       "easy-move-plus-resize"
       "phoenix"
+      "hackintool"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
