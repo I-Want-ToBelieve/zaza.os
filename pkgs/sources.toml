@@ -31,3 +31,9 @@ fetch.github = "a-parhom/LightlyShaders"
 [plasma5-applets-window-appmenu]
 src.git = "https://github.com/psifidotos/applet-window-appmenu.git"
 fetch.github = "psifidotos/applet-window-appmenu"
+
+
+[ecal]
+src.git = "https://github.com/eclipse-ecal/ecal.git"
+fetch.github = "eclipse-ecal/ecal"
+git.fetchSubmodules = true
