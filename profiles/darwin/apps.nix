@@ -80,6 +80,7 @@
       "v2raya/v2raya/v2raya"
       "node"
       "borders"
+      "proxychains-ng"
     ];
 
     # `brew install --cask`
@@ -94,6 +95,9 @@
       "easy-move-plus-resize"
       "phoenix"
       "hackintool"
+      "docker"
+      "kap"
+      "keycastr"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
