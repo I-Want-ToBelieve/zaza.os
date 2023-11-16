@@ -34,6 +34,7 @@
       lt = "ls --tree";
       ra = "joshuto";
       jo = "joshuto";
+      proxy = "proxychains4";
     };
     functions = {
       c = {

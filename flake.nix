@@ -44,6 +44,7 @@
 
           # https://devenv.sh/scripts/
           scripts.hello.exec = "echo $GREET";
+          scripts.rebuild.exec = "nix run nix-darwin --accept-flake-config -- switch --flake .#k99-lite-darwin";
 
           enterShell = ''
             hello
