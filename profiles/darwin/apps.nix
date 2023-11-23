@@ -54,7 +54,7 @@
     masApps = {
       # TODO Feel free to add your favorite apps here.
 
-      # Xcode = 497799835;
+      Xcode = 497799835;
       # Wechat = 836500024;
       # NeteaseCloudMusic = 944848654;
       # QQ = 451108668;
@@ -81,6 +81,9 @@
       "node"
       "borders"
       "proxychains-ng"
+      "clang-format"
+
+      "mas"
     ];
 
     # `brew install --cask`
@@ -98,6 +101,7 @@
       "docker"
       "kap"
       "keycastr"
+
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];

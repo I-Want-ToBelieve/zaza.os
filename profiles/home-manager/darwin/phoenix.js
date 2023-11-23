@@ -11,7 +11,7 @@
 // https://github.com/kasper/phoenix/issues/269
 
 
-const DISPLAYS_HAVE_SEPARATE_SPACES = `Must set Apple menu > System Preferences > Mission Control > Displays have Separate Spaces`
+const DISPLAYS_HAVE_SEPARATE_SPACES = `Must set Apple menu >  System Preferences > Mission Control > Displays have Separate Spaces`
 
 // common screen locations
 const topHalf = {

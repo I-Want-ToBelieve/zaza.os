@@ -145,5 +145,9 @@
     };
 
     bat = {enable = true;};
+
+    zellij = {
+      enable = true;
+    };
   };
 }

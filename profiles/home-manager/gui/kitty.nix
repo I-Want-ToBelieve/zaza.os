@@ -53,6 +53,11 @@
       adjust_line_height = "0";
       adjust_column_width = "0";
       box_drawing_scale = "0.001, 1, 1.5, 2";
+
+      # macos
+      macos_show_window_title_in = "none";
+      macos_menubar_title_max_length = "0";
+      hide_window_decorations = "titlebar-only";
     };
 
     extraConfig = lib.mkAfter ''

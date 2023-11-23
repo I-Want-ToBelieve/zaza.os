@@ -5,8 +5,8 @@
 
   home.file.".proxychains/proxychains.conf".text = ''
     [ProxyList]
-    socks5  127.0.0.1 20173
-    http    127.0.0.1 20172
+    socks5  127.0.0.1 20170
+    http    127.0.0.1 20171
   '';
 
   programs.kitty = {
