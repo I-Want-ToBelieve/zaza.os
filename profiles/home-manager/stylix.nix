@@ -8,4 +8,5 @@
   stylix.targets.gtk.enable = false;
   stylix.targets.kde.enable = false;
   stylix.targets.xfce.enable = false;
+  stylix.targets.gnome.enable = false;
 }
