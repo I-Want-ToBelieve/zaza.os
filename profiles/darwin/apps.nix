@@ -70,6 +70,7 @@
       "homebrew/cask-versions"
       "v2raya/v2raya"
       "FelixKratz/formulae"
+      "I-Want-ToBelieve/homebrew-formulae"
     ];
 
     # `brew install`
@@ -78,12 +79,14 @@
       "wget" # download tool
       "curl" # no not install curl via nixpkgs, it's not working well on macOS!
       "v2raya/v2raya/v2raya"
-      "node"
       "borders"
       "proxychains-ng"
       "clang-format"
-
       "mas"
+      "rust"
+      "node"
+      "yakite"
+      "yakite-toast"
     ];
 
     # `brew install --cask`
