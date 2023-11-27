@@ -77,8 +77,10 @@
 
     # Keys
     keybindings = {
-      "ctrl+shift+v" = "paste_from_clipboard";
-      "ctrl+shift+s" = "paste_from_selection";
+      "ctrl+v" = "paste_from_clipboard";
+      "ctrl+c" = "copy_or_interrupt";
+      "super+c" = "copy_or_interrupt";
+      "ctrl+shift+v" = "paste_from_selection";
       "ctrl+shift+c" = "copy_to_clipboard";
       "shift+insert" = "paste_from_selection";
 
