@@ -3,12 +3,14 @@
   pkgs,
   lib,
   ...
-}: let
-  github520 = pkgs.fetchurl {
-    url = "https://raw.hellogithub.com/hosts";
-    sha256 = "sha256-eCWj8GslYIF6Nv8KTxlT0Q9WDInAM4bszvLZxDwBXX4=";
-  };
-in {
+}:
+#  let
+#   github520 = pkgs.fetchurl {
+#     url = "https://raw.hellogithub.com/hosts";
+#     sha256 = "sha256-eCWj8GslYIF6Nv8KTxlT0Q9WDInAM4bszvLZxDwBXX4=";
+#   };
+# in
+{
   networking = {
     networkmanager = {
       enable = true;
@@ -34,7 +36,7 @@ in {
       ''
 
       # https://gitee.com/klmahuaw/GitHub520/
-      (builtins.readFile "${github520}")
+      # (builtins.readFile "${github520}")
     ];
 
     firewall = {
