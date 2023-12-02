@@ -13,28 +13,26 @@
 
     inputMethod = {
       enabled = "fcitx5";
-      fcitx5.addons =
-        with pkgs;
-        with inur; [
+      fcitx5.addons = with pkgs;
+      with inur;
+        [
           fcitx5-gtk
           fcitx5-chinese-addons
           libsForQt5.fcitx5-qt
           fcitx5-theme-catppuccin
-          fcitx5-rime
         ]
-        # ++ [
-        #   (fcitx5-rime.override {
-        #     rimeDataPkgs = with pkgs.inur; [
-        #       (rime-cloverpinyin.overrideAttrs (finalAttrs: previousAttrs: {
-        #         preInstall = ''
-        #           echo '  - warframe' >> clover.dict.yaml
-        #         '';
-        #       }))
-        #       rime-dict
-        #     ];
-        #   })
-        # ]
-        ;
+        ++ [
+          (fcitx5-rime.override {
+            rimeDataPkgs = with pkgs.inur; [
+              (rime-cloverpinyin.overrideAttrs (finalAttrs: previousAttrs: {
+                preInstall = ''
+                  echo '  - warframe' >> clover.dict.yaml
+                '';
+              }))
+              rime-dict
+            ];
+          })
+        ];
     };
   };
 

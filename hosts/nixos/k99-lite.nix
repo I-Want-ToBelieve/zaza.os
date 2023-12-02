@@ -30,7 +30,7 @@
     KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
   '';
 
-  services.sunshine.enable = true;
+  services.sunshine.enable = false;
 
   # amd gpu
   boot.blacklistedKernelModules = ["nouveau" "nvidia"];
