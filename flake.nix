@@ -252,7 +252,7 @@
                         inputs.plasma-manager.homeManagerModules.plasma-manager
                         {programs.nix-index-database.comma.enable = true;}
                       ];
-                    home.stateVersion = "23.05";
+                    home.stateVersion = "23.11";
                   };
                   # Optionally, use home-manager.extraSpecialArgs to pass
                   # arguments to home.nix
@@ -318,7 +318,7 @@
                 inputs.stylix.nixosModules.stylix
                 inputs.nix-gaming.nixosModules.steamCompat
                 {
-                  system.stateVersion = "23.05";
+                  system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
                 }
 
@@ -343,7 +343,7 @@
                         inputs.plasma-manager.homeManagerModules.plasma-manager
                         {programs.nix-index-database.comma.enable = true;}
                       ];
-                    home.stateVersion = "23.05";
+                    home.stateVersion = "23.11";
                   };
                   # Optionally, use home-manager.extraSpecialArgs to pass
                   # arguments to home.nix
@@ -403,7 +403,7 @@
                         inputs.nix-index-database.hmModules.nix-index
                         {programs.nix-index-database.comma.enable = true;}
                       ];
-                    home.stateVersion = "23.05";
+                    home.stateVersion = "23.11";
                   };
                 }
               ];
@@ -484,7 +484,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
+    # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
