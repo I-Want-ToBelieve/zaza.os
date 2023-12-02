@@ -16,20 +16,20 @@
         websockets
         # other python packages
       ]))
-    (wallpaper-engine-kde-plugin.overrideAttrs (finalAttrs: previousAttrs: {
-      patches =
-        (previousAttrs.patches or [])
-        ++ [
-          (fetchpatch {
-            name = "wallpaper-engine-kde-plugin-main-nixos.patch";
-            url = "https://github.com/I-Want-ToBelieve/wallpaper-engine-kde-plugin/commit/95bb3268d7576473a61416f75c38fe93047a11a5.patch";
-            sha256 = "sha256-FBoJEX8nZNt5Wy/10nzv5DcMNL8xoxDPHyfJJleoGUM=";
-          })
-        ];
-    }))
+    # (wallpaper-engine-kde-plugin.overrideAttrs (finalAttrs: previousAttrs: {
+    #   patches =
+    #     (previousAttrs.patches or [])
+    #     ++ [
+    #       (fetchpatch {
+    #         name = "wallpaper-engine-kde-plugin-main-nixos.patch";
+    #         url = "https://github.com/I-Want-ToBelieve/wallpaper-engine-kde-plugin/commit/95bb3268d7576473a61416f75c38fe93047a11a5.patch";
+    #         sha256 = "sha256-FBoJEX8nZNt5Wy/10nzv5DcMNL8xoxDPHyfJJleoGUM=";
+    #       })
+    #     ];
+    # }))
 
-    plasma5-applets-window-appmenu
-    lightly-shaders
+    # plasma5-applets-window-appmenu
+    # lightly-shaders
   ];
 
   programs.kdeconnect = {enable = true;};
