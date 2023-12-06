@@ -489,6 +489,11 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    autohide-tdrop = {
+      url = "github:I-Want-ToBelieve/autohide-tdrop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {

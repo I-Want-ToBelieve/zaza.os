@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs;
     [
       alsa-lib
@@ -109,8 +113,9 @@
       ripgrep
       yt-dlp
     ]
-    ++ (with pkgs.inur; [autohide-tdrop krabby leagueoflegends])
-    ++ (with pkgs.nur.repos; [xddxdd.baidupcs-go]);
+    ++ (with pkgs.inur; [krabby leagueoflegends])
+    ++ (with pkgs.nur.repos; [xddxdd.baidupcs-go])
+    ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
 
   programs = {
     eza.enable = true;
