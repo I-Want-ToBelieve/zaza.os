@@ -56,10 +56,7 @@
 
     bluetooth = {
       enable = true;
-      # https://pythonhosted.org/BT-Manager/config.html#etc-bluetooth-main-conf
-      # https://github.com/NixOS/nixpkgs/blob/2f9286912cb215969ece465147badf6d07aa43fe/nixos/modules/services/hardware/bluetooth.nix#L110
-      # https://www.goulin.fr/blog/bluetooth-headset-battery-percentage-ubuntu#:~:text=Edit%20the%20following%20file%20as%20root%3A%20%2Fetc%2Fbluetooth%2Fmain.conf,Add%20Experimental%3Dtrue%20at%20the%20beginning%20of%20the%20file.
-      # https://mynixos.com/nixpkgs/option/hardware.bluetooth.settings
+      powerOnBoot = true;
       settings = {General = {Experimental = true;};};
     };
 

@@ -1,5 +1,11 @@
-{ config, lib, pkgs, self, ... }: {
-  imports = [ ./common.nix ];
+{
+  config,
+  lib,
+  pkgs,
+  self,
+  ...
+}: {
+  imports = [./common.nix];
 
   # console = let
   #   normal = ["181825" "F38BA8" "A6E3A1" "F9E2AF" "89B4FA" "F5C2E7" "94E2D5" "BAC2DE"];
@@ -12,7 +18,7 @@
 
   environment = {
     binsh = "${pkgs.bash}/bin/bash";
-    shells = with pkgs; [ zsh ];
+    shells = with pkgs; [zsh];
 
     sessionVariables = {
       GTK_IM_MODULE = "fcitx";
@@ -55,7 +61,8 @@
     #   eval $(ssh-agent)
     # '';
 
-    shellAliases = let ifSudo = lib.mkIf config.security.sudo.enable;
+    shellAliases = let
+      ifSudo = lib.mkIf config.security.sudo.enable;
     in {
       # nix
       nrb = ifSudo "sudo nixos-rebuild";
@@ -89,7 +96,7 @@
   services.openssh = {
     enable = true;
     openFirewall = true;
-    ports = [ 22 ];
+    ports = [22];
 
     settings = {
       X11Forwarding = false;
@@ -141,11 +148,11 @@
     fstrim.enable = true;
     v2raya.enable = true;
 
-    udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
     dbus = {
       enable = true;
-      packages = with pkgs; [ dconf gcr ];
+      packages = with pkgs; [dconf gcr];
     };
 
     gnome = {
@@ -175,8 +182,8 @@
   };
 
   systemd.user.services = {
-    pipewire.wantedBy = [ "default.target" ];
-    pipewire-pulse.wantedBy = [ "default.target" ];
+    pipewire.wantedBy = ["default.target"];
+    pipewire-pulse.wantedBy = ["default.target"];
   };
 
   security = {
@@ -185,7 +192,7 @@
     apparmor = {
       enable = true;
       killUnconfinedConfinables = true;
-      packages = [ pkgs.apparmor-profiles ];
+      packages = [pkgs.apparmor-profiles];
     };
 
     pam = {
