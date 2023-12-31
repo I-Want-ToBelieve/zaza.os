@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   services.gvfs.enable = true;
   services.samba-wsdd.enable =
     true; # make shares visible for windows 10 clients
@@ -9,7 +9,7 @@
     3702 # wsdd
   ];
 
-  environment.systemPackages = with pkgs; [ cifs-utils ];
+  environment.systemPackages = with pkgs; [cifs-utils];
 
   services.samba = {
     enable = true;
@@ -40,11 +40,16 @@
         "guest only" = "yes";
         "create mask" = "0644";
         "directory mask" = "0755";
-      };
-      share = {
         "follow symlinks" = "yes";
         "wide links" = "yes";
       };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    # after exec:
+    # sudo chmod -R 1777 /mnt/share/
+    # sudo chown -R root /mnt/share/
+    "d /mnt/share 1777 root root -"
+  ];
 }

@@ -26,7 +26,7 @@
   users.groups.input.members = ["i.want.to.believe"];
 
   services.udev.extraRules = ''
-    Sunshine
+    # Sunshine
     KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
   '';
 
@@ -37,10 +37,6 @@
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.hip-common}"
     "f /dev/shm/looking-glass 0660 i.want.to.believe qemu-libvirtd -"
-    # after exec:
-    # sudo chmod -R 1777 /mnt/share/
-    # sudo chown -R root /mnt/share/
-    "d /mnt/share 1777 root root -"
   ];
 
   hardware = {
