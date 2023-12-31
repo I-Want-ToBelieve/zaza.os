@@ -10,6 +10,8 @@
       alsa-tools
       alsa-utils
 
+      android-studio
+
       # archivebox
       # ariang
       motrix
@@ -61,7 +63,7 @@
       libappindicator
       libnotify
       libsecret
-      localsend
+      # localsend
       # libreoffice-fresh
       lutris
 
