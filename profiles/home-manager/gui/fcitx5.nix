@@ -101,14 +101,12 @@
   home.file.".config/fcitx5/conf/classicui.conf".text = ''
     # Vertical Candidate List
     Vertical Candidate List=False
-    # Use Per Screen DPI
-    PerScreenDPI=True
     # Use mouse wheel to go to prev or next page
     WheelForPaging=True
     # Font
-    Font="Sans 10"
+    Font="WenQuanYi Micro Hei Mono 22"
     # Menu Font
-    MenuFont="Sans 10"
+    MenuFont="WenQuanYi Micro Hei Mono 12"
     # Tray Font
     TrayFont="Sans Bold 10"
     # Tray Label Outline Color
@@ -120,10 +118,20 @@
     # Show Layout Name In Icon
     ShowLayoutNameInIcon=True
     # Use input method language to display text
-    UseInputMethodLangaugeToDisplayText=True
-    # Theme or macchiato, frappe, latte, mocha
+    UseInputMethodLanguageToDisplayText=True
+    # Theme
     Theme=catppuccin-mocha
+    # Dark Theme
+    DarkTheme=default-dark
+    # Follow system light/dark color scheme
+    UseDarkTheme=False
+    # Follow system accent color if it is supported by theme and desktop
+    UseAccentColor=True
+    # Use Per Screen DPI on X11
+    PerScreenDPI=True
     # Force font DPI on Wayland
     ForceWaylandDPI=0
+    # Enable fractional scale under Wayland
+    EnableFractionalScale=True
   '';
 }
