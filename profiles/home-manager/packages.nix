@@ -63,7 +63,7 @@
       libappindicator
       libnotify
       libsecret
-      # localsend
+      localsend
       # libreoffice-fresh
       lutris
 
@@ -97,6 +97,7 @@
       wineWowPackages.unstableFull
       winetricks
       wirelesstools
+
       xarchiver
       xclip
       xdg-utils
