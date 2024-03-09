@@ -2,7 +2,7 @@
   programs.aria2 = {
     enable = true;
     settings = {
-      dir = "/home/i.want.to.believe/Games/Games";
+      dir = "Downloads";
 
       # rpc
       enable-rpc = true;

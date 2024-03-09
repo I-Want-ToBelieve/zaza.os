@@ -11,19 +11,13 @@
     ++ [
       inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
       inputs.nixos-hardware.nixosModules.common-gpu-intel
-      inputs.nixos-hardware.nixosModules.common-gpu-amd
     ];
 
-  system.stateVersion = lib.mkForce "24.05";
+  services.rkvm.client.enable = true;
+  services.rkvm.client.settings.password = "0123456789";
+  services.rkvm.client.settings.server = "192.168.0.130:5258";
 
-  specialisation = {
-    gpupass = {
-      configuration = {
-        system.nixos.tags = ["with-gpupass"];
-        gpupass.enable = true;
-      };
-    };
-  };
+  system.stateVersion = lib.mkForce "24.05";
 
   users.groups.input.members = ["i.want.to.believe"];
 
@@ -42,12 +36,6 @@
   ];
 
   hardware = {
-    amdgpu = {
-      amdvlk = true;
-      opencl = true;
-      loadInInitrd = true;
-    };
-
     opengl = {enable = true;};
 
     steam-hardware = {enable = true;};
@@ -77,9 +65,6 @@
       "snd-aloop"
     ];
     extraModprobeConfig = ''
-      options kvm_intel nested=1
-      options kvm_intel emulate_invalid_guest_state=0
-      options kvm ignore_msrs=1
       # exclusive_caps: Skype, Zoom, Teams etc. will only show device when actually streaming
       # card_label: Name of virtual camera, how it'll show up in Skype, Zoom, Teams
       # https://github.com/umlaeute/v4l2loopback
@@ -88,13 +73,12 @@
     extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
-      "intel_iommu=on"
       # "i915.enable_gvt=1"
       # "i915.enable_guc=0"
-      "iommu=pt"
+      # "iommu=pt"
       # "earlymodules=vfio-pci"
       # "vfio-pci.ids=8086:1912"
-      "pcie_aspm=off"
+      # "pcie_aspm=off"
     ];
 
     supportedFilesystems = ["btrfs" "ntfs"];
@@ -138,22 +122,6 @@
         useOSProber = true;
         enableCryptodisk = true;
         configurationLimit = 5;
-
-        extraEntries = ''
-          menuentry "OC & HACKINTOSH" {
-            insmod chain
-            insmod fat
-            insmod part_gpt
-            search --label --no-floppy --set=root DARWIN-BOOT
-            chainloader ($root)/EFI/BOOT/BOOTx64.efi
-          }
-          menuentry "Reboot" {
-            reboot
-          }
-          menuentry "Poweroff" {
-            halt
-          }
-        '';
       };
     };
   };
@@ -189,39 +157,6 @@
   };
 
   swapDevices = [{device = "/dev/disk/by-label/swap";}];
-
-  fileSystems."/var/lib/libvirt" = {
-    device = "/dev/disk/by-label/qemu-kvm";
-    fsType = "ext4";
-  };
-
-  fileSystems."/var/lib/containers" = {
-    device = "/dev/disk/by-label/containers";
-    fsType = "ext4";
-  };
-
-  fileSystems."/home/i.want.to.believe/Games" = {
-    device = "/dev/disk/by-label/SG";
-    fsType = "ext4";
-    options = ["rw" "nosuid" "nodev" "relatime" "errors=remount-ro"];
-    noCheck = true;
-  };
-
-  fileSystems."/run/media/i.want.to.believe/Games" = {
-    device = "/dev/disk/by-label/Games";
-    fsType = "ntfs3";
-    options = [
-      "rw"
-      "nosuid"
-      "nodev"
-      "relatime"
-      "uid=1000"
-      "gid=100"
-      "iocharset=utf8"
-      "windows_names"
-    ];
-    noCheck = true;
-  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -260,15 +195,6 @@
       qemu = {
         ovmf = {enable = true;};
         runAsRoot = false;
-      };
-    };
-
-    kvmgt = {
-      enable = !config.gpupass.enable;
-      vgpus = {
-        "i915-GVTg_V5_4" = {
-          uuid = ["179881f8-f4d8-11ed-8914-23e4dfd5da5b"];
-        };
       };
     };
   };
