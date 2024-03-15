@@ -226,7 +226,6 @@
                 inputs.home-manager.nixosModules.home-manager
 
                 inputs.stylix.nixosModules.stylix
-                inputs.nix-gaming.nixosModules.steamCompat
                 {
                   system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
@@ -318,7 +317,6 @@
                 inputs.home-manager.nixosModules.home-manager
 
                 inputs.stylix.nixosModules.stylix
-                inputs.nix-gaming.nixosModules.steamCompat
                 {
                   system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
@@ -410,7 +408,6 @@
                 inputs.home-manager.nixosModules.home-manager
 
                 inputs.stylix.nixosModules.stylix
-                inputs.nix-gaming.nixosModules.steamCompat
                 {
                   system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
@@ -508,7 +505,7 @@
 
   inputs = {
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 

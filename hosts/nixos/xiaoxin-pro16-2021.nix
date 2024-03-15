@@ -192,7 +192,7 @@
 
     podman = {
       enable = true;
-      extraPackages = with pkgs; [skopeo conmon runc];
+      extraPackages = with pkgs; [skopeo conmon runc crun];
     };
 
     libvirtd = {

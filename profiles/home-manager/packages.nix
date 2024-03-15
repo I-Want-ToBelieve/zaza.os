@@ -105,7 +105,6 @@
       xz
       xorg.xhost
       yesplaymusic
-      yuzu-ea
       zoom-us
       gnome.zenity
       catimg
