@@ -6,7 +6,7 @@
         "style/font_face" = "LXGW WenKai Mono";
         "style/font_point" = 32;
         "menu/page_size" = 5;
-        schema_list = [{schema = "clover";}];
+        schema_list = [{schema = "rime_ice";}];
         "ascii_composer/good_old_caps_lock" = true;
         "ascii_composer/switch_key" = {
           "Caps_Lock" = "noop";
