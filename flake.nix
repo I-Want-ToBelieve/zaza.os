@@ -505,8 +505,8 @@
 
   inputs = {
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     devenv.url = "github:cachix/devenv";
