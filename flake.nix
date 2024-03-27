@@ -156,6 +156,14 @@
               swaylock
               mime
             ];
+            niri = with desktop; [
+              dunst
+              waybar
+              window-managers.niri
+              rofi
+              swaylock
+              mime
+            ];
             kde-x11 = [desktop.plasma desktop.bismuth desktop.kvantum];
             kde-wayland = [desktop.plasma desktop.bismuth desktop.kvantum];
           };
@@ -405,9 +413,12 @@
                 }
               ]
               ++ [
+                inputs.niri.nixosModules.niri
                 inputs.home-manager.nixosModules.home-manager
-
                 inputs.stylix.nixosModules.stylix
+                {
+                  programs.niri.enable = true;
+                }
                 {
                   system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
@@ -585,6 +596,8 @@
       url = "github:I-Want-ToBelieve/autohide-tdrop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   nixConfig = {
