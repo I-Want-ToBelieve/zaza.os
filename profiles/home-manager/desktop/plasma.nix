@@ -464,7 +464,7 @@
       "kgammarc"."ConfigFile"."use" = "kgammarc";
       "kglobalshortcutsrc"."ActivityManager"."_k_friendly_name" = "Activity Manager";
       "kglobalshortcutsrc"."KDE Keyboard Layout Switcher"."_k_friendly_name" = "Keyboard Layout Switcher";
-      "kglobalshortcutsrc"."WAYLAND_DISPLAY_OLD=$WAYLAND_DISPLAY-2.desktop"."_k_friendly_name" = "\sWAYLAND_DISPLAY=no KITTY_DISABLE_WAYLAND=1 tdrop -n tdrop_terminal --post-create-hook \"autohide-tdrop &\" -mta -h 60%% -w 70%% -x 15%% -y 0 kitty --class tdrop_terminal";
+      "kglobalshortcutsrc"."WAYLAND_DISPLAY_OLD=$WAYLAND_DISPLAY-2.desktop"."_k_friendly_name" = "WAYLAND_DISPLAY_OLD=$WAYLAND_DISPLAY WAYLAND_DISPLAY=no KITTY_DISABLE_WAYLAND=1 tdrop -n tdrop_terminal --post-create-hook \"autohide-tdrop &\" -mta -h 60%% -w 70%% -x 15%% -y 0 kitty --class tdrop_terminal";
       "kglobalshortcutsrc"."bismuth"."_k_friendly_name" = "Window Tiling";
       "kglobalshortcutsrc"."copyq.desktop"."_k_friendly_name" = "copyq toggle";
       "kglobalshortcutsrc"."ddcutil.desktop"."_k_friendly_name" = "ddcutil setvcp 60 11";

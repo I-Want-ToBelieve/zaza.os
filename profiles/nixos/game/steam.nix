@@ -12,7 +12,7 @@
 
     # https://github.com/fufexan/nix-gaming#usage-1
     # add extra compatibility tools to your STEAM_EXTRA_COMPAT_TOOLS_PATHS using the newly added `extraCompatPackages` option
-    extraCompatTools = with pkgs; [
+    extraCompatPackages = with pkgs; [
       # add the packages that you would like to have in Steam's extra compatibility packages list
       # pkgs.luxtorpeda
       proton-ge-bin

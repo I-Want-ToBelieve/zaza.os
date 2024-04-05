@@ -40,6 +40,7 @@
       }))
 
       evtest
+      fuzzel
       filebrowser
       filelight
       findutils
@@ -81,7 +82,7 @@
       nodejs
       neovim
       nix-init
-      obinskit
+
       openssl
 
       pamixer
