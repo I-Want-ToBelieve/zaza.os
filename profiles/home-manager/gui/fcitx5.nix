@@ -4,8 +4,8 @@
     "fcitx5/rime/default.custom.yaml".source = (pkgs.formats.yaml {}).generate "default.custom" {
       patch = {
         "style/font_face" = "LXGW WenKai Mono";
-        "style/font_point" = 32;
-        "menu/page_size" = 5;
+        "style/font_point" = 12;
+        "menu/page_size" = 6;
         schema_list = [{schema = "rime_ice";}];
         "ascii_composer/good_old_caps_lock" = true;
         "ascii_composer/switch_key" = {
@@ -84,7 +84,7 @@
     # Show first input method information
     ShowFirstInputMethodInformation=True
     # Default page size
-    DefaultPageSize=5
+    DefaultPageSize=6
     # Override Xkb Option
     OverrideXkbOption=False
     # Custom Xkb Option
@@ -104,9 +104,9 @@
     # Use mouse wheel to go to prev or next page
     WheelForPaging=True
     # Font
-    Font="WenQuanYi Micro Hei Mono 22"
+    Font="LXGW WenKai Mono 12"
     # Menu Font
-    MenuFont="WenQuanYi Micro Hei Mono 12"
+    MenuFont="LXGW WenKai Mono 12"
     # Tray Font
     TrayFont="Sans Bold 10"
     # Tray Label Outline Color
@@ -122,7 +122,7 @@
     # Theme
     Theme=catppuccin-mocha
     # Dark Theme
-    DarkTheme=default-dark
+    DarkTheme=catppuccin-mocha
     # Follow system light/dark color scheme
     UseDarkTheme=False
     # Follow system accent color if it is supported by theme and desktop

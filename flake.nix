@@ -63,7 +63,6 @@
           };
 
           # Plugin configuration
-          pre-commit.settings = {yamllint.relaxed = true;};
         };
       };
       flake = {

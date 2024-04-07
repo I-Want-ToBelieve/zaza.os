@@ -91,7 +91,7 @@
       pavucontrol
       pulseaudio
       (pkgs.python3Full.withPackages
-        (pythonPackages: with pythonPackages; [requests websockets]))
+        (pythonPackages: with pythonPackages; [requests websockets pyclip]))
       rsync
       scrcpy
       scream
