@@ -90,6 +90,7 @@
       psmisc
       pavucontrol
       pulseaudio
+      qimgv
       (pkgs.python3Full.withPackages
         (pythonPackages: with pythonPackages; [requests websockets pyclip]))
       rsync
