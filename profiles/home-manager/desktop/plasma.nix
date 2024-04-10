@@ -27,7 +27,7 @@
       "bismuth"."move_window_to_prev_pos" = "Meta+Shift+I";
       "bismuth"."move_window_to_right_pos" = [];
       "bismuth"."move_window_to_upper_pos" = [];
-      "bismuth"."next_layout" = ", , ";
+      "bismuth"."next_layout" = ["" "Meta+\\,Meta+\\,Switch to the Next Layout"];
       "bismuth"."prev_layout" = "Meta+|";
       "bismuth"."push_window_to_master" = "Meta+Shift+M";
       "bismuth"."rotate" = [];
@@ -51,6 +51,7 @@
       "kded5"."Show System Activity" = "Ctrl+Esc";
       "kded5"."display" = ["Display" "Meta+P"];
       "khotkeys"."{d03619b6-9b3c-48cc-9d9c-a2aadb485550}" = [];
+      "kitty-2.desktop"."_launch" = "Meta+Return";
       "kmix"."decrease_microphone_volume" = "Microphone Volume Down";
       "kmix"."decrease_volume" = "Volume Down";
       "kmix"."increase_microphone_volume" = "Microphone Volume Up";
@@ -398,9 +399,11 @@
       "kactivitymanagerdrc"."activities"."2fceeaf5-e7eb-41ea-9108-13788b24131a".value = "Default";
       "kactivitymanagerdrc"."main"."currentActivity".value = "2fceeaf5-e7eb-41ea-9108-13788b24131a";
       "kcminputrc"."Libinput.1133.16500.Logitech G304"."PointerAccelerationProfile".value = 1;
+      "kcminputrc"."Libinput.1133.16519.Logitech G903 LS"."AnnePro2 Mouse\x5d".value = "";
       "kcminputrc"."Libinput.1133.16519.Logitech G903 LS"."AnnePro2 Mouse]".value = "";
       "kcminputrc"."Libinput.1133.16519.Logitech G903 LS"."PointerAccelerationProfile".value = 1;
       "kcminputrc"."Libinput.1133.16519.Logitech G903 LS"."[Libinput.1241.41619.OBINS OBINS".value = "";
+      "kcminputrc"."Libinput.9011.26214.ydotoold virtual device"."AnnePro2 Mouse\x5d".value = "";
       "kcminputrc"."Libinput.9011.26214.ydotoold virtual device"."AnnePro2 Mouse]".value = "";
       "kcminputrc"."Libinput.9011.26214.ydotoold virtual device"."PointerAccelerationProfile".value = 1;
       "kcminputrc"."Libinput.9011.26214.ydotoold virtual device"."[Libinput.1241.41619.OBINS OBINS".value = "";
@@ -411,6 +414,7 @@
       "kcminputrc"."Libinput/1739/52856/06CB0001:00 06CB:CE78 Touchpad"."ScrollFactor".value = 0.75;
       "kcminputrc"."Libinput/1739/52856/06CB0001:00 06CB:CE78 Touchpad"."TapToClick".value = true;
       "kcminputrc"."Libinput/9011/26214/ydotoold virtual device"."PointerAccelerationProfile".value = 1;
+      "kcminputrc"."Mouse"."AnnePro2 Mouse\x5d".value = "";
       "kcminputrc"."Mouse"."AnnePro2 Mouse]".value = "";
       "kcminputrc"."Mouse"."PointerAccelerationProfile".value = 1;
       "kcminputrc"."Mouse"."X11LibInputXAccelProfileFlat".value = false;
@@ -493,8 +497,9 @@
       "kglobalshortcutsrc"."kcm_touchpad"."_k_friendly_name".value = "Touchpad";
       "kglobalshortcutsrc"."kded5"."_k_friendly_name".value = "KDE Daemon";
       "kglobalshortcutsrc"."khotkeys"."_k_friendly_name".value = "Custom Shortcuts Service";
+      "kglobalshortcutsrc"."kitty-2.desktop"."_k_friendly_name".value = "kitty";
       "kglobalshortcutsrc"."kmix"."_k_friendly_name".value = "Audio Volume";
-      "kglobalshortcutsrc"."ksmserver"."_k_friendly_name".value = "Session Management";
+      "kglobalshortcutsrc"."ksmserver"."_k_friendly_name".value = "KWin";
       "kglobalshortcutsrc"."kwin"."_k_friendly_name".value = "KWin";
       "kglobalshortcutsrc"."mediacontrol"."_k_friendly_name".value = "Media Controller";
       "kglobalshortcutsrc"."org.kde.dolphin.desktop"."_k_friendly_name".value = "Dolphin";
@@ -1330,7 +1335,7 @@
       "kxkbrc"."Layout"."VariantList".value = "";
       "plasma-localerc"."Formats"."LANG".value = "en_US.UTF-8";
       "plasmanotifyrc"."Notifications"."PopupPosition".value = "TopRight";
-      "plasmarc"."Wallpapers"."usersWallpapers".value = "";
+      "plasmarc"."Wallpapers"."usersWallpapers".value = "/nix/store/2ara2akymz7dli6fqi2d553aqrqls9lz-breeze-qt5-5.27.10-bin/share/wallpapers/Next/,/home/i.want.to.believe/git.workspace/nix.workspace/zaza.os/assets/wallpapers/catppuccin.png";
       "systemsettingsrc"."KFileDialog Settings"."detailViewIconSize".value = 16;
     };
   };
