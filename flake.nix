@@ -63,7 +63,6 @@
           };
 
           # Plugin configuration
-          pre-commit.settings = {yamllint.relaxed = true;};
         };
       };
       flake = {
@@ -156,6 +155,7 @@
               swaylock
               mime
             ];
+
             kde-x11 = [desktop.plasma desktop.bismuth desktop.kvantum];
             kde-wayland = [desktop.plasma desktop.bismuth desktop.kvantum];
           };
@@ -210,6 +210,7 @@
                       "electron-13.6.9"
                       "electron-19.0.7"
                       "openssl-1.1.1v"
+                      "openssl-1.1.1w"
                       "python3.11-django-3.1.14"
                     ];
                   };
@@ -225,7 +226,6 @@
                 inputs.home-manager.nixosModules.home-manager
 
                 inputs.stylix.nixosModules.stylix
-                inputs.nix-gaming.nixosModules.steamCompat
                 {
                   system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
@@ -299,6 +299,7 @@
                     permittedInsecurePackages = [
                       "electron-13.6.9"
                       "electron-19.0.7"
+                      "openssl-1.1.1w"
                       "openssl-1.1.1v"
                       "python3.11-django-3.1.14"
                     ];
@@ -316,7 +317,6 @@
                 inputs.home-manager.nixosModules.home-manager
 
                 inputs.stylix.nixosModules.stylix
-                inputs.nix-gaming.nixosModules.steamCompat
                 {
                   system.stateVersion = "23.11";
                   system.autoUpgrade.enable = false;
@@ -324,6 +324,97 @@
 
                 inputs.agenix.nixosModules.default
                 ./hosts/wsl/k99-lite-wsl.nix
+
+                ./users/root.nix
+
+                ./users/i.want.to.believe.nix
+
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.extraSpecialArgs = {inputs = inputs;};
+                  home-manager.users."i.want.to.believe" = {
+                    imports =
+                      nixpkgs.lib.attrValues self.homeManagerModules
+                      ++ (with self.suites.home-manager;
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                      ++ [
+                        inputs.nix-index-database.hmModules.nix-index
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        {programs.nix-index-database.comma.enable = true;}
+                      ];
+                    home.stateVersion = "23.11";
+                  };
+                  # Optionally, use home-manager.extraSpecialArgs to pass
+                  # arguments to home.nix
+                }
+              ];
+          };
+          "xiaoxin-pro16-2021" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {
+              suites = self.suites.nixos;
+              inputs = inputs;
+              self = self;
+            };
+            modules =
+              nixpkgs.lib.attrValues self.nixosModules
+              ++ [
+                ({
+                  config,
+                  pkgs,
+                  ...
+                }: {
+                  nixpkgs.overlays = [
+                    (final: prev: {
+                      __dontExport = true;
+                      lib = prev.lib.extend (lfinal: lprev: {our = self.lib;});
+                    })
+                    (final: prev: {
+                      inur = inputs.inur.packages."${prev.system}";
+                    })
+                    (final: _: let
+                      inherit (final) system;
+                    in {
+                      # Packages provided by flake inputs
+                      crane-lib = inputs.crane.lib.${system};
+                    })
+                    inputs.nur.overlay
+                    inputs.agenix.overlays.default
+                    inputs.nvfetcher.overlays.default
+                    inputs.rust-overlay.overlays.default
+                    (import ./pkgs)
+                    self.overlays.default
+                  ];
+                  nixpkgs.config = {
+                    allowUnfree = true;
+                    permittedInsecurePackages = [
+                      "electron-13.6.9"
+                      "electron-19.0.7"
+                      "openssl-1.1.1w"
+                      "openssl-1.1.1v"
+                      "python3.11-django-3.1.14"
+                    ];
+                  };
+                })
+              ]
+              ++ [
+                {
+                  imports = with self.suites.nixos;
+                    nixpkgs.lib.flatten [base misc games kde-wayland];
+                }
+              ]
+              ++ [
+                inputs.home-manager.nixosModules.home-manager
+                inputs.stylix.nixosModules.stylix
+
+                {
+                  system.stateVersion = "23.11";
+                  system.autoUpgrade.enable = false;
+                }
+
+                inputs.agenix.nixosModules.default
+                ./hosts/nixos/xiaoxin-pro16-2021.nix
 
                 ./users/root.nix
 
@@ -415,7 +506,7 @@
   inputs = {
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
+    # nixpkgs.url = "github:NixOS/nixpkgs/master";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     devenv.url = "github:cachix/devenv";
@@ -500,8 +591,8 @@
     extra-experimental-features = "nix-command flakes";
     extra-substituters = [
       "https://nix-gaming.cachix.org"
-      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      # "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+      # "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
       "https://fortuneteller2k.cachix.org"

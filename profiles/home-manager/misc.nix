@@ -1,23 +1,27 @@
-{ pkgs, config, ... }: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   home = {
-    sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+    sessionPath = ["${config.home.homeDirectory}/.local/bin"];
 
     file = {
       ".local/bin/updoot" = {
         # Upload and get link
         executable = true;
-        text = import ./bin/updoot.nix { inherit pkgs; };
+        text = import ./bin/updoot.nix {inherit pkgs;};
       };
 
       ".local/bin/preview.sh" = {
         # Preview script for fzf tab
         executable = true;
-        text = import ./bin/preview.nix { inherit pkgs; };
+        text = import ./bin/preview.nix {inherit pkgs;};
       };
       ".local/bin/autostart-kde.sh" = {
         # Preview script for fzf tab
         executable = true;
-        text = import ./bin/autostart-kde.nix { inherit pkgs; };
+        text = import ./bin/autostart-kde.nix {inherit pkgs;};
       };
 
       ".config/autostart/autostart-kde.sh.desktop" = {
@@ -40,7 +44,6 @@
 
     gpg-agent = {
       enable = true;
-      pinentryFlavor = "gnome3";
       enableZshIntegration = true;
       enableFishIntegration = true;
       enableSshSupport = true;

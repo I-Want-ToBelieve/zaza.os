@@ -21,8 +21,7 @@
     shells = with pkgs; [zsh];
 
     sessionVariables = {
-      GTK_IM_MODULE = "fcitx";
-      QT_IM_MODULE = "fcitx";
+      GLFW_IM_MODULE = "ibus";
     };
 
     variables = {
@@ -144,8 +143,15 @@
     lorri.enable = true;
     udisks2.enable = true;
     printing.enable = true;
+    printing.drivers = [pkgs.hplip pkgs.gutenprint];
     fstrim.enable = true;
     v2raya.enable = true;
+
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
 
     udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
