@@ -14,6 +14,7 @@
     (python3Full.withPackages (ps:
       with ps; [
         websockets
+        pyclip
         # other python packages
       ]))
     # (wallpaper-engine-kde-plugin.overrideAttrs (finalAttrs: previousAttrs: {

@@ -28,9 +28,19 @@
       ddcutil
       droidcam
 
-      distrobox
+      (distrobox.overrideAttrs (finalAttrs: previousAttrs: {
+        version = "1.7.0.1";
+        src = fetchFromGitHub {
+          owner = "89luca89";
+          repo = "distrobox";
+          rev = finalAttrs.version;
+          hash = "sha256-mIVMy09VO8l6/wzlVUhXCq2de8xSwFU1eXMBl9S6uWU=";
+        };
+        patches = [];
+      }))
 
       evtest
+      fuzzel
       filebrowser
       filelight
       findutils
@@ -63,7 +73,7 @@
       libappindicator
       libnotify
       libsecret
-      # localsend
+      localsend
       # libreoffice-fresh
       lutris
 
@@ -72,7 +82,7 @@
       nodejs
       neovim
       nix-init
-      obinskit
+
       openssl
 
       pamixer
@@ -80,8 +90,9 @@
       psmisc
       pavucontrol
       pulseaudio
+      qimgv
       (pkgs.python3Full.withPackages
-        (pythonPackages: with pythonPackages; [requests websockets]))
+        (pythonPackages: with pythonPackages; [requests websockets pyclip]))
       rsync
       scrcpy
       scream
@@ -97,6 +108,7 @@
       wineWowPackages.unstableFull
       winetricks
       wirelesstools
+
       xarchiver
       xclip
       xdg-utils
@@ -104,7 +116,6 @@
       xz
       xorg.xhost
       yesplaymusic
-      yuzu-ea
       zoom-us
       gnome.zenity
       catimg

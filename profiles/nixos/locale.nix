@@ -13,6 +13,7 @@
 
     inputMethod = {
       enabled = "fcitx5";
+      fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs;
       with inur;
         [
@@ -23,15 +24,9 @@
         ]
         ++ [
           (fcitx5-rime.override {
-            rimeDataPkgs = with pkgs.inur; [
-              (rime-cloverpinyin.overrideAttrs (finalAttrs: previousAttrs: {
-                preInstall = ''
-                  echo '  - warframe' >> clover.dict.yaml
-                '';
-              }))
-              rime-dict
-            ];
+            rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [rime-ice];
           })
+          fcitx5-mozc
         ];
     };
   };

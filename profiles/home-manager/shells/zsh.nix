@@ -7,7 +7,7 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableAutosuggestions = true;
+    autosuggestion = {enable = true;};
     dotDir = ".config/zsh";
     history = {
       save = 10000;
