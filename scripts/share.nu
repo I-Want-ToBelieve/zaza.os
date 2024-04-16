@@ -6,12 +6,13 @@ export def get_globals [] {
             {
                 sources: [
                     "~/.local/share/color-schemes",
-                    "~/.local/share/plasma"
+                    "~/.local/share/plasma",
+                    "~/.config/Kvantum"
                 ]
-                target: $"./sync/(hostname)"
+                target: $"./mutable/synchronous/(hostname)"
             }
         ],
-        original: "./sync/k99-lite",
+        original: "./mutable/synchronous/k99-lite",
     }
 }
 
