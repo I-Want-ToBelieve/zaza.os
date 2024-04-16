@@ -183,3 +183,8 @@ NixOS / Home-Manager / Flake
 <p align="center"><a href="https://github.com/I-Want-ToBelieve/dotfiles/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=flat&label=License&message=MIT&logoColor=cdd6f4&colorA=1e1e2e&colorB=cba6f7"/></a></p>
 
 </div>
+
+
+Human-friendly.
+
+Less is a special case of more, if x is array then return x else return arrayify(x).
