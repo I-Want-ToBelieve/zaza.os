@@ -183,6 +183,12 @@ NixOS / Home-Manager / Flake
 <p align="center"><a href="https://github.com/I-Want-ToBelieve/dotfiles/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=flat&label=License&message=MIT&logoColor=cdd6f4&colorA=1e1e2e&colorB=cba6f7"/></a></p>
 
 </div>
+Applelications Style: kvantum-dark and GTK is WhiteSur-Dark-solid
+kvantum: MontereyDark
+Cursors: Future-dark Cursors
+Icons: Mkos-Big-Sur-Night
+Colors: MkosBigSur-Dark
+Plasma Style: AppleDark-All
 
 
 Human-friendly.
