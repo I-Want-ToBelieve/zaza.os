@@ -126,6 +126,7 @@
       ripgrep
       yt-dlp
     ]
+    ++ (with pkgs.libsForQt5; [qtstyleplugin-kvantum])
     ++ (with pkgs.inur; [krabby leagueoflegends])
     ++ (with pkgs.nur.repos; [xddxdd.baidupcs-go])
     ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
