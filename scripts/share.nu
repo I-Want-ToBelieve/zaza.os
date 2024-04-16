@@ -7,7 +7,12 @@ export def get_globals [] {
                 sources: [
                     "~/.local/share/color-schemes",
                     "~/.local/share/plasma",
-                    "~/.config/Kvantum"
+                    "~/.local/share/icons",
+                    "~/.local/share/kwin",
+                    "~/.local/share/wallpapers",
+                    "~/.local/share/kxmlgui5",
+                    "~/.config/Kvantum",
+                    "~/.config/dolphinrc"
                 ]
                 target: $"./mutable/synchronous/(hostname)"
             }

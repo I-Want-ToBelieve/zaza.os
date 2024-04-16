@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "zayronxio.gm@gmail.com",
+                "Name": "zayronxio"
+            }
+        ],
+        "Id": "Next",
+        "License": "CC-BY-SA-4.0",
+        "Name": "Apple-Monterey",
+         "Name[x-test]": "xxApple-Montereyxx"
+    }
+}
