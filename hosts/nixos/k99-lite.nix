@@ -20,7 +20,14 @@
     gpupass = {
       configuration = {
         system.nixos.tags = ["with-gpupass"];
-        gpupass.enable = true;
+        gpupass = {
+          enable = true;
+          gpuIDs = [
+            "1002:73df" # Graphics
+            "1002:ab28" # Audio
+          ];
+          vendors = "AMD";
+        };
       };
     };
   };
