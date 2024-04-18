@@ -507,6 +507,11 @@
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:NixOS/nixpkgs/master";
+
+    nix2container.url = "github:nlewo/nix2container";
+
+    nix2container.inputs = {nixpkgs.follows = "nixpkgs";};
+
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     devenv.url = "github:cachix/devenv";
