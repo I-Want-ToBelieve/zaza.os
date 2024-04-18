@@ -4,10 +4,9 @@
   ...
 }: {
   # @see https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
-  options = {
-    gpupass = {
-      enable = lib.mkEnableOption (lib.mdDoc "Configure the machine for GPUPASS");
-    };
+  options.gpupass = {
+    enable = lib.mkEnableOption (lib.mdDoc "Configure the machine for GPUPASS");
+
     gpuIDs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
@@ -26,7 +25,7 @@
       '';
     };
     vendors = lib.mkOption {
-      type = lib.str;
+      type = lib.types.str;
       default = "AMD";
       example = "Intel";
       description = ''
