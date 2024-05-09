@@ -1,0 +1,64 @@
+MenuBar=Disabled
+
+[$Version]
+update_info=dolphin_detailsmodesettings.upd:rename-leading-padding,dolphin_detailsmodesettings.upd:move-content-display
+
+[CompactMode]
+PreviewSize=80
+IconSize=48
+
+[DetailsMode]
+IconSize=32
+PreviewSize=32
+
+[General][$i]
+Version[$i]=202
+ViewPropsTimestamp[$i]=2023,3,21,20,12,27.81
+
+[IconsMode]
+PreviewSize=32
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=16
+
+[KPropertiesDialog]
+2048x1152 screen: Height=586
+2048x1152 screen: Width=526
+2560x1440 screen: Height=586
+2560x1440 screen: Width=526
+
+[MainWindow]
+MenuBar=Disabled
+ToolBarsMovable=Disabled
+
+[MainWindow][Toolbar mainToolBar]
+IconSize=16
+ToolButtonStyle=IconOnly
+
+[PlacesPanel]
+IconSize=16
+
+[PreviewSettings]
+Plugins=audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mobithumbnail,opendocumentthumbnail,gsthumbnail,rawthumbnail,svgthumbnail,textthumbnail,ffmpegthumbs
+
+[Search]
+Location=Everywhere
+
+[Toolbar mainToolBar]
+IconSize=16
+ToolButtonStyle=IconOnly
+
+[Baloo KEditCommentDialog]
+2560x1600 screen: Height=231
+2560x1600 screen: Width=264
+
+[FoldersPanel]
+HiddenFilesShown=true
+
+[General.$i]
+Version[$i]=202
+ViewPropsTimestamp[$i]=2023,3,21,20,12,27.81
+
+[InformationPanel]
+previewsShown=false

@@ -1,0 +1,9 @@
+<hostdev mode="subsystem" type="usb" managed="yes">
+  <source>
+    <vendor id="0x04d9"/>
+    <product id="0xa293"/>
+    <address bus="1" device="8"/>
+  </source>
+  <alias name="hostdev3"/>
+  <address type="usb" bus="0" port="2"/>
+</hostdev>

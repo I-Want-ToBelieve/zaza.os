@@ -1,0 +1,6 @@
+<disk type='block' device='disk'>
+  <driver name='qemu' type='raw' cache='none' />
+  <source dev='/dev/disk/by-id/nvme-Fanxiang_S500PRO_2TB_FXS500PRO230702182-part2' />
+  <target dev='vde' bus='virtio' />
+  <address type='pci' domain='0x0000' bus='0x13' slot='0x00' function='0x0' />
+</disk>

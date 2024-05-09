@@ -1,0 +1,3 @@
+<input type="evdev">
+  <source dev="/dev/input/by-id/usb-OBINS_OBINS_AnnePro2_00000000000000000000000000000000-event-kbd" grab="all" repeat="on"/>
+</input>
