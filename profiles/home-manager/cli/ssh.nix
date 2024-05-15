@@ -1,5 +1,11 @@
-{ inputs, pkgs, ... }: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   home.file.".ssh/config".text = ''
+    UserKnownHostsFile ~/.ssh/known_hosts
+
     # gitlab localhost
     Host 127.0.0.1
         HostName 127.0.0.1
