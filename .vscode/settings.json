@@ -6,5 +6,15 @@
   "nix.enableLanguageServer": true,
   "files.associations": {
     "flake.lock": "json"
+  },
+  "files.exclude": {
+    "mutable/": true,
+    ".direnv": true,
+    ".devenv": true
+  },
+  "search.exclude": {
+    "mutable/": true,
+    ".direnv": true,
+    ".devenv": true
   }
 }
