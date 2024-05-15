@@ -7,7 +7,22 @@
     nixpkgs,
     haumea,
     ...
-  }:
+  }: let
+    share = {
+      overlays = [
+        (final: prev: {
+          inur = inputs.inur.packages."${prev.system}";
+        })
+      ];
+      permittedInsecurePackages = [
+        "electron-13.6.9"
+        "electron-19.0.7"
+        "openssl-1.1.1v"
+        "openssl-1.1.1w"
+        "python3.11-django-3.1.14"
+      ];
+    };
+  in
     flake-parts.lib.mkFlake {inherit inputs;} ({moduleWithSystem, ...}: {
       imports = [inputs.devenv.flakeModule];
 
@@ -183,36 +198,19 @@
                   pkgs,
                   ...
                 }: {
-                  nixpkgs.overlays = [
-                    (final: prev: {
-                      __dontExport = true;
-                      lib = prev.lib.extend (lfinal: lprev: {our = self.lib;});
-                    })
-                    (final: prev: {
-                      inur = inputs.inur.packages."${prev.system}";
-                    })
-                    (final: _: let
-                      inherit (final) system;
-                    in {
-                      # Packages provided by flake inputs
-                      crane-lib = inputs.crane.lib.${system};
-                    })
-                    inputs.nur.overlay
-                    inputs.agenix.overlays.default
-                    inputs.nvfetcher.overlays.default
-                    inputs.rust-overlay.overlays.default
-                    (import ./pkgs)
-                    self.overlays.default
-                  ];
+                  nixpkgs.overlays =
+                    share.overlays
+                    ++ [
+                      inputs.nur.overlay
+                      inputs.agenix.overlays.default
+                      inputs.nvfetcher.overlays.default
+                      inputs.rust-overlay.overlays.default
+                      (import ./pkgs)
+                      self.overlays.default
+                    ];
                   nixpkgs.config = {
                     allowUnfree = true;
-                    permittedInsecurePackages = [
-                      "electron-13.6.9"
-                      "electron-19.0.7"
-                      "openssl-1.1.1v"
-                      "openssl-1.1.1w"
-                      "python3.11-django-3.1.14"
-                    ];
+                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
                   };
                 })
               ]
@@ -273,36 +271,19 @@
                   pkgs,
                   ...
                 }: {
-                  nixpkgs.overlays = [
-                    (final: prev: {
-                      __dontExport = true;
-                      lib = prev.lib.extend (lfinal: lprev: {our = self.lib;});
-                    })
-                    (final: prev: {
-                      inur = inputs.inur.packages."${prev.system}";
-                    })
-                    (final: _: let
-                      inherit (final) system;
-                    in {
-                      # Packages provided by flake inputs
-                      crane-lib = inputs.crane.lib.${system};
-                    })
-                    inputs.nur.overlay
-                    inputs.agenix.overlays.default
-                    inputs.nvfetcher.overlays.default
-                    inputs.rust-overlay.overlays.default
-                    (import ./pkgs)
-                    self.overlays.default
-                  ];
+                  nixpkgs.overlays =
+                    share.overlays
+                    ++ [
+                      inputs.nur.overlay
+                      inputs.agenix.overlays.default
+                      inputs.nvfetcher.overlays.default
+                      inputs.rust-overlay.overlays.default
+                      (import ./pkgs)
+                      self.overlays.default
+                    ];
                   nixpkgs.config = {
                     allowUnfree = true;
-                    permittedInsecurePackages = [
-                      "electron-13.6.9"
-                      "electron-19.0.7"
-                      "openssl-1.1.1w"
-                      "openssl-1.1.1v"
-                      "python3.11-django-3.1.14"
-                    ];
+                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
                   };
                 })
               ]
@@ -365,36 +346,19 @@
                   pkgs,
                   ...
                 }: {
-                  nixpkgs.overlays = [
-                    (final: prev: {
-                      __dontExport = true;
-                      lib = prev.lib.extend (lfinal: lprev: {our = self.lib;});
-                    })
-                    (final: prev: {
-                      inur = inputs.inur.packages."${prev.system}";
-                    })
-                    (final: _: let
-                      inherit (final) system;
-                    in {
-                      # Packages provided by flake inputs
-                      crane-lib = inputs.crane.lib.${system};
-                    })
-                    inputs.nur.overlay
-                    inputs.agenix.overlays.default
-                    inputs.nvfetcher.overlays.default
-                    inputs.rust-overlay.overlays.default
-                    (import ./pkgs)
-                    self.overlays.default
-                  ];
+                  nixpkgs.overlays =
+                    share.overlays
+                    ++ [
+                      inputs.nur.overlay
+                      inputs.agenix.overlays.default
+                      inputs.nvfetcher.overlays.default
+                      inputs.rust-overlay.overlays.default
+                      (import ./pkgs)
+                      self.overlays.default
+                    ];
                   nixpkgs.config = {
                     allowUnfree = true;
-                    permittedInsecurePackages = [
-                      "electron-13.6.9"
-                      "electron-19.0.7"
-                      "openssl-1.1.1w"
-                      "openssl-1.1.1v"
-                      "python3.11-django-3.1.14"
-                    ];
+                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
                   };
                 })
               ]
@@ -452,21 +416,19 @@
                   pkgs,
                   ...
                 }: {
-                  nixpkgs.overlays = [
-                    (final: prev: {
-                      inur = inputs.inur.packages."${prev.system}";
-                    })
-                    inputs.nur.overlay
+                  nixpkgs.overlays =
+                    share.overlays
+                    ++ [
+                      inputs.nur.overlay
 
-                    inputs.nvfetcher.overlays.default
-                    inputs.rust-overlay.overlays.default
-                    (import ./pkgs)
-                    self.overlays.default
-                  ];
+                      inputs.nvfetcher.overlays.default
+                      inputs.rust-overlay.overlays.default
+                      (import ./pkgs)
+                      self.overlays.default
+                    ];
                   nixpkgs.config = {
                     allowUnfree = true;
-                    permittedInsecurePackages = [
-                    ];
+                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
                   };
                 })
               ]
@@ -540,10 +502,6 @@
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    crane = {
-      url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
