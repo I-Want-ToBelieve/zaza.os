@@ -464,6 +464,7 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
                   home-manager.extraSpecialArgs = {inputs = inputs;};
                   home-manager.users."i.want.to.believe" = {
                     imports =
@@ -475,6 +476,65 @@
                         inputs.plasma-manager.homeManagerModules.plasma-manager
                         {programs.nix-index-database.comma.enable = true;}
                       ];
+                    home.stateVersion = "23.11";
+                  };
+                }
+              ];
+          };
+          "thinkpad-t420s-minimal" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {
+              suites = self.suites.nixos;
+              inputs = inputs;
+              self = self;
+            };
+            modules =
+              nixpkgs.lib.attrValues self.nixosModules
+              ++ [
+                ({
+                  config,
+                  pkgs,
+                  ...
+                }: {
+                  nixpkgs.hostPlatform = "x86_64-linux";
+                  nixpkgs.overlays =
+                    share.overlays
+                    ++ [
+                      inputs.nur.overlay
+                      inputs.agenix.overlays.default
+                      inputs.nvfetcher.overlays.default
+                      inputs.rust-overlay.overlays.default
+                      (import ./pkgs)
+                      self.overlays.default
+                    ];
+                  nixpkgs.config = {
+                    allowUnfree = true;
+                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
+                  };
+                })
+              ]
+              ++ [
+                inputs.home-manager.nixosModules.home-manager
+
+                inputs.disko.nixosModules.disko
+
+                {
+                  system.stateVersion = "23.11";
+                  system.autoUpgrade.enable = false;
+                }
+
+                inputs.agenix.nixosModules.default
+                ./hosts/nixos/thinkpad-t420s/minimal.nix
+
+                ./users/root.nix
+
+                ./users/i.want.to.believe.nix
+
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.extraSpecialArgs = {inputs = inputs;};
+                  home-manager.users."i.want.to.believe" = {
                     home.stateVersion = "23.11";
                   };
                 }

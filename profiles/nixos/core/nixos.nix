@@ -98,9 +98,9 @@
 
     settings = {
       X11Forwarding = false;
-      PermitRootLogin = lib.mkForce "no";
+      PermitRootLogin = lib.mkForce "yes";
       UseDns = false;
-      PasswordAuthentication = lib.mkForce false;
+      PasswordAuthentication = lib.mkForce true;
       KbdInteractiveAuthentication = false;
     };
 
