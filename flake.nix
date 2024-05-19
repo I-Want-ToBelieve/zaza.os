@@ -696,7 +696,6 @@
   nixConfig = {
     extra-experimental-features = "nix-command flakes";
     extra-substituters = [
-      "http://192.168.0.121:8080"
       "https://nix-gaming.cachix.org"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
       "https://mirrors.ustc.edu.cn/nix-channels/store"

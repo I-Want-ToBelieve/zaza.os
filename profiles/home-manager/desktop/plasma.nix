@@ -27,7 +27,7 @@
       "bismuth"."move_window_to_prev_pos" = "Meta+Shift+I";
       "bismuth"."move_window_to_right_pos" = [];
       "bismuth"."move_window_to_upper_pos" = [];
-      "bismuth"."next_layout" = [];
+      "bismuth"."next_layout" = ", , ";
       "bismuth"."prev_layout" = "Meta+|";
       "bismuth"."push_window_to_master" = "Meta+Shift+M";
       "bismuth"."rotate" = [];
@@ -384,20 +384,23 @@
       "dolphinrc"."Baloo KEditCommentDialog"."2560x1600 screen: Width" = 264;
       "dolphinrc"."CompactMode"."IconSize" = 48;
       "dolphinrc"."CompactMode"."PreviewSize" = 80;
+      "dolphinrc"."DetailsMode"."IconSize" = 32;
       "dolphinrc"."DetailsMode"."PreviewSize" = 32;
       "dolphinrc"."FoldersPanel"."HiddenFilesShown" = true;
-      "dolphinrc"."General"."Version" = 202;
-      "dolphinrc"."General"."ViewPropsTimestamp" = "2023,3,21,20,12,27.81";
       "dolphinrc"."IconsMode"."PreviewSize" = 32;
       "dolphinrc"."InformationPanel"."previewsShown" = false;
       "dolphinrc"."KFileDialog Settings"."Places Icons Auto-resize" = false;
       "dolphinrc"."KFileDialog Settings"."Places Icons Static Size" = 16;
       "dolphinrc"."MainWindow/Toolbar mainToolBar"."IconSize" = 16;
+      "dolphinrc"."MainWindow/Toolbar mainToolBar"."ToolButtonStyle" = "IconOnly";
       "dolphinrc"."PlacesPanel"."IconSize" = 16;
+      "dolphinrc"."PreviewSettings"."Plugins" = "audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mobithumbnail,opendocumentthumbnail,gsthumbnail,rawthumbnail,svgthumbnail,textthumbnail,ffmpegthumbs";
       "dolphinrc"."Search"."Location" = "Everywhere";
       "dolphinrc"."Toolbar mainToolBar"."IconSize" = 16;
+      "dolphinrc"."Toolbar mainToolBar"."ToolButtonStyle" = "IconOnly";
       "kactivitymanagerdrc"."activities"."2fceeaf5-e7eb-41ea-9108-13788b24131a" = "Default";
       "kactivitymanagerdrc"."main"."currentActivity" = "2fceeaf5-e7eb-41ea-9108-13788b24131a";
+      "kcminputrc"."Mouse"."cursorTheme" = "Future-dark-cursors";
       "kded5rc"."Module-appmenu"."autoload" = false;
       "kded5rc"."Module-baloosearchmodule"."autoload" = true;
       "kded5rc"."Module-bluedevil"."autoload" = true;
@@ -431,6 +434,7 @@
       "kdeglobals"."General"."font" = "Noto Sans,10,-1,5,50,0,0,0,0,0";
       "kdeglobals"."General"."toolBarFont" = "Noto Sans,10,-1,5,50,0,0,0,0,0";
       "kdeglobals"."KDE"."ScrollbarLeftClickNavigatesByPage" = false;
+      "kdeglobals"."KDE"."ShowDeleteCommand" = false;
       "kdeglobals"."KDE"."SingleClick" = true;
       "kdeglobals"."KDE"."widgetStyle" = "kvantum-dark";
       "kdeglobals"."KFileDialog Settings"."Allow Expansion" = false;
@@ -452,6 +456,7 @@
       "kdeglobals"."KFileDialog Settings"."Speedbar Width" = 138;
       "kdeglobals"."KFileDialog Settings"."View Style" = "DetailTree";
       "kdeglobals"."KScreen"."ScreenScaleFactors" = "DP-4=1;";
+      "kdeglobals"."PreviewSettings"."MaximumRemoteSize" = 0;
       "kdeglobals"."Shortcuts"."GotoLine" = "";
       "kdeglobals"."Shortcuts"."Reload" = "Refresh";
       "kdeglobals"."Shortcuts"."SubstringCompletion" = "";
@@ -503,6 +508,7 @@
       "khotkeysrc"."GesturesExclude"."Comment" = "";
       "khotkeysrc"."GesturesExclude"."WindowsCount" = 0;
       "khotkeysrc"."KDE"."ScrollbarLeftClickNavigatesByPage" = "";
+      "khotkeysrc"."KDE"."ShowDeleteCommand" = "";
       "khotkeysrc"."KDE"."SingleClick" = "";
       "khotkeysrc"."KDE"."widgetStyle" = "";
       "khotkeysrc"."KFileDialog Settings"."Allow Expansion" = "";
@@ -527,6 +533,7 @@
       "khotkeysrc"."KScreen"."XwaylandClientsScale" = "";
       "khotkeysrc"."Main"."AlreadyImported" = "defaults,kde32b1,konqueror_gestures_kde321";
       "khotkeysrc"."Main"."Disabled" = false;
+      "khotkeysrc"."PreviewSettings"."MaximumRemoteSize" = "";
       "khotkeysrc"."Shortcuts"."GotoLine" = "";
       "khotkeysrc"."Shortcuts"."Reload" = "";
       "khotkeysrc"."Shortcuts"."SubstringCompletion" = "";
@@ -541,6 +548,7 @@
       "khotkeysrc"."WM"."inactiveFrame" = "";
       "kiorc"."Confirmations"."ConfirmDelete" = true;
       "kiorc"."Confirmations"."ConfirmEmptyTrash" = true;
+      "kiorc"."Confirmations"."ConfirmTrash" = false;
       "kiorc"."Executable scripts"."behaviourOnLaunch" = "execute";
       "klipperrc"."General"."IgnoreImages" = false;
       "klipperrc"."General"."MaxClipItems" = 999;
@@ -569,6 +577,18 @@
       "krunnerrc"."Plugins"."windowsEnabled" = false;
       "kscreenlockerrc"."Daemon"."Autolock" = false;
       "kscreenlockerrc"."Daemon"."LockOnResume" = false;
+      "kservicemenurc"."Show"."compressfileitemaction" = true;
+      "kservicemenurc"."Show"."extractfileitemaction" = true;
+      "kservicemenurc"."Show"."forgetfileitemaction" = true;
+      "kservicemenurc"."Show"."installFont" = true;
+      "kservicemenurc"."Show"."kactivitymanagerd_fileitem_linking_plugin" = true;
+      "kservicemenurc"."Show"."kdeconnectfileitemaction" = true;
+      "kservicemenurc"."Show"."kio-admin" = true;
+      "kservicemenurc"."Show"."mountisoaction" = true;
+      "kservicemenurc"."Show"."runInKonsole" = true;
+      "kservicemenurc"."Show"."setAsWallpaper" = true;
+      "kservicemenurc"."Show"."slideshowfileitemaction" = true;
+      "kservicemenurc"."Show"."tagsfileitemaction" = true;
       "kwalletrc"."Wallet"."Close When Idle" = false;
       "kwalletrc"."Wallet"."Close on Screensaver" = false;
       "kwalletrc"."Wallet"."Default Wallet" = "kdewallet";
@@ -629,7 +649,6 @@
       "kwinrc"."Plugins"."kwin4_effect_maximizeEnabled" = false;
       "kwinrc"."Plugins"."kwin4_effect_scaleEnabled" = false;
       "kwinrc"."Plugins"."kwin4_effect_squashEnabled" = false;
-      "kwinrc"."Plugins"."kwin4_effect_tvEnabled" = true;
       "kwinrc"."Plugins"."kwin4_effect_tv_glitchEnabled" = true;
       "kwinrc"."Plugins"."lattewindowcolorsEnabled" = true;
       "kwinrc"."Plugins"."macsimizeEnabled" = false;
@@ -669,11 +688,12 @@
       "kwinrc"."TabBoxAlternative"."DesktopMode" = 0;
       "kwinrc"."TabBoxAlternative"."LayoutName" = "flipswitch";
       "kwinrc"."Tiling"."padding" = 4;
+
       "kwinrc"."Wayland"."InputMethod" = "/run/current-system/sw/share/applications/org.fcitx.Fcitx5.desktop";
       "kwinrc"."Windows"."ElectricBorderMaximize" = false;
       "kwinrc"."Windows"."ElectricBorderTiling" = false;
       "kwinrc"."Windows"."RollOverDesktops" = true;
-      "kwinrc"."Xwayland"."Scale" = 1.5;
+      "kwinrc"."Xwayland"."Scale" = 1;
       "kwinrc"."org.kde.kdecoration2"."BorderSize" = "Tiny";
       "kwinrc"."org.kde.kdecoration2"."BorderSizeAuto" = false;
       "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "MN";
