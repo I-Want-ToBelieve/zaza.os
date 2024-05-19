@@ -20,5 +20,7 @@ final: prev: {
     prev.plasma5Packages.callPackage
     ./desktops/plasma-5/3rdparty/addons/plasma5-applets-window-appmenu.nix {};
 
+  my-wpsoffice = prev.libsForQt5.callPackage ./applications/office/wpsoffice.nix {};
+
   # ecal = prev.plasma5Packages.callPackage ./development/libraries/ecal.nix {};
 }

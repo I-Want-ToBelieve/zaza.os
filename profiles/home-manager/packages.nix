@@ -104,6 +104,8 @@
       util-linux
       vscode
 
+      my-wpsoffice
+
       wineWowPackages.fonts
       wineWowPackages.unstableFull
       winetricks
