@@ -240,6 +240,7 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
                   home-manager.extraSpecialArgs = {inputs = inputs;};
                   home-manager.users."i.want.to.believe" = {
                     imports =
@@ -315,6 +316,7 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
                   home-manager.extraSpecialArgs = {inputs = inputs;};
                   home-manager.users."i.want.to.believe" = {
                     imports =
@@ -390,6 +392,7 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
                   home-manager.extraSpecialArgs = {inputs = inputs;};
                   home-manager.users."i.want.to.believe" = {
                     imports =
@@ -533,6 +536,7 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
                   home-manager.extraSpecialArgs = {inputs = inputs;};
                   home-manager.users."i.want.to.believe" = {
                     home.stateVersion = "23.11";
@@ -582,6 +586,7 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
                   home-manager.extraSpecialArgs = {inputs = inputs;};
                   home-manager.users."i.want.to.believe" = {
                     imports =

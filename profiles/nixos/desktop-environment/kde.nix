@@ -28,9 +28,6 @@
     #       })
     #     ];
     # }))
-
-    # plasma5-applets-window-appmenu
-    # lightly-shaders
   ];
 
   programs.kdeconnect = {enable = true;};
