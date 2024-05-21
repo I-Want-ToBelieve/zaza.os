@@ -137,6 +137,7 @@
               samba
               rescue-boot
               development.android
+              applications.chromium
             ];
             games = [game.steam game.uudeck.default];
           };
