@@ -27,7 +27,7 @@
       "bismuth"."move_window_to_prev_pos" = "Meta+Shift+I";
       "bismuth"."move_window_to_right_pos" = [];
       "bismuth"."move_window_to_upper_pos" = [];
-      "bismuth"."next_layout" = ", , ";
+      "bismuth"."next_layout" = [];
       "bismuth"."prev_layout" = "Meta+|";
       "bismuth"."push_window_to_master" = "Meta+Shift+M";
       "bismuth"."rotate" = [];
