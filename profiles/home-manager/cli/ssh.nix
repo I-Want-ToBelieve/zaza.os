@@ -5,6 +5,7 @@
 }: {
   home.file.".ssh/config".text = ''
     UserKnownHostsFile ~/.ssh/known_hosts
+    StrictHostKeyChecking accept-new
 
     # gitlab localhost
     Host 127.0.0.1

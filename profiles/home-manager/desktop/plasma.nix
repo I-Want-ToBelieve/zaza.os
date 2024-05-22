@@ -49,14 +49,13 @@
       "kcm_touchpad"."Enable Touchpad" = "Touchpad On";
       "kcm_touchpad"."Toggle Touchpad" = "Touchpad Toggle";
       "kded5"."Show System Activity" = "Ctrl+Esc";
-      "kded5"."display" = ["" "Display" "Meta+P"];
-      "khotkeys"."{d03619b6-9b3c-48cc-9d9c-a2aadb485550}" = [];
+      "kded5"."display" = ["Display" "Meta+P"];
       "kitty-2.desktop"."_launch" = "Meta+Return";
       "kmix"."decrease_microphone_volume" = "Microphone Volume Down";
       "kmix"."decrease_volume" = "Volume Down";
       "kmix"."increase_microphone_volume" = "Microphone Volume Up";
       "kmix"."increase_volume" = "Volume Up";
-      "kmix"."mic_mute" = ["" "Microphone Mute" "Meta+Volume Mute"];
+      "kmix"."mic_mute" = ["Microphone Mute" "Meta+Volume Mute"];
       "kmix"."mute" = "Volume Mute";
       "ksmserver"."Halt Without Confirmation" = [];
       "ksmserver"."Lock Session" = "Screensaver";
@@ -68,7 +67,7 @@
       "kwin"."Decrease Opacity" = [];
       "kwin"."Edit Tiles" = [];
       "kwin"."Expose" = "Ctrl+F9";
-      "kwin"."ExposeAll" = ["" "Ctrl+F10" "Launch (C)"];
+      "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C)"];
       "kwin"."ExposeClass" = "Ctrl+F7";
       "kwin"."ExposeClassCurrentDesktop" = [];
       "kwin"."Increase Opacity" = [];
@@ -218,9 +217,9 @@
       "kwin"."Window to Desktop 8" = "Meta+*";
       "kwin"."Window to Desktop 9" = "Meta+(";
       "kwin"."Window to Next Desktop" = "Meta+Shift+L";
-      "kwin"."Window to Next Screen" = ["" "Meta+>" "Meta+Shift+Right"];
+      "kwin"."Window to Next Screen" = ["Meta+>" "Meta+Shift+Right"];
       "kwin"."Window to Previous Desktop" = "Meta+Shift+J";
-      "kwin"."Window to Previous Screen" = ["" "Meta+Shift+Left" "Meta+<"];
+      "kwin"."Window to Previous Screen" = ["Meta+Shift+Left" "Meta+<"];
       "kwin"."Window to Screen 0" = [];
       "kwin"."Window to Screen 1" = [];
       "kwin"."Window to Screen 2" = [];
@@ -307,7 +306,7 @@
       "kwin"."karousel-window-move-up" = "Meta+Shift+W";
       "kwin"."karousel-window-toggle-floating" = [];
       "kwin"."view_actual_size" = [];
-      "kwin"."view_zoom_in" = ["" "Meta++" "Meta+="];
+      "kwin"."view_zoom_in" = ["Meta++" "Meta+="];
       "kwin"."view_zoom_out" = "Meta+-";
       "mediacontrol"."mediavolumedown" = [];
       "mediacontrol"."mediavolumeup" = [];
@@ -322,7 +321,7 @@
       "org.kde.konsole.desktop"."NewWindow" = [];
       "org.kde.konsole.desktop"."_launch" = "Ctrl+Alt+T";
       "org.kde.krunner.desktop"."RunClipboard" = "Alt+Shift+F2";
-      "org.kde.krunner.desktop"."_launch" = ["" "Alt+Space" "Alt+F2" "Search"];
+      "org.kde.krunner.desktop"."_launch" = ["Alt+Space" "Alt+F2" "Search"];
       "org.kde.plasma.emojier.desktop"."_launch" = "Meta+.";
       "org.kde.spectacle.desktop"."ActiveWindowScreenShot" = "Meta+Print";
       "org.kde.spectacle.desktop"."CurrentMonitorScreenShot" = [];
@@ -436,6 +435,8 @@
       "kdeglobals"."DirSelect Dialog"."DirSelectDialog Size" = "1478,1370";
       "kdeglobals"."General"."AllowKDEAppsToRememberWindowPositions" = true;
       "kdeglobals"."General"."BrowserApplication" = "google-chrome.desktop";
+      "kdeglobals"."General"."TerminalApplication" = "kitty";
+      "kdeglobals"."General"."TerminalService" = "kitty.desktop";
       "kdeglobals"."General"."XftHintStyle" = "hintfull";
       "kdeglobals"."General"."XftSubPixel" = "none";
       "kdeglobals"."General"."accentColorFromWallpaper" = false;
@@ -486,7 +487,6 @@
       "kglobalshortcutsrc"."kaccess"."_k_friendly_name" = "Accessibility";
       "kglobalshortcutsrc"."kcm_touchpad"."_k_friendly_name" = "Touchpad";
       "kglobalshortcutsrc"."kded5"."_k_friendly_name" = "KDE Daemon";
-      "kglobalshortcutsrc"."khotkeys"."_k_friendly_name" = "Custom Shortcuts Service";
       "kglobalshortcutsrc"."kitty-2.desktop"."_k_friendly_name" = "kitty";
       "kglobalshortcutsrc"."kmix"."_k_friendly_name" = "Audio Volume";
       "kglobalshortcutsrc"."ksmserver"."_k_friendly_name" = "Session Management";
@@ -510,10 +510,12 @@
       "khotkeysrc"."Data_1Conditions"."Comment" = "";
       "khotkeysrc"."Data_1Conditions"."ConditionsCount" = 0;
       "khotkeysrc"."DirSelect Dialog"."DirSelectDialog Size" = "";
-      "khotkeysrc"."General"."AccentColor" = "";
       "khotkeysrc"."General"."AllowKDEAppsToRememberWindowPositions" = "";
       "khotkeysrc"."General"."BrowserApplication" = "";
-      "khotkeysrc"."General"."LastUsedCustomAccentColor" = "";
+      "khotkeysrc"."General"."ColorSchemeHash" = "";
+      "khotkeysrc"."General"."ColorScheme" = "";
+      "khotkeysrc"."General"."TerminalApplication" = "";
+      "khotkeysrc"."General"."TerminalService" = "";
       "khotkeysrc"."General"."XftHintStyle" = "";
       "khotkeysrc"."General"."XftSubPixel" = "";
       "khotkeysrc"."General"."accentColorFromWallpaper" = "";
@@ -524,6 +526,8 @@
       "khotkeysrc"."Gestures"."Timeout" = 300;
       "khotkeysrc"."GesturesExclude"."Comment" = "";
       "khotkeysrc"."GesturesExclude"."WindowsCount" = 0;
+      "khotkeysrc"."Icons"."Theme" = "";
+      "khotkeysrc"."KDE"."LookAndFeelPackage" = "";
       "khotkeysrc"."KDE"."ScrollbarLeftClickNavigatesByPage" = "";
       "khotkeysrc"."KDE"."ShowDeleteCommand" = "";
       "khotkeysrc"."KDE"."SingleClick" = "";
@@ -547,7 +551,6 @@
       "khotkeysrc"."KFileDialog Settings"."Speedbar Width" = "";
       "khotkeysrc"."KFileDialog Settings"."View Style" = "";
       "khotkeysrc"."KScreen"."ScreenScaleFactors" = "";
-      "khotkeysrc"."KScreen"."XwaylandClientsScale" = "";
       "khotkeysrc"."Main"."AlreadyImported" = "defaults,kde32b1,konqueror_gestures_kde321";
       "khotkeysrc"."Main"."Disabled" = false;
       "khotkeysrc"."PreviewSettings"."MaximumRemoteSize" = "";
@@ -750,7 +753,7 @@
       "kwinrc"."Windows"."ElectricBorderMaximize" = false;
       "kwinrc"."Windows"."ElectricBorderTiling" = false;
       "kwinrc"."Windows"."RollOverDesktops" = true;
-      "kwinrc"."Xwayland"."Scale" = 1;
+      "kwinrc"."Xwayland"."Scale" = 1.5;
       "kwinrc"."org.kde.kdecoration2"."BorderSize" = "Tiny";
       "kwinrc"."org.kde.kdecoration2"."BorderSizeAuto" = false;
       "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "MN";
