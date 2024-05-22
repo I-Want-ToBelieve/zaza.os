@@ -251,9 +251,9 @@
 
       trusted-substituters = lib.mkForce [
         "http://192.168.0.121:8080"
-        "https://nix-community.cachix.org"
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
         "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://nix-community.cachix.org"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

@@ -32,7 +32,7 @@
           };
           root = {
             name = "root";
-            size = "100%";
+            size = "380G";
             content = {
               type = "lvm_pv";
               vg = "pool";

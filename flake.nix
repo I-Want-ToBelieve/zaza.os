@@ -79,6 +79,35 @@
 
           # Plugin configuration
         };
+        packages = {
+          kde-plasma-iso = inputs.nixos-generators.nixosGenerate {
+            system = "x86_64-linux";
+            modules = [
+              # you can include your own nixos configuration here, i.e.
+              # ./configuration.nix
+              "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-plasma5-new-kernel.nix"
+              "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
+              ./hosts/nixos/kde-plasma-iso.nix
+            ];
+            format = "iso";
+
+            # optional arguments:
+            # explicit nixpkgs and lib:
+            # pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            # lib = nixpkgs.legacyPackages.x86_64-linux.lib;
+            # additional arguments to pass to modules:
+            specialArgs = {
+              suites = self.suites.nixos;
+              profiles = self.profiles.nixos;
+              inputs = inputs;
+              self = self;
+            };
+
+            # you can also define your own custom formats
+            # customFormats = { "myFormat" = <myFormatModule>; ... };
+            # format = "myFormat";
+          };
+        };
       };
       flake = {
         # The usual flake attributes can be defined here, including system-
@@ -745,6 +774,11 @@
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:NixOS/nixpkgs/master";
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nix2container.url = "github:nlewo/nix2container";
 
