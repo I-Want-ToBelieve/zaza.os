@@ -3,13 +3,6 @@
   inputs,
   ...
 }: {
-  networking.networkmanager.enable = lib.mkForce false;
-  networking.wireless.enable = lib.mkForce true;
-  networking.wireless.userControlled.enable = true;
-  networking.wireless.networks."Makcoo" = {
-    psk = "makcoo888888";
-  };
-
   services = {
     v2raya.enable = true;
   };
