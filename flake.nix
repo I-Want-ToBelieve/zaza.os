@@ -80,7 +80,7 @@
           # Plugin configuration
         };
         packages = {
-          kde-plasma-iso = inputs.nixos-generators.nixosGenerate {
+          kde-plasma-iso-v1 = inputs.nixos-generators.nixosGenerate {
             system = "x86_64-linux";
             modules = [
               # you can include your own nixos configuration here, i.e.
@@ -88,6 +88,9 @@
               "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-plasma5-new-kernel.nix"
               "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
               ./hosts/nixos/kde-plasma-iso.nix
+
+              ./users/root.nix
+              ./users/i.want.to.believe.nix
             ];
             format = "iso";
 
