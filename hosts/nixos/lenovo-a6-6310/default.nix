@@ -64,7 +64,7 @@
 
   boot = {
     kernelModules = [
-      "kvm-intel" # If using an AMD CPU, use `kvm-amd`
+      "kvm-amd" # If using an AMD CPU, use `kvm-amd`
       # https://www.reddit.com/r/NixOS/comments/p8bqvu/how_to_install_v4l2looback_kernel_module/?onetap_auto=true
       # Virtual Camera
       "v4l2loopback"
