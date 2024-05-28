@@ -10,10 +10,5 @@
         };
       };
     };
-    defaultSession = "plasmawayland";
-    autoLogin = {
-      enable = true;
-      user = "i.want.to.believe";
-    };
   };
 }
