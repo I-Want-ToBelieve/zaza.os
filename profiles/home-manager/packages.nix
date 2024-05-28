@@ -28,16 +28,7 @@
       ddcutil
       droidcam
 
-      (distrobox.overrideAttrs (finalAttrs: previousAttrs: {
-        version = "1.7.0.1";
-        src = fetchFromGitHub {
-          owner = "89luca89";
-          repo = "distrobox";
-          rev = finalAttrs.version;
-          hash = "sha256-mIVMy09VO8l6/wzlVUhXCq2de8xSwFU1eXMBl9S6uWU=";
-        };
-        patches = [];
-      }))
+      distrobox
 
       evtest
       fuzzel
