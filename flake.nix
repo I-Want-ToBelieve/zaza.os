@@ -55,7 +55,10 @@
           packages = with pkgs; [nvfetcher];
 
           # https://devenv.sh/basics/
-          env = {GREET = "🛠️ Let's hack 🧑🏻‍💻";};
+          env = {
+            GREET = "🛠️ Let's hack 🧑🏻‍💻";
+            NIX_SSHOPTS = "-i ~/.ssh/thinkpad_t420s_root_id_rsa";
+          };
 
           # https://devenv.sh/scripts/
           scripts.hello.exec = "echo $GREET";

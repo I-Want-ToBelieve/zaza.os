@@ -6,6 +6,8 @@
   programs.chromium = {
     enable = true;
     extensions = [
+      "jinjaccalgkegednnccohejagnlnfdag" # violentmonkey
+      "gjldcdngmdknpinoemndlidpcabkggco" # Extensions Manager
     ];
     # https://chromeenterprise.google/policies/
     extraOpts = {
@@ -20,28 +22,29 @@
       "ImportBookmarks" = false;
       "ManagedBookmarks" = [
         {
-          "toplevel_name" = "My managed bookmarks folder";
-        }
-        {
-          "name" = "Google";
-          "url" = "google.com";
-        }
-        {
-          "name" = "Youtube";
-          "url" = "youtube.com";
+          "name" = "MakcooCode";
+          "url" = "https://www.makcoocode.com/";
         }
         {
           "children" = [
             {
-              "name" = "Chromium";
-              "url" = "chromium.org";
+              "name" = "在线练习打字";
+              "url" = "https://dazi.91xjr.com/";
             }
             {
-              "name" = "Chromium Developers";
-              "url" = "dev.chromium.org";
+              "name" = "Codeflow";
+              "url" = "https://codeflow.biaoyansu.com/";
+            }
+            {
+              "name" = "Qwerty";
+              "url" = "https://qwerty.kaiyi.cool/";
+            }
+            {
+              "name" = "Monkeytype";
+              "url" = "https://monkeytype.com/";
             }
           ];
-          "name" = "Chrome links";
+          "name" = "打字练习";
         }
       ];
 

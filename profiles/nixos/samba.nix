@@ -1,5 +1,12 @@
-{pkgs, ...}: {
-  services.gvfs.enable = true;
+{
+  pkgs,
+  lib,
+  ...
+}: {
+  services.gvfs = {
+    enable = true;
+    package = lib.mkForce pkgs.gnome3.gvfs;
+  };
   services.samba-wsdd.enable =
     true; # make shares visible for windows 10 clients
   networking.firewall.allowedTCPPorts = [
@@ -10,6 +17,15 @@
   ];
 
   environment.systemPackages = with pkgs; [cifs-utils];
+
+  fileSystems."/mnt/samba/public" = {
+    device = "//192.168.0.121/public";
+    fsType = "cifs";
+    options = let
+      # this line prevents hanging on network split
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in ["${automount_opts}"];
+  };
 
   services.samba = {
     enable = true;
@@ -49,7 +65,6 @@
   systemd.tmpfiles.rules = [
     # after exec:
     # sudo chmod -R 1777 /mnt/share/
-    # sudo chown -R root /mnt/share/
     "d /mnt/share 1777 root root -"
   ];
 }
