@@ -445,7 +445,7 @@
                 }
               ];
           };
-          "thinkpad-t420s" = nixpkgs.lib.nixosSystem {
+          "dell-makcoo" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
               suites = self.suites.nixos;
@@ -494,7 +494,7 @@
                 }
 
                 inputs.agenix.nixosModules.default
-                ./hosts/nixos/thinkpad-t420s/default.nix
+                ./hosts/nixos/dell-makcoo/default.nix
 
                 ./users/root.nix
 
@@ -520,7 +520,7 @@
                 }
               ];
           };
-          "thinkpad-t420s-minimal" = nixpkgs.lib.nixosSystem {
+          "dell-makcoo-minimal" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
               suites = self.suites.nixos;
@@ -563,7 +563,7 @@
                 }
 
                 inputs.agenix.nixosModules.default
-                ./hosts/nixos/thinkpad-t420s/minimal.nix
+                ./hosts/nixos/dell-makcoo/minimal.nix
 
                 ./users/root.nix
 

@@ -1,7 +1,7 @@
 {lib, ...}: {
   disko.devices = {
     disk.main = {
-      device = lib.mkDefault "/dev/sda";
+      device = lib.mkDefault "/dev/nvme0n1";
       type = "disk";
       content = {
         type = "gpt";
@@ -32,7 +32,7 @@
           };
           root = {
             name = "root";
-            size = "100%";
+            size = "150G";
             content = {
               type = "lvm_pv";
               vg = "pool";
