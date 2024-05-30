@@ -16,6 +16,15 @@
 
   system.stateVersion = lib.mkForce "24.05";
 
+  fileSystems."/mnt/samba/public" = lib.mkForce {
+    device = "//192.168.31.187/public";
+    fsType = "cifs";
+    options = let
+      # this line prevents hanging on network split
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in ["${automount_opts}"];
+  };
+
   specialisation = {
     gpupass = {
       configuration = {
