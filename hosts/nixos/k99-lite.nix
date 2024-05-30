@@ -17,7 +17,7 @@
   system.stateVersion = lib.mkForce "24.05";
 
   fileSystems."/mnt/samba/public" = lib.mkForce {
-    device = "//192.168.31.187/public";
+    device = "//192.168.0.121/public";
     fsType = "cifs";
     options = let
       # this line prevents hanging on network split
