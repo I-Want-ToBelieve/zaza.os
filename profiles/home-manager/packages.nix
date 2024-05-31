@@ -46,7 +46,6 @@
       gnuplot
       gnused
       gnutls
-      google-chrome
       grex
 
       gtk3-nocsd

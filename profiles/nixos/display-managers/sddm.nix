@@ -3,12 +3,12 @@
   services.displayManager = {
     sddm = {
       enable = true;
-      settings = {
-        Autologin = {
-          Session = "plasmawayland";
-          User = "i.want.to.believe";
-        };
-      };
+      # settings = {
+      #   Autologin = {
+      #     Session = "plasmawayland";
+      #     User = "i.want.to.believe";
+      #   };
+      # };
     };
   };
 }

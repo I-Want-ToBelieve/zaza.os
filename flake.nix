@@ -173,6 +173,7 @@
               rescue-boot
               development.android
               applications.chromium
+              packages
             ];
             games = [game.steam game.uudeck.default];
           };
@@ -188,6 +189,7 @@
               copyq
               looking-glass-client
               mpv
+              chromium
             ];
             shells = with shells; [fish zsh nu.default];
             wsl = with wsl; [plasma];
