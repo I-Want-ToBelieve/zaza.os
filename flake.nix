@@ -189,7 +189,7 @@
               copyq
               looking-glass-client
               mpv
-              chromium
+              chromium.default
             ];
             shells = with shells; [fish zsh nu.default];
             wsl = with wsl; [plasma];

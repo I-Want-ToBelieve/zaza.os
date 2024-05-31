@@ -6,8 +6,8 @@
   programs.chromium = {
     enable = true;
     extensions = [
-      "jinjaccalgkegednnccohejagnlnfdag" # violentmonkey
-      "gjldcdngmdknpinoemndlidpcabkggco" # Extensions Manager
+      # "jinjaccalgkegednnccohejagnlnfdag" # violentmonkey
+      # "gjldcdngmdknpinoemndlidpcabkggco" # Extensions Manager
     ];
     # https://chromeenterprise.google/policies/
     extraOpts = {
