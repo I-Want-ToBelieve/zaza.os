@@ -10,8 +10,6 @@
       alsa-tools
       alsa-utils
 
-      android-studio
-
       # archivebox
       # ariang
       motrix
@@ -108,7 +106,6 @@
       xz
       xorg.xhost
       yesplaymusic
-      zoom-us
       gnome.zenity
       catimg
       duf
@@ -116,7 +113,6 @@
       fd
       file
       ripgrep
-      yt-dlp
     ]
     ++ (with pkgs.kdePackages; [qtstyleplugin-kvantum])
     ++ (with pkgs.inur; [krabby leagueoflegends])
