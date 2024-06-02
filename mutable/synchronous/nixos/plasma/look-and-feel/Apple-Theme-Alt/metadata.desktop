@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Apple-Theme-Alt
+X-KDE-PluginInfo-Category=Plasma Look And Feel
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-Author=zayronxio
+X-KDE-PluginInfo-Email=zayronxio@hotmail.com
+X-KDE-PluginInfo-License=GPL3.0
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Name=Apple-Theme-Alt
+X-KDE-fallbackPackage=org.kde.breeze.desktop
+X-KPackage-Dependencies=kns://colorschemes.knsrc/api.kde-look.org/1870462,kns://plasma-themes.knsrc/api.kde-look.org/1975770,kns://plasma-themes.knsrc/api.kde-look.org/2087471,kns://aurorae.knsrc/api.kde-look.org/1409704,kns://wallpaper.knsrc/api.kde-look.org/1459313,kns://wallpaper.knsrc/api.kde-look.org/1975692,kns://wallpaper.knsrc/api.kde-look.org/1975674,kns://sddmtheme.knsrc/api.kde-look.org/1398839,kns://icons.knsrc/api.kde-look.org/1400021,kns://plasmoids.knsrc/api.kde-look.org/1402942,kns://plasmoids.knsrc/api.kde-look.org/1916655,kns://plasmoids.knsrc/api.kde-look.org/1269296,kns://plasmoids.knsrc/api.kde-look.org/1473016,kns://plasmoids.knsrc/api.kde-look.org/1384156,kns://plasmoids.knsrc/api.kde-look.org/1973454,kns://plasmoids.knsrc/api.kde-look.org/1295376,kns://kwinswitcher.knsrc/api.kde-look.org/1327319,kns://sddmtheme.knsrc/api.kde-look.org/2050201,kns://sddmtheme.knsrc/api.kde-look.org/2059021,kns://wallpaper.knsrc/api.kde-look.org/2081899,kns://xcursor.knsrc/api.kde-look.org/2083798,kns://wallpaper.knsrc/api.kde-look.org/2099238,kns://plasmoids.knsrc/api.kde-look.org/2103591,kns://plasmoids.knsrc/api.kde-look.org/2101527,kns://plasmoids.knsrc/api.kde-look.org/2112055,kns://plasmoids.knsrc/api.kde-look.org/2115728,kns://wallpaper.knsrc/api.kde-look.org/2128990

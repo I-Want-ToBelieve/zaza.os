@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Apple-Sonoma-Light
+X-KDE-PluginInfo-Category=Plasma Look And Feel
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-Author=zayronxio
+X-KDE-PluginInfo-Email=zayronxio@hotmail.com
+X-KDE-PluginInfo-License=GPL3.0
+X-KDE-PluginInfo-Version=1.6.3
+X-KDE-PluginInfo-Name=Apple-Sonoma-Light
+X-KDE-fallbackPackage=org.kde.breeze.desktop
+
+X-KPackage-Dependencies=kns://wallpaper.knsrc/api.kde-look.org/2047314,kns://wallpaper.knsrc/api.kde-look.org/2125613,kns://colorschemes.knsrc/api.kde-look.org/1408712,kns://plasma-themes.knsrc/api.kde-look.org/1973335,kns://aurorae.knsrc/api.kde-look.org/1408711,kns://wallpaper.knsrc/api.kde-look.org/1886183,kns://wallpaper.knsrc/api.kde-look.org/1459313,kns://wallpaper.knsrc/api.kde-look.org/1973337,kns://wallpaper.knsrc/api.kde-look.org/1409728,kns://icons.knsrc/api.kde-look.org/1400021,kns://plasmoids.knsrc/api.kde-look.org/1402942,kns://plasmoids.knsrc/api.kde-look.org/1916655,kns://plasmoids.knsrc/api.kde-look.org/1245902,kns://plasmoids.knsrc/api.kde-look.org/1269296,kns://plasmoids.knsrc/api.kde-look.org/1473016,kns://plasmoids.knsrc/api.kde-look.org/1384156,kns://plasmoids.knsrc/api.kde-look.org/1973454,kns://plasmoids.knsrc/api.kde-look.org/1295376,kns://kwinswitcher.knsrc/api.kde-look.org/1327319,kns://sddmtheme.knsrc/api.kde-look.org/2049601,kns://sddmtheme.knsrc/api.kde-look.org/2059021,kns://xcursor.knsrc/api.kde-look.org/2083798,kns://plasmoids.knsrc/api.kde-look.org/2099762,kns://plasmoids.knsrc/api.kde-look.org/2101527,kns://plasmoids.knsrc/api.kde-look.org/2112055,kns://plasmoids.knsrc/api.kde-look.org/2115728,kns://wallpaper.knsrc/api.kde-look.org/2128990
