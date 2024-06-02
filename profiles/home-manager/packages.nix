@@ -99,6 +99,8 @@
       winetricks
       wirelesstools
 
+      whitesur-gtk-theme
+
       xarchiver
       xclip
       xdg-utils
