@@ -81,7 +81,10 @@
       qimgv
       (pkgs.python3Full.withPackages
         (pythonPackages: with pythonPackages; [requests websockets pyclip]))
+
       rsync
+      rustdesk
+
       scrcpy
       scream
 
@@ -98,6 +101,8 @@
       wineWowPackages.unstableFull
       winetricks
       wirelesstools
+
+      waypipe
 
       whitesur-gtk-theme
 
