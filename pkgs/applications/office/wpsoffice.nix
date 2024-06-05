@@ -116,7 +116,7 @@ in
       done
       for i in $out/share/applications/*;do
         substituteInPlace $i \
-          --replace /usr/bin 'env XMODIFIERS="@im=fcitx" GTK_IM_MODULE="fcitx" QT_IM_MODULE="fcitx" SDL_IM_MODULE=fcitx GLFW_IM_MODULE=ibus $(placeholder "out")/bin'
+          --replace /usr/bin 'env XMODIFIERS="@im=fcitx" GTK_IM_MODULE="fcitx" QT_IM_MODULE="fcitx" SDL_IM_MODULE=fcitx GLFW_IM_MODULE=ibus ${placeholder "out"}/bin'
       done
 
 
