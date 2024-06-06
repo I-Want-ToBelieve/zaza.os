@@ -52,7 +52,7 @@
           ];
 
           # https://devenv.sh/reference/options/
-          packages = with pkgs; [nvfetcher];
+          packages = with pkgs; [nvfetcher] ++ [zellij];
 
           # https://devenv.sh/basics/
           env = {
@@ -63,6 +63,22 @@
           # https://devenv.sh/scripts/
           scripts.hello.exec = "echo $GREET";
           scripts.rebuild.exec = "nix run nix-darwin --accept-flake-config -- switch --flake .#k99-lite-darwin";
+
+          scripts."100r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.218";
+          scripts."101r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.101";
+          scripts."102r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.102";
+          scripts."103r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.103";
+          scripts."104r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.104";
+          scripts."105r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.105";
+          scripts."106r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.106";
+          scripts."107r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.107";
+          scripts."108r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.108";
+          scripts."109r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.109";
+          scripts."10r".exec = ''
+            cd $DEVENV_ROOT
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- 100r\n"' &
+            zellij --session r10 || zellij attach r10
+          '';
 
           enterShell = ''
             hello
@@ -736,6 +752,8 @@
           # 自动回滚反而适得其反，因此建议关闭
           magicRollback = false;
 
+          remoteBuild = true;
+
           nodes = {
             "dell-makcoo" = {
               # 目标机器的地址，IP 或域名或 .ssh/config 中配置的别名均可
@@ -805,6 +823,9 @@
               ];
           };
         };
+
+        # This is highly advised, and will prevent many possible mistakes
+        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
       };
     });
 
