@@ -15,7 +15,7 @@
     networkmanager = {
       enable = true;
       unmanaged = ["docker0" "rndis0"];
-      # wifi.macAddress = "random";
+      wifi.macAddress = "permanent";
     };
 
     extraHosts = builtins.concatStringsSep "\n" [
