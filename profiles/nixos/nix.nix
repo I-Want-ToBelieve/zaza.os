@@ -64,6 +64,12 @@
       # for direnv GC roots
       keep-derivations = true;
       keep-outputs = true;
+
+      substituters = lib.mkForce [
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+        "https://cache.nixos.org/"
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+      ];
     };
   };
 }

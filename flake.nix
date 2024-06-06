@@ -911,8 +911,9 @@
     extra-substituters = [
       "https://nix-gaming.cachix.org"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://cache.nixos.org"
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+
       "https://nix-community.cachix.org"
       "https://fortuneteller2k.cachix.org"
       "https://nixpkgs-wayland.cachix.org"
