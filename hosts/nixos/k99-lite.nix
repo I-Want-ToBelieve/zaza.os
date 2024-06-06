@@ -16,6 +16,14 @@
 
   system.stateVersion = lib.mkForce "24.05";
 
+  my.wakeonwlan.interfaces.phy0.methods = [
+    "magic-packet"
+    "disconnect"
+    "gtk-rekey-failure"
+    "eap-identity-request"
+    "rfkill-release"
+  ];
+
   fileSystems."/mnt/samba/public" = lib.mkForce {
     device = "//192.168.0.121/public";
     fsType = "cifs";

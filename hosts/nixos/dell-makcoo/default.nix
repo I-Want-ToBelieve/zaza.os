@@ -130,10 +130,18 @@
 
   # Wake On LAN
   # https://search.nixos.org/options?channel=24.05&show=networking.interfaces.%3Cname%3E.wakeOnLan.policy&from=0&size=50&sort=relevance&type=packages&query=wakeOnLan
-  networking.interfaces.wlp2s0.wakeOnLan.policy = [
-    "magic"
+  # networking.interfaces.wlp2s0.wakeOnLan.policy = [
+  #   "magic"
+  # ];
+  # networking.interfaces.wlp2s0.wakeOnLan.enable = true;
+
+  my.wakeonwlan.interfaces.phy0.methods = [
+    "magic-packet"
+    "disconnect"
+    "gtk-rekey-failure"
+    "eap-identity-request"
+    "rfkill-release"
   ];
-  networking.interfaces.wlp2s0.wakeOnLan.enable = true;
 
   # compresses half the ram for use as swap
   zramSwap = {
