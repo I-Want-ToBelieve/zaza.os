@@ -473,6 +473,11 @@
             modules =
               nixpkgs.lib.attrValues self.nixosModules
               ++ [
+                {
+                  _module.args = {disks = ["/dev/nvme0n1"];};
+                }
+              ]
+              ++ [
                 ({
                   config,
                   pkgs,
@@ -547,6 +552,11 @@
             };
             modules =
               nixpkgs.lib.attrValues self.nixosModules
+              ++ [
+                {
+                  _module.args = {disks = ["/dev/nvme0n1"];};
+                }
+              ]
               ++ [
                 ({
                   config,
