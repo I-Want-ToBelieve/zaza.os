@@ -57,7 +57,7 @@
           # https://devenv.sh/basics/
           env = {
             GREET = "🛠️ Let's hack 🧑🏻‍💻";
-            NIX_SSHOPTS = "-i ~/.ssh/thinkpad_t420s_root_id_rsa";
+            NIX_SSHOPTS = "-i /home/i.want.to.believe/.ssh/thinkpad_t420s_root_id_rsa";
           };
 
           # https://devenv.sh/scripts/
@@ -457,6 +457,68 @@
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
                         {programs.nix-index-database.comma.enable = true;}
+                      ];
+                    home.stateVersion = "23.11";
+                  };
+
+                  home-manager.users."root" = {
+                    imports =
+                      nixpkgs.lib.attrValues self.homeManagerModules
+                      ++ (with self.suites.home-manager;
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                      ++ [
+                        inputs.nix-index-database.hmModules.nix-index
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        {programs.nix-index-database.comma.enable = true;}
+                      ]
+                      ++ [
+                        ({...}: {
+                          programs.ssh = {
+                            enable = true;
+                            matchBlocks = {
+                              "nixos-makcoo-100" = {
+                                hostname = "192.168.0.100";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-101" = {
+                                hostname = "192.168.0.101";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-102" = {
+                                hostname = "192.168.0.102";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-103" = {
+                                hostname = "192.168.0.103";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-104" = {
+                                hostname = "192.168.0.104";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-105" = {
+                                hostname = "192.168.0.105";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-106" = {
+                                hostname = "192.168.0.106";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-107" = {
+                                hostname = "192.168.0.107";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-108" = {
+                                hostname = "192.168.0.108";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                              "nixos-makcoo-109" = {
+                                hostname = "192.168.0.109";
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                            };
+                          };
+                        })
                       ];
                     home.stateVersion = "23.11";
                   };

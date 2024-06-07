@@ -138,9 +138,6 @@
   my.wakeonwlan.interfaces.phy0.methods = [
     "magic-packet"
     "disconnect"
-    "gtk-rekey-failure"
-    "eap-identity-request"
-    "rfkill-release"
   ];
 
   # compresses half the ram for use as swap

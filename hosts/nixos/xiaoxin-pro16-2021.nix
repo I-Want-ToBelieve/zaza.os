@@ -173,6 +173,11 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
 
+  my.wakeonwlan.interfaces.phy0.methods = [
+    "magic-packet"
+    "disconnect"
+  ];
+
   # compresses half the ram for use as swap
   zramSwap = {
     enable = true;
