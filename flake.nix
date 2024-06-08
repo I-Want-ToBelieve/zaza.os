@@ -52,7 +52,7 @@
           ];
 
           # https://devenv.sh/reference/options/
-          packages = with pkgs; [nvfetcher] ++ [zellij];
+          packages = with pkgs; [nvfetcher] ++ [zellij] ++ [amber-lang] ++ [deno];
 
           # https://devenv.sh/basics/
           env = {
@@ -64,16 +64,6 @@
           scripts.hello.exec = "echo $GREET";
           scripts.rebuild.exec = "nix run nix-darwin --accept-flake-config -- switch --flake .#k99-lite-darwin";
 
-          scripts."100r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.218";
-          scripts."101r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.101";
-          scripts."102r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.102";
-          scripts."103r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.103";
-          scripts."104r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.104";
-          scripts."105r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.105";
-          scripts."106r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.106";
-          scripts."107r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.107";
-          scripts."108r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.108";
-          scripts."109r".exec = "sudo nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.109";
           scripts."10r".exec = ''
             cd $DEVENV_ROOT
             sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- 100r\n"' &
@@ -476,44 +466,7 @@
                           programs.ssh = {
                             enable = true;
                             matchBlocks = {
-                              "nixos-makcoo-100" = {
-                                hostname = "192.168.0.100";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-101" = {
-                                hostname = "192.168.0.101";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-102" = {
-                                hostname = "192.168.0.102";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-103" = {
-                                hostname = "192.168.0.103";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-104" = {
-                                hostname = "192.168.0.104";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-105" = {
-                                hostname = "192.168.0.105";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-106" = {
-                                hostname = "192.168.0.106";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-107" = {
-                                hostname = "192.168.0.107";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-108" = {
-                                hostname = "192.168.0.108";
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                              "nixos-makcoo-109" = {
-                                hostname = "192.168.0.109";
+                              "192.168.0.*" = {
                                 identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
                               };
                             };
