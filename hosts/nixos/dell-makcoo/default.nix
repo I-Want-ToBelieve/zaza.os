@@ -28,6 +28,8 @@
   '';
 
   services.sunshine.enable = true;
+  services.sunshine.capSysAdmin = true;
+  services.sunshine.openFirewall = true;
 
   # intel gpu
   boot.blacklistedKernelModules = ["nouveau" "nvidia"];
