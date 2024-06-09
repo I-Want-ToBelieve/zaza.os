@@ -12,7 +12,7 @@
 
       # archivebox
       # ariang
-      motrix
+
       bandwhich
       bc
       btop
@@ -64,6 +64,8 @@
       localsend
       # libreoffice-fresh
       lutris
+
+      moonlight-qt
 
       netease-cloud-music-gtk
       nil

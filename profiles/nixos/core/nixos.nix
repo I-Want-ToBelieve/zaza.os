@@ -151,6 +151,8 @@
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
+      publish.enable = true;
+      publish.userServices = true;
     };
 
     udev.packages = with pkgs; [gnome.gnome-settings-daemon];
@@ -217,6 +219,13 @@
           value = "1048576";
         }
       ];
+    };
+
+    wrappers.sunshine = {
+      owner = "root";
+      group = "root";
+      capabilities = "cap_sys_admin+p";
+      source = "${pkgs.sunshine}/bin/sunshine";
     };
   };
 }
