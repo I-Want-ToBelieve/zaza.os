@@ -16,7 +16,7 @@ def random_wallpaper [] {
 
     let size = ($array | length)
 
-    let index = (random integer) mod $size
+    let index = (random int) mod $size
     echo $index
 
     let wallpaper = ($array | get $index) # randomly select

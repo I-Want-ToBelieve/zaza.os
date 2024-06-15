@@ -12,7 +12,7 @@ export def get_globals [] {
                     "~/.local/share/wallpapers",
                     "~/.local/share/kxmlgui5",
                     "~/.config/Kvantum",
-                    "~/.config/dolphinrc"
+                    # "~/.config/dolphinrc"
                     "~/.themes"
                 ]
                 target: $"./mutable/synchronous/(hostname)"
