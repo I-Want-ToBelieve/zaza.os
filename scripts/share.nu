@@ -12,6 +12,7 @@ export def get_globals [] {
                     "~/.local/share/wallpapers",
                     "~/.local/share/kxmlgui5",
                     "~/.config/Kvantum",
+                    "~/.local/share/aurorae/themes/"
                     # "~/.config/dolphinrc"
                     "~/.themes"
                 ]
