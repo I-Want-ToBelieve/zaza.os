@@ -1,4 +1,3 @@
-# nix run github:pjones/plasma-manager | wl-copy
 {
   programs.plasma = {
     enable = true;
@@ -6,6 +5,7 @@
       "ActivityManager"."switch-to-activity-2fceeaf5-e7eb-41ea-9108-13788b24131a" = [];
       "ActivityManager"."switch-to-activity-ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3" = [];
       "KDE Keyboard Layout Switcher"."Switch keyboard layout to English (US)" = [];
+      "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
       "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+K";
       "WAYLAND_DISPLAY_OLD=$WAYLAND_DISPLAY-2.desktop"."_launch" = "Ctrl+T";
       "bismuth"."decrease_master_size" = [];
@@ -28,7 +28,6 @@
       "bismuth"."move_window_to_prev_pos" = "Meta+Shift+I";
       "bismuth"."move_window_to_right_pos" = [];
       "bismuth"."move_window_to_upper_pos" = [];
-      "bismuth"."next_layout" = "Meta+\\,Meta+\\,Switch to the Next Layout";
       "bismuth"."prev_layout" = "Meta+|";
       "bismuth"."push_window_to_master" = "Meta+Shift+M";
       "bismuth"."rotate" = [];
@@ -58,7 +57,7 @@
       "kmix"."increase_microphone_volume" = "Microphone Volume Up";
       "kmix"."increase_volume" = "Volume Up";
       "kmix"."increase_volume_small" = "Shift+Volume Up";
-      "kmix"."mic_mute" = ["" "Microphone Mute" "Meta+Volume Mute"];
+      "kmix"."mic_mute" = ["Microphone Mute" "Meta+Volume Mute"];
       "kmix"."mute" = "Volume Mute";
       "ksmserver"."Halt Without Confirmation" = [];
       "ksmserver"."Lock Session" = "Screensaver";
@@ -77,7 +76,7 @@
       "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C)"];
       "kwin"."ExposeClass" = "Ctrl+F7";
       "kwin"."ExposeClassCurrentDesktop" = [];
-
+      "kwin"."Grid View" = "Meta+G";
       "kwin"."Increase Opacity" = [];
       "kwin"."Kill Window" = "Meta+Ctrl+Esc";
       "kwin"."Move Tablet to Next Output" = [];
@@ -329,7 +328,7 @@
       "org.kde.konsole.desktop"."NewWindow" = [];
       "org.kde.konsole.desktop"."_launch" = "Ctrl+Alt+T";
       "org.kde.krunner.desktop"."RunClipboard" = "Alt+Shift+F2";
-      "org.kde.krunner.desktop"."_launch" = ["" "Alt+Space" "Alt+F2" "Search"];
+      "org.kde.krunner.desktop"."_launch" = ["Alt+Space" "Alt+F2" "Search"];
       "org.kde.plasma.emojier.desktop"."_launch" = "Meta+.";
       "org.kde.spectacle.desktop"."ActiveWindowScreenShot" = "Meta+Print";
       "org.kde.spectacle.desktop"."CurrentMonitorScreenShot" = [];
@@ -350,7 +349,7 @@
       "org_kde_powerdevil"."Sleep" = "Sleep";
       "org_kde_powerdevil"."Toggle Keyboard Backlight" = "Keyboard Light On/Off";
       "org_kde_powerdevil"."Turn Off Screen" = [];
-      "org_kde_powerdevil"."powerProfile" = ["" "Battery" "Meta+B"];
+      "org_kde_powerdevil"."powerProfile" = ["Battery" "Meta+B"];
       "plasmashell"."activate task manager entry 1" = [];
       "plasmashell"."activate task manager entry 10" = [];
       "plasmashell"."activate task manager entry 2" = [];
@@ -486,17 +485,17 @@
       "kdeglobals"."Shortcuts"."GotoLine" = "";
       "kdeglobals"."Shortcuts"."Reload" = "Refresh";
       "kdeglobals"."Shortcuts"."SubstringCompletion" = "";
-      "kdeglobals"."WM"."activeBackground" = "51,51,51";
-      "kdeglobals"."WM"."activeBlend" = "171,171,171";
-      "kdeglobals"."WM"."activeForeground" = "252,252,252";
+      "kdeglobals"."WM"."activeBackground" = "61,61,62";
+      "kdeglobals"."WM"."activeBlend" = "61,61,62";
+      "kdeglobals"."WM"."activeForeground" = "255,255,255";
       "kdeglobals"."WM"."frame" = "110,255,137";
-      "kdeglobals"."WM"."inactiveBackground" = "66,66,66";
-      "kdeglobals"."WM"."inactiveBlend" = "85,85,85";
-      "kdeglobals"."WM"."inactiveForeground" = "170,170,170";
+      "kdeglobals"."WM"."inactiveBackground" = "61,61,62";
+      "kdeglobals"."WM"."inactiveBlend" = "61,61,62";
+      "kdeglobals"."WM"."inactiveForeground" = "155,155,155";
       "kdeglobals"."WM"."inactiveFrame" = "81,100,104";
       "kgammarc"."ConfigFile"."use" = "kgammarc";
-      "kglobalshortcutsrc"."ActivityManager"."_k_friendly_name" = "Activity Manager";
-      "kglobalshortcutsrc"."KDE Keyboard Layout Switcher"."_k_friendly_name" = "Keyboard Layout Switcher";
+      "kglobalshortcutsrc"."ActivityManager"."_k_friendly_name" = "活动管理器";
+      "kglobalshortcutsrc"."KDE Keyboard Layout Switcher"."_k_friendly_name" = "键盘布局切换器";
       "kglobalshortcutsrc"."WAYLAND_DISPLAY_OLD=$WAYLAND_DISPLAY-2.desktop"."_k_friendly_name" = "WAYLAND_DISPLAY_OLD=$WAYLAND_DISPLAY WAYLAND_DISPLAY=no KITTY_DISABLE_WAYLAND=1 tdrop -n tdrop_terminal --post-create-hook \"autohide-tdrop &\" -mta -h 60%% -w 70%% -x 15%% -y 0 kitty --class tdrop_terminal";
       "kglobalshortcutsrc"."bismuth"."_k_friendly_name" = "Window Tiling";
       "kglobalshortcutsrc"."copyq.desktop"."_k_friendly_name" = "copyq toggle";
@@ -529,6 +528,8 @@
       "khotkeysrc"."DirSelect Dialog"."DirSelectDialog Size" = "";
       "khotkeysrc"."General"."AllowKDEAppsToRememberWindowPositions" = "";
       "khotkeysrc"."General"."BrowserApplication" = "";
+      "khotkeysrc"."General"."ColorSchemeHash" = "";
+      "khotkeysrc"."General"."ColorScheme" = "";
       "khotkeysrc"."General"."TerminalApplication" = "";
       "khotkeysrc"."General"."TerminalService" = "";
       "khotkeysrc"."General"."XftHintStyle" = "";
@@ -541,6 +542,8 @@
       "khotkeysrc"."Gestures"."Timeout" = 300;
       "khotkeysrc"."GesturesExclude"."Comment" = "";
       "khotkeysrc"."GesturesExclude"."WindowsCount" = 0;
+      "khotkeysrc"."Icons"."Theme" = "";
+      "khotkeysrc"."KDE"."LookAndFeelPackage" = "";
       "khotkeysrc"."KDE"."ScrollbarLeftClickNavigatesByPage" = "";
       "khotkeysrc"."KDE"."ShowDeleteCommand" = "";
       "khotkeysrc"."KDE"."SingleClick" = "";
@@ -642,14 +645,11 @@
       "kwinrc"."Desktops"."BorderActivateAll" = 9;
       "kwinrc"."Desktops"."Drag" = 92;
       "kwinrc"."Desktops"."Duration" = 550;
-      "kwinrc"."Desktops"."Id_1" = "664200de-6817-4c11-beff-ffeb88847b95";
-      "kwinrc"."Desktops"."Id_2" = "b4e02a93-aa4e-49b6-9525-73f0ab13b8ca";
-      "kwinrc"."Desktops"."Id_3" = "e1d452e4-8f3a-40d7-afd6-0dc576f025e4";
+      "kwinrc"."Desktops"."Id_1" = "b4e02a93-aa4e-49b6-9525-73f0ab13b8ca";
       "kwinrc"."Desktops"."MoveFactor" = 20;
-      "kwinrc"."Desktops"."Name_1" = "Desktop 2";
-      "kwinrc"."Desktops"."Name_2" = "Desktop 3";
+      "kwinrc"."Desktops"."Name_1" = "Desktop 3";
       "kwinrc"."Desktops"."NoiseStrength" = 0;
-      "kwinrc"."Desktops"."Number" = 3;
+      "kwinrc"."Desktops"."Number" = 1;
       "kwinrc"."Desktops"."Rows" = 1;
       "kwinrc"."Desktops"."Speed" = 1;
       "kwinrc"."Desktops"."Stiffness" = 3;
@@ -672,30 +672,24 @@
       "kwinrc"."MouseBindings"."CommandAllWheel" = "Change Opacity";
       "kwinrc"."Plugins"."activatelattelaunchermenuEnabled" = true;
       "kwinrc"."Plugins"."anything-dropdownEnabled" = false;
-      "kwinrc"."Plugins"."bismuthEnabled" = false;
       "kwinrc"."Plugins"."blurEnabled" = true;
       "kwinrc"."Plugins"."force-decorations-gtk3Enabled" = true;
       "kwinrc"."Plugins"."forceblurEnabled" = true;
+      "kwinrc"."Plugins"."glideEnabled" = true;
       "kwinrc"."Plugins"."karouselEnabled" = false;
       "kwinrc"."Plugins"."kwin4_effect_dimscreenEnabled" = true;
-      "kwinrc"."Plugins"."kwin4_effect_eyeonscreenEnabled" = true;
       "kwinrc"."Plugins"."kwin4_effect_geometry_changeEnabled" = true;
       "kwinrc"."Plugins"."kwin4_effect_lightlyshadersEnabled" = false;
-      "kwinrc"."Plugins"."kwin4_effect_maximizeEnabled" = false;
       "kwinrc"."Plugins"."kwin4_effect_rubberband_maximizeEnabled" = false;
       "kwinrc"."Plugins"."kwin4_effect_scaleEnabled" = false;
       "kwinrc"."Plugins"."kwin4_effect_squashEnabled" = false;
-      "kwinrc"."Plugins"."kwin4_effect_tvEnabled" = true;
-      "kwinrc"."Plugins"."kwin4_effect_tv_glitchEnabled" = true;
-      "kwinrc"."Plugins"."kwin4_effect_windowapertureEnabled" = false;
-      "kwinrc"."Plugins"."lattewindowcolorsEnabled" = true;
+      "kwinrc"."Plugins"."lattewindowcolorsEnabled" = false;
       "kwinrc"."Plugins"."macsimizeEnabled" = false;
       "kwinrc"."Plugins"."magiclampEnabled" = true;
-      "kwinrc"."Plugins"."max2NewVirtualDesktopEnabled" = false;
+      "kwinrc"."Plugins"."max2NewVirtualDesktopEnabled" = true;
       "kwinrc"."Plugins"."poloniumEnabled" = true;
-      "kwinrc"."Plugins"."screenedgeEnabled" = false;
+      "kwinrc"."Plugins"."sheetEnabled" = true;
       "kwinrc"."Plugins"."slidebackEnabled" = true;
-      "kwinrc"."Plugins"."wobblywindowsEnabled" = true;
       "kwinrc"."Script-bismuth"."enableFloatingLayout" = true;
       "kwinrc"."Script-bismuth"."enableQuarterLayout" = true;
       "kwinrc"."Script-bismuth"."floatingClass" = "yakuake,spectacle,Conky,zoom,tdrop_terminal,copyq,Steam,lutris, steam,steam_app.*, Steam,Warframe,lutris,Riot Client Main,League of Legends, weixin, .scrcpy-wrapped,zenity,org.kde.polkit-kde-authentication-agent-1,control.exe,wineboot.exe,wechat.exe";
