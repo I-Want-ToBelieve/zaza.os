@@ -8,4 +8,4 @@ export const computer = Array.from({ length: 10 }, (it, idx) => {
   }
 })
 
-console.log(computer)
+
