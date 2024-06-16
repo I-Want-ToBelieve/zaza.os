@@ -423,7 +423,7 @@
       "kded5rc"."PlasmaBrowserIntegration"."shownCount" = 4;
       "kdeglobals"."DirSelect Dialog"."DirSelectDialog Size" = "1478,1370";
       "kdeglobals"."General"."AllowKDEAppsToRememberWindowPositions" = true;
-      "kdeglobals"."General"."BrowserApplication" = "google-chrome.desktop";
+      "kdeglobals"."General"."BrowserApplication" = "chromium-browser.desktop";
       "kdeglobals"."General"."XftHintStyle" = "hintfull";
       "kdeglobals"."General"."XftSubPixel" = "none";
       "kdeglobals"."General"."accentColorFromWallpaper" = false;
