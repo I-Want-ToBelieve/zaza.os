@@ -1,3 +1,0 @@
-<input type="evdev">
-  <source dev="/dev/input/by-id/usb-Logitech_USB_Receiver-if02-event-mouse"/>
-</input>
