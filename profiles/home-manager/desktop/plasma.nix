@@ -682,7 +682,6 @@
       "kwinrc"."Plugins"."lattewindowcolorsEnabled" = false;
       "kwinrc"."Plugins"."macsimizeEnabled" = false;
       "kwinrc"."Plugins"."magiclampEnabled" = true;
-      "kwinrc"."Plugins"."max2NewVirtualDesktopEnabled" = true;
       "kwinrc"."Plugins"."poloniumEnabled" = true;
       "kwinrc"."Plugins"."sheetEnabled" = true;
       "kwinrc"."Plugins"."slidebackEnabled" = true;
@@ -708,8 +707,6 @@
       "kwinrc"."Script-karousel"."gapsOuterRight" = 10;
       "kwinrc"."Script-karousel"."manualScrollStep" = 500;
       "kwinrc"."Script-karousel"."overscroll" = 10;
-      "kwinrc"."Script-max2NewVirtualDesktop"."newDesktopPosition" = "NextToCurrent";
-      "kwinrc"."Script-max2NewVirtualDesktop"."trigger" = "FullscreenAndMaximize";
       "kwinrc"."SubSession: 2fceeaf5-e7eb-41ea-9108-13788b24131a"."active" = "-1";
       "kwinrc"."SubSession: 2fceeaf5-e7eb-41ea-9108-13788b24131a"."count" = 0;
       "kwinrc"."TabBox"."ActivitiesMode" = 0;
