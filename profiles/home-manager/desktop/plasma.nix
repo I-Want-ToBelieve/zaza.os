@@ -3,7 +3,6 @@
     enable = true;
     shortcuts = {
       "ActivityManager"."switch-to-activity-2fceeaf5-e7eb-41ea-9108-13788b24131a" = [];
-      "ActivityManager"."switch-to-activity-ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3" = [];
       "KDE Keyboard Layout Switcher"."Switch keyboard layout to English (US)" = [];
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
       "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+K";
@@ -49,7 +48,7 @@
       "kcm_touchpad"."Enable Touchpad" = "Touchpad On";
       "kcm_touchpad"."Toggle Touchpad" = "Touchpad Toggle";
       "kded5"."Show System Activity" = "Ctrl+Esc";
-      "kded5"."display" = ["" "Display" "Meta+P"];
+      "kded5"."display" = ["Display" "Meta+P"];
       "kitty-2.desktop"."_launch" = "Meta+Return";
       "kmix"."decrease_microphone_volume" = "Microphone Volume Down";
       "kmix"."decrease_volume" = "Volume Down";
@@ -57,7 +56,7 @@
       "kmix"."increase_microphone_volume" = "Microphone Volume Up";
       "kmix"."increase_volume" = "Volume Up";
       "kmix"."increase_volume_small" = "Shift+Volume Up";
-      "kmix"."mic_mute" = ["" "Microphone Mute" "Meta+Volume Mute"];
+      "kmix"."mic_mute" = ["Microphone Mute" "Meta+Volume Mute"];
       "kmix"."mute" = "Volume Mute";
       "ksmserver"."Halt Without Confirmation" = [];
       "ksmserver"."Lock Session" = "Screensaver";
@@ -73,7 +72,7 @@
       "kwin"."Decrease Opacity" = [];
       "kwin"."Edit Tiles" = [];
       "kwin"."Expose" = "Ctrl+F9";
-      "kwin"."ExposeAll" = ["" "Ctrl+F10" "Launch (C)"];
+      "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C)"];
       "kwin"."ExposeClass" = "Ctrl+F7";
       "kwin"."ExposeClassCurrentDesktop" = [];
       "kwin"."Grid View" = "Meta+G";
@@ -224,9 +223,9 @@
       "kwin"."Window to Desktop 8" = "Meta+*";
       "kwin"."Window to Desktop 9" = "Meta+(";
       "kwin"."Window to Next Desktop" = "Meta+Shift+L";
-      "kwin"."Window to Next Screen" = ["" "Meta+>" "Meta+Shift+Right"];
+      "kwin"."Window to Next Screen" = ["Meta+>" "Meta+Shift+Right"];
       "kwin"."Window to Previous Desktop" = "Meta+Shift+J";
-      "kwin"."Window to Previous Screen" = ["" "Meta+Shift+Left" "Meta+<"];
+      "kwin"."Window to Previous Screen" = ["Meta+Shift+Left" "Meta+<"];
       "kwin"."Window to Screen 0" = [];
       "kwin"."Window to Screen 1" = [];
       "kwin"."Window to Screen 2" = [];
@@ -313,7 +312,7 @@
       "kwin"."karousel-window-move-up" = "Meta+Shift+W";
       "kwin"."karousel-window-toggle-floating" = [];
       "kwin"."view_actual_size" = [];
-      "kwin"."view_zoom_in" = ["" "Meta++" "Meta+="];
+      "kwin"."view_zoom_in" = ["Meta++" "Meta+="];
       "kwin"."view_zoom_out" = "Meta+-";
       "mediacontrol"."mediavolumedown" = [];
       "mediacontrol"."mediavolumeup" = [];
@@ -328,7 +327,7 @@
       "org.kde.konsole.desktop"."NewWindow" = [];
       "org.kde.konsole.desktop"."_launch" = "Ctrl+Alt+T";
       "org.kde.krunner.desktop"."RunClipboard" = "Alt+Shift+F2";
-      "org.kde.krunner.desktop"."_launch" = ["" "Alt+Space" "Alt+F2" "Search"];
+      "org.kde.krunner.desktop"."_launch" = ["Alt+Space" "Alt+F2" "Search"];
       "org.kde.plasma.emojier.desktop"."_launch" = "Meta+.";
       "org.kde.spectacle.desktop"."ActiveWindowScreenShot" = "Meta+Print";
       "org.kde.spectacle.desktop"."CurrentMonitorScreenShot" = [];
@@ -349,7 +348,7 @@
       "org_kde_powerdevil"."Sleep" = "Sleep";
       "org_kde_powerdevil"."Toggle Keyboard Backlight" = "Keyboard Light On/Off";
       "org_kde_powerdevil"."Turn Off Screen" = [];
-      "org_kde_powerdevil"."powerProfile" = ["" "Battery" "Meta+B"];
+      "org_kde_powerdevil"."powerProfile" = ["Battery" "Meta+B"];
       "plasmashell"."activate task manager entry 1" = [];
       "plasmashell"."activate task manager entry 10" = [];
       "plasmashell"."activate task manager entry 2" = [];
@@ -409,10 +408,8 @@
       "dolphinrc"."Toolbar mainToolBar"."IconSize" = 16;
       "dolphinrc"."Toolbar mainToolBar"."ToolButtonStyle" = "IconOnly";
       "kactivitymanagerdrc"."activities"."2fceeaf5-e7eb-41ea-9108-13788b24131a" = "Default";
-      "kactivitymanagerdrc"."activities"."ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3" = "moonlight";
-      "kactivitymanagerdrc"."activities-icons"."ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3" = "activities";
       "kactivitymanagerdrc"."main"."currentActivity" = "2fceeaf5-e7eb-41ea-9108-13788b24131a";
-      "kactivitymanagerdrc"."main"."runningActivities" = "ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3";
+      "kactivitymanagerdrc"."main"."runningActivities" = "2fceeaf5-e7eb-41ea-9108-13788b24131a";
       "kactivitymanagerdrc"."main"."stoppedActivities" = "";
       "kcminputrc"."Libinput.1133.16500.Logitech G304"."PointerAccelerationProfile" = 1;
       "kcminputrc"."Libinput/1133/16500/Logitech G304"."PointerAccelerationProfile" = 1;
@@ -514,7 +511,7 @@
       "kglobalshortcutsrc"."org.kde.plasma.emojier.desktop"."_k_friendly_name" = "Emoji Selector";
       "kglobalshortcutsrc"."org.kde.spectacle.desktop"."_k_friendly_name" = "Spectacle";
       "kglobalshortcutsrc"."org_kde_powerdevil"."_k_friendly_name" = "电源管理";
-      "kglobalshortcutsrc"."plasmashell"."_k_friendly_name" = "Plasma";
+      "kglobalshortcutsrc"."plasmashell"."_k_friendly_name" = "切换活动";
       "kglobalshortcutsrc"."systemsettings.desktop"."_k_friendly_name" = "System Settings";
       "khotkeysrc"."Data"."DataCount" = 1;
       "khotkeysrc"."Data_1"."Comment" = "KMenuEdit Global Shortcuts";
@@ -528,6 +525,8 @@
       "khotkeysrc"."DirSelect Dialog"."DirSelectDialog Size" = "";
       "khotkeysrc"."General"."AllowKDEAppsToRememberWindowPositions" = "";
       "khotkeysrc"."General"."BrowserApplication" = "";
+      "khotkeysrc"."General"."ColorSchemeHash" = "";
+      "khotkeysrc"."General"."ColorScheme" = "";
       "khotkeysrc"."General"."TerminalApplication" = "";
       "khotkeysrc"."General"."TerminalService" = "";
       "khotkeysrc"."General"."XftHintStyle" = "";
@@ -540,6 +539,8 @@
       "khotkeysrc"."Gestures"."Timeout" = 300;
       "khotkeysrc"."GesturesExclude"."Comment" = "";
       "khotkeysrc"."GesturesExclude"."WindowsCount" = 0;
+      "khotkeysrc"."Icons"."Theme" = "";
+      "khotkeysrc"."KDE"."LookAndFeelPackage" = "";
       "khotkeysrc"."KDE"."ScrollbarLeftClickNavigatesByPage" = "";
       "khotkeysrc"."KDE"."ShowDeleteCommand" = "";
       "khotkeysrc"."KDE"."SingleClick" = "";
@@ -622,6 +623,7 @@
       "kservicemenurc"."Show"."slideshowfileitemaction" = true;
       "kservicemenurc"."Show"."tagsfileitemaction" = true;
       "ksmserverrc"."SubSession: 2fceeaf5-e7eb-41ea-9108-13788b24131a"."count" = 0;
+      "ksmserverrc"."SubSession: ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3"."count" = 0;
       "kwalletrc"."Wallet"."Close When Idle" = false;
       "kwalletrc"."Wallet"."Close on Screensaver" = false;
       "kwalletrc"."Wallet"."Default Wallet" = "kdewallet";
@@ -645,6 +647,7 @@
       "kwinrc"."Desktops"."Id_2" = "63aeee72-bc77-4269-acee-76e07a38e013";
       "kwinrc"."Desktops"."Id_3" = "18f12a29-5124-459b-b3c5-f9b702370ad4";
       "kwinrc"."Desktops"."Id_4" = "ba87f839-0048-41fd-ba7f-dc7e52f6be56";
+      "kwinrc"."Desktops"."Name_1" = "桌面 2";
       "kwinrc"."Desktops"."Number" = 4;
       "kwinrc"."Desktops"."Rows" = 1;
       "kwinrc"."Desktops"."Speed" = 1;
@@ -709,6 +712,8 @@
       "kwinrc"."Script-karousel"."overscroll" = 10;
       "kwinrc"."SubSession: 2fceeaf5-e7eb-41ea-9108-13788b24131a"."active" = "-1";
       "kwinrc"."SubSession: 2fceeaf5-e7eb-41ea-9108-13788b24131a"."count" = 0;
+      "kwinrc"."SubSession: ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3"."active" = "-1";
+      "kwinrc"."SubSession: ce0ba7e7-68a0-495a-ab2e-6a46e02e3bd3"."count" = 0;
       "kwinrc"."TabBox"."ActivitiesMode" = 0;
       "kwinrc"."TabBox"."DesktopMode" = 0;
       "kwinrc"."TabBox"."LayoutName" = "flipswitch";
@@ -718,7 +723,7 @@
       "kwinrc"."Tiling"."padding" = 4;
       "kwinrc"."Tiling/7b033d70-7be4-564a-8cb5-131fc76f4517"."tiles" = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
       "kwinrc"."Xwayland"."Scale" = 1.5;
-      "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "AXI";
+      "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "XAI";
       "kwinrc"."org.kde.kdecoration2"."ButtonsOnRight" = "M";
       "kwinrulesrc"."1"."Description" = "min-zero";
       "kwinrulesrc"."1"."minsize" = "1,1";
