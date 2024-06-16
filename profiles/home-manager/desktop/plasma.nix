@@ -49,7 +49,7 @@
       "kcm_touchpad"."Enable Touchpad" = "Touchpad On";
       "kcm_touchpad"."Toggle Touchpad" = "Touchpad Toggle";
       "kded5"."Show System Activity" = "Ctrl+Esc";
-      "kded5"."display" = ["Display" "Meta+P"];
+      "kded5"."display" = ["" "Display" "Meta+P"];
       "kitty-2.desktop"."_launch" = "Meta+Return";
       "kmix"."decrease_microphone_volume" = "Microphone Volume Down";
       "kmix"."decrease_volume" = "Volume Down";
@@ -57,7 +57,7 @@
       "kmix"."increase_microphone_volume" = "Microphone Volume Up";
       "kmix"."increase_volume" = "Volume Up";
       "kmix"."increase_volume_small" = "Shift+Volume Up";
-      "kmix"."mic_mute" = ["Microphone Mute" "Meta+Volume Mute"];
+      "kmix"."mic_mute" = ["" "Microphone Mute" "Meta+Volume Mute"];
       "kmix"."mute" = "Volume Mute";
       "ksmserver"."Halt Without Confirmation" = [];
       "ksmserver"."Lock Session" = "Screensaver";
@@ -73,7 +73,7 @@
       "kwin"."Decrease Opacity" = [];
       "kwin"."Edit Tiles" = [];
       "kwin"."Expose" = "Ctrl+F9";
-      "kwin"."ExposeAll" = ["Ctrl+F10" "Launch (C)"];
+      "kwin"."ExposeAll" = ["" "Ctrl+F10" "Launch (C)"];
       "kwin"."ExposeClass" = "Ctrl+F7";
       "kwin"."ExposeClassCurrentDesktop" = [];
       "kwin"."Grid View" = "Meta+G";
@@ -224,9 +224,9 @@
       "kwin"."Window to Desktop 8" = "Meta+*";
       "kwin"."Window to Desktop 9" = "Meta+(";
       "kwin"."Window to Next Desktop" = "Meta+Shift+L";
-      "kwin"."Window to Next Screen" = ["Meta+>" "Meta+Shift+Right"];
+      "kwin"."Window to Next Screen" = ["" "Meta+>" "Meta+Shift+Right"];
       "kwin"."Window to Previous Desktop" = "Meta+Shift+J";
-      "kwin"."Window to Previous Screen" = ["Meta+Shift+Left" "Meta+<"];
+      "kwin"."Window to Previous Screen" = ["" "Meta+Shift+Left" "Meta+<"];
       "kwin"."Window to Screen 0" = [];
       "kwin"."Window to Screen 1" = [];
       "kwin"."Window to Screen 2" = [];
@@ -313,7 +313,7 @@
       "kwin"."karousel-window-move-up" = "Meta+Shift+W";
       "kwin"."karousel-window-toggle-floating" = [];
       "kwin"."view_actual_size" = [];
-      "kwin"."view_zoom_in" = ["Meta++" "Meta+="];
+      "kwin"."view_zoom_in" = ["" "Meta++" "Meta+="];
       "kwin"."view_zoom_out" = "Meta+-";
       "mediacontrol"."mediavolumedown" = [];
       "mediacontrol"."mediavolumeup" = [];
@@ -328,7 +328,7 @@
       "org.kde.konsole.desktop"."NewWindow" = [];
       "org.kde.konsole.desktop"."_launch" = "Ctrl+Alt+T";
       "org.kde.krunner.desktop"."RunClipboard" = "Alt+Shift+F2";
-      "org.kde.krunner.desktop"."_launch" = ["Alt+Space" "Alt+F2" "Search"];
+      "org.kde.krunner.desktop"."_launch" = ["" "Alt+Space" "Alt+F2" "Search"];
       "org.kde.plasma.emojier.desktop"."_launch" = "Meta+.";
       "org.kde.spectacle.desktop"."ActiveWindowScreenShot" = "Meta+Print";
       "org.kde.spectacle.desktop"."CurrentMonitorScreenShot" = [];
@@ -349,7 +349,7 @@
       "org_kde_powerdevil"."Sleep" = "Sleep";
       "org_kde_powerdevil"."Toggle Keyboard Backlight" = "Keyboard Light On/Off";
       "org_kde_powerdevil"."Turn Off Screen" = [];
-      "org_kde_powerdevil"."powerProfile" = ["Battery" "Meta+B"];
+      "org_kde_powerdevil"."powerProfile" = ["" "Battery" "Meta+B"];
       "plasmashell"."activate task manager entry 1" = [];
       "plasmashell"."activate task manager entry 10" = [];
       "plasmashell"."activate task manager entry 2" = [];
@@ -528,8 +528,6 @@
       "khotkeysrc"."DirSelect Dialog"."DirSelectDialog Size" = "";
       "khotkeysrc"."General"."AllowKDEAppsToRememberWindowPositions" = "";
       "khotkeysrc"."General"."BrowserApplication" = "";
-      "khotkeysrc"."General"."ColorSchemeHash" = "";
-      "khotkeysrc"."General"."ColorScheme" = "";
       "khotkeysrc"."General"."TerminalApplication" = "";
       "khotkeysrc"."General"."TerminalService" = "";
       "khotkeysrc"."General"."XftHintStyle" = "";
@@ -542,8 +540,6 @@
       "khotkeysrc"."Gestures"."Timeout" = 300;
       "khotkeysrc"."GesturesExclude"."Comment" = "";
       "khotkeysrc"."GesturesExclude"."WindowsCount" = 0;
-      "khotkeysrc"."Icons"."Theme" = "";
-      "khotkeysrc"."KDE"."LookAndFeelPackage" = "";
       "khotkeysrc"."KDE"."ScrollbarLeftClickNavigatesByPage" = "";
       "khotkeysrc"."KDE"."ShowDeleteCommand" = "";
       "khotkeysrc"."KDE"."SingleClick" = "";
@@ -725,6 +721,8 @@
       "kwinrc"."Tiling"."padding" = 4;
       "kwinrc"."Tiling/7b033d70-7be4-564a-8cb5-131fc76f4517"."tiles" = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
       "kwinrc"."Xwayland"."Scale" = 1.5;
+      "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "AXI";
+      "kwinrc"."org.kde.kdecoration2"."ButtonsOnRight" = "M";
       "kwinrulesrc"."1"."Description" = "min-zero";
       "kwinrulesrc"."1"."minsize" = "1,1";
       "kwinrulesrc"."1"."minsizerule" = 2;
