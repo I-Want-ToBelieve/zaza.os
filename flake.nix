@@ -66,7 +66,17 @@
 
           scripts."10r".exec = ''
             cd $DEVENV_ROOT
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- 100r\n"' &
+
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.100\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.101\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.103\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.104\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.105\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.106\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.107\n"' &
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.108\n"' &
+            zellij --session r10 || zellij attach r10
+            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.109\n"' &
             zellij --session r10 || zellij attach r10
           '';
 
