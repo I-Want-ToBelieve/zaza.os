@@ -722,6 +722,8 @@
       "kwinrc"."TabBoxAlternative"."LayoutName" = "flipswitch";
       "kwinrc"."Tiling"."padding" = 4;
       "kwinrc"."Tiling/7b033d70-7be4-564a-8cb5-131fc76f4517"."tiles" = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+      "kwinrc"."Tiling/94f0e600-8a2b-5449-86c3-636a21506c65"."tiles" = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+      "kwinrc"."Wayland"."InputMethod" = "/run/current-system/sw/share/applications/org.fcitx.Fcitx5.desktop";
       "kwinrc"."Xwayland"."Scale" = 1.5;
       "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "XAI";
       "kwinrc"."org.kde.kdecoration2"."ButtonsOnRight" = "M";
