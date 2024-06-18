@@ -22,6 +22,7 @@
       cachix
 
       coreutils
+      deno
       dconf
       ddcutil
       droidcam

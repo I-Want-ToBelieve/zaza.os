@@ -71,11 +71,11 @@
 
             sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.101\n"' &
 
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.102\n"' &
+            sh -c $'sleep 0.414;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.102\n"' &
 
             sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.103\n"' &
 
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.104\n"' &
+            sh -c $'sleep 0.414;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.104\n"' &
 
             sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.105\n"' &
 
