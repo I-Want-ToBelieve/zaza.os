@@ -751,8 +751,14 @@
       "kwinrulesrc"."3"."noborderrule" = 2;
       "kwinrulesrc"."3"."wmclass" = "^(?!.*krunner).*$";
       "kwinrulesrc"."3"."wmclassmatch" = 3;
-      "kwinrulesrc"."General"."count" = 3;
-      "kwinrulesrc"."General"."rules" = "1,2,3";
+      "kwinrulesrc"."4"."Description" = "forcetop";
+      "kwinrulesrc"."4"."above" = true;
+      "kwinrulesrc"."4"."aboverule" = 2;
+      "kwinrulesrc"."4"."types" = 1;
+      "kwinrulesrc"."4"."wmclass" = "org.freedesktop.impl.portal.desktop.kde";
+      "kwinrulesrc"."4"."wmclassmatch" = 1;
+      "kwinrulesrc"."General"."count" = 4;
+      "kwinrulesrc"."General"."rules" = "1,2,3,4";
       "kxkbrc"."Layout"."DisplayNames" = "";
       "kxkbrc"."Layout"."LayoutList" = "us";
       "kxkbrc"."Layout"."Options" = "terminate:ctrl_alt_bksp,caps:swapescape";
