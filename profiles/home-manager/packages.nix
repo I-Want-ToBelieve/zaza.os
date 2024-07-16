@@ -116,7 +116,7 @@
       xz
       xorg.xhost
       yesplaymusic
-      gnome.zenity
+      zenity
       catimg
       duf
       du-dust

@@ -12,7 +12,8 @@
       lib.mkDefault ["en_US.UTF-8/UTF-8" "zh_CN.UTF-8/UTF-8"];
 
     inputMethod = {
-      enabled = "fcitx5";
+      type = "fcitx5";
+      enable = true;
       fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs;
       with inur;

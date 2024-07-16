@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  stylix.enable = true;
   # https://danth.github.io/stylix/configuration.html
   stylix.image = pkgs.fetchurl rec {
     name = "wallpaper-${sha256}.png";

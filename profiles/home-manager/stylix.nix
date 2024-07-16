@@ -1,6 +1,7 @@
 {...}: {
   # https://danth.github.io/stylix/configuration.html
   # https://danth.github.io/stylix/options/hm.html
+  stylix.enable = true;
   stylix.targets.vscode.enable = false;
   stylix.targets.waybar.enable = false;
   stylix.targets.swaylock.enable = false;

@@ -39,14 +39,6 @@
   ];
 
   hardware = {
-    amdgpu = {
-      amdvlk = true;
-      opencl = true;
-      loadInInitrd = true;
-    };
-
-    opengl = {enable = true;};
-
     steam-hardware = {enable = true;};
 
     bluetooth = {
