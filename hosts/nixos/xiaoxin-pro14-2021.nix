@@ -13,9 +13,9 @@
       inputs.nixos-hardware.nixosModules.common-gpu-intel
     ];
 
-  services.rkvm.client.enable = true;
-  services.rkvm.client.settings.password = "0123456789";
-  services.rkvm.client.settings.server = "192.168.0.130:5258";
+  # services.rkvm.client.enable = true;
+  # services.rkvm.client.settings.password = "0123456789";
+  # services.rkvm.client.settings.server = "192.168.0.130:5258";
 
   system.stateVersion = lib.mkForce "24.05";
 
@@ -35,8 +35,20 @@
     "f /dev/shm/looking-glass 0660 i.want.to.believe qemu-libvirtd -"
   ];
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
+  };
+
   hardware = {
-    opengl = {enable = true;};
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+    };
 
     steam-hardware = {enable = true;};
 
@@ -73,6 +85,7 @@
     extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
+      "i915.enable_psr=0"
       # "i915.enable_gvt=1"
       # "i915.enable_guc=0"
       # "iommu=pt"
@@ -233,6 +246,7 @@
 
     sessionVariables = {
       # NIXOS_OZONE_WL = "1";
+      LIBVA_DRIVER_NAME = "iHD"; # Force intel-media-driver
     };
 
     systemPackages = with pkgs; [
