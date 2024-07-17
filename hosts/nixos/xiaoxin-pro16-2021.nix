@@ -15,11 +15,11 @@
 
   system.stateVersion = lib.mkForce "24.05";
 
-  services.rustdesk-server.enable = true;
-  services.rustdesk-server.openFirewall = true;
+  services.rustdesk-server.enable = false;
+  services.rustdesk-server.openFirewall = false;
   services.rustdesk-server.relayIP = "192.168.0.121";
 
-  services.rkvm.server.enable = false;
+  services.rkvm.server.enable = true;
   services.rkvm.server.settings.password = "0123456789";
 
   users.groups.input.members = ["i.want.to.believe"];
