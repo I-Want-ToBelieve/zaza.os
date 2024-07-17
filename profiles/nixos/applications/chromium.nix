@@ -12,15 +12,20 @@
     # https://chromeenterprise.google/policies/
     extraOpts = {
       # homepage
-      "HomepageLocation" = "https://www.makcoocode.com/";
-      "HomepageIsNewTabPage" = false;
+      "ShowHomeButton" = true;
+      "HomepageLocation" = "http://192.168.0.121:3000/";
+      "HomepageIsNewTabPage" = true;
 
       # new page
-      "NewTabPageLocation" = "https://cn.bing.com/";
+      "NewTabPageLocation" = "http://192.168.0.121:3000/";
 
       # bookmarks
       "ImportBookmarks" = false;
       "ManagedBookmarks" = [
+        {
+          "name" = "主页";
+          "url" = "http://192.168.0.121:3000/";
+        }
         {
           "name" = "MakcooCode";
           "url" = "https://www.makcoocode.com/";
@@ -57,6 +62,8 @@
       # 4 = Open a list of URLs
       # 6 = Open a list of URLs and restore the last session
       "RestoreOnStartup" = 1;
+
+      "RestoreOnStartupURLs" = ["https://cn.bing.com/" "http://192.168.0.121:3000/"];
 
       # search
       "DefaultSearchProviderName" = "bing";
