@@ -25,7 +25,7 @@ in {
       enable = true;
       settings = {
         password = "0123456789";
-        server = "192.168.0.130:5258";
+        server = "192.168.0.121:5258";
         certificate = snakeoil-cert;
         key = snakeoil-key;
       };

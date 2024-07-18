@@ -16,7 +16,7 @@
 
   # services.rkvm.client.enable = true;
   # services.rkvm.client.settings.password = "0123456789";
-  # services.rkvm.client.settings.server = "192.168.0.130:5258";
+  # services.rkvm.client.settings.server = "192.168.0.121:5258";
 
   system.stateVersion = lib.mkForce "24.05";
 
