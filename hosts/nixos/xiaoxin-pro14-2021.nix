@@ -5,7 +5,14 @@
   lib,
   modulesPath,
   ...
-}: {
+}: let
+  # Generated with
+  #
+  # nix shell .#rkvm --command "rkvm-certificate-gen --ip-addresses 192.168.0.xxx cert.pem key.pem"
+  #
+  snakeoil-cert = ../../assets/pems/cert.pem;
+  snakeoil-key = ../../assets/pems/key.pem;
+in {
   imports =
     [(modulesPath + "/installer/scan/not-detected.nix")]
     ++ [
@@ -13,9 +20,17 @@
       inputs.nixos-hardware.nixosModules.common-gpu-intel
     ];
 
-  # services.rkvm.client.enable = true;
-  # services.rkvm.client.settings.password = "0123456789";
-  # services.rkvm.client.settings.server = "192.168.0.130:5258";
+  services.rkvm = {
+    client = {
+      enable = true;
+      settings = {
+        password = "0123456789";
+        server = "192.168.0.130:5258";
+        certificate = snakeoil-cert;
+        key = snakeoil-key;
+      };
+    };
+  };
 
   system.stateVersion = lib.mkForce "24.05";
 

@@ -5,7 +5,14 @@
   lib,
   modulesPath,
   ...
-}: {
+}: let
+  # Generated with
+  #
+  # nix shell .#rkvm --command "rkvm-certificate-gen --ip-addresses 192.168.0.xxx cert.pem key.pem"
+  #
+  snakeoil-cert = ../../assets/pems/cert.pem;
+  snakeoil-key = ../../assets/pems/key.pem;
+in {
   imports =
     [(modulesPath + "/installer/scan/not-detected.nix")]
     ++ [
@@ -19,8 +26,15 @@
   services.rustdesk-server.openFirewall = false;
   services.rustdesk-server.relayIP = "192.168.0.121";
 
-  services.rkvm.server.enable = true;
-  services.rkvm.server.settings.password = "0123456789";
+  services.rkvm.server = {
+    enable = true;
+    settings = {
+      password = "0123456789";
+      certificate = snakeoil-cert;
+      key = snakeoil-key;
+      switch-keys = ["left-alt" "right-alt"];
+    };
+  };
 
   users.groups.input.members = ["i.want.to.believe"];
 
