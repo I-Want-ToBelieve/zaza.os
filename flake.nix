@@ -499,6 +499,105 @@
               ];
           };
 
+          "xiaoxin-pro14-2021" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {
+              suites = self.suites.nixos;
+              inputs = inputs;
+              self = self;
+            };
+            modules =
+              nixpkgs.lib.attrValues self.nixosModules
+              ++ [
+                ({
+                  config,
+                  pkgs,
+                  ...
+                }: {
+                  nixpkgs.hostPlatform = "x86_64-linux";
+                  nixpkgs.overlays =
+                    share.overlays
+                    ++ [
+                      inputs.nur.overlay
+                      inputs.agenix.overlays.default
+                      inputs.nvfetcher.overlays.default
+                      inputs.rust-overlay.overlays.default
+                      (import ./pkgs)
+                      self.overlays.default
+                    ];
+                  nixpkgs.config = {
+                    allowUnfree = true;
+                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
+                  };
+                })
+              ]
+              ++ [
+                {
+                  imports = with self.suites.nixos;
+                    nixpkgs.lib.flatten [base misc games kde-wayland];
+                }
+              ]
+              ++ [
+                inputs.home-manager.nixosModules.home-manager
+                inputs.stylix.nixosModules.stylix
+
+                {
+                  system.stateVersion = "23.11";
+                  system.autoUpgrade.enable = false;
+                }
+
+                inputs.agenix.nixosModules.default
+                ./hosts/nixos/xiaoxin-pro14-2021.nix
+
+                ./users/root.nix
+
+                ./users/i.want.to.believe.nix
+
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.backupFileExtension = "homebak";
+                  home-manager.extraSpecialArgs = {inputs = inputs;};
+                  home-manager.users."i.want.to.believe" = {
+                    imports =
+                      nixpkgs.lib.attrValues self.homeManagerModules
+                      ++ (with self.suites.home-manager;
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                      ++ [
+                        inputs.nix-index-database.hmModules.nix-index
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        {programs.nix-index-database.comma.enable = true;}
+                      ];
+                    home.stateVersion = "23.11";
+                  };
+
+                  home-manager.users."root" = {
+                    imports =
+                      nixpkgs.lib.attrValues self.homeManagerModules
+                      ++ (with self.suites.home-manager;
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                      ++ [
+                        inputs.nix-index-database.hmModules.nix-index
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        {programs.nix-index-database.comma.enable = true;}
+                      ]
+                      ++ [
+                        ({...}: {
+                          programs.ssh = {
+                            enable = true;
+                            matchBlocks = {
+                              "192.168.0.*" = {
+                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
+                              };
+                            };
+                          };
+                        })
+                      ];
+                    home.stateVersion = "23.11";
+                  };
+                }
+              ];
+          };
           "dell-makcoo" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
