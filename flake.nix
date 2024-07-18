@@ -1060,6 +1060,38 @@
           };
         };
 
+        nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+          modules = [
+            ./hosts/termux/redmi-k70pro/nix-on-droid.nix
+
+            # list of extra modules for Nix-on-Droid system
+            # { nix.registry.nixpkgs.flake = nixpkgs; }
+            # ./path/to/module.nix
+
+            # or import source out-of-tree modules like:
+            # flake.nixOnDroidModules.module
+          ];
+
+          # list of extra special args for Nix-on-Droid modules
+          extraSpecialArgs = {
+            # rootPath = ./.;
+            inputs = inputs;
+          };
+
+          # set nixpkgs instance, it is recommended to apply `nix-on-droid.overlays.default`
+          pkgs = import nixpkgs {
+            system = "aarch64-linux";
+
+            overlays = [
+              inputs.nix-on-droid.overlays.default
+              # add other overlays
+            ];
+          };
+
+          # set path to home-manager flake
+          home-manager-path = inputs.home-manager.outPath;
+        };
+
         darwinConfigurations = {
           "k99-lite-darwin" = inputs.darwin.lib.darwinSystem {
             system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
@@ -1218,6 +1250,12 @@
     autohide-tdrop = {
       url = "github:I-Want-ToBelieve/autohide-tdrop";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 
