@@ -32,7 +32,7 @@ in {
       password = "0123456789";
       certificate = snakeoil-cert;
       key = snakeoil-key;
-      switch-keys = ["left-alt" "right-alt"];
+      switch-keys = ["left-ctrl" "left-alt" "left-shift" "m"];
     };
   };
 
