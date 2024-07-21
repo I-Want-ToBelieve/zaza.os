@@ -356,6 +356,8 @@
       };
       "[python]" = {
         editor.formatOnType = true;
+        editor.formatOnSave = true;
+        editor.defaultFormatter = "ms-python.black-formatter";
       };
       settingsSync.ignoredExtensions = [
       ];
