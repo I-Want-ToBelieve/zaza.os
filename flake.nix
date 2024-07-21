@@ -237,6 +237,8 @@
 
             kde-x11 = [desktop.plasma desktop.bismuth desktop.kvantum];
             kde-wayland = [desktop.plasma desktop.bismuth desktop.kvantum];
+
+            managed = with managed; [vscode];
           };
 
           darwin = with self.profiles.darwin; {
@@ -667,7 +669,7 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland managed])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
@@ -750,7 +752,7 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland managed])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
@@ -956,7 +958,7 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland managed])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
