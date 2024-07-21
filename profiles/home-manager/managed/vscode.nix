@@ -7,6 +7,8 @@
       ms-python.debugpy
       ms-python.black-formatter
       ms-ceintl.vscode-language-pack-zh-hans
+      catppuccin.catppuccin-vsc
+      catppuccin.catppuccin-vsc-icons
     ];
     userSettings = {
       terminal.integrated.profiles.windows = {
@@ -384,7 +386,8 @@
       editor.wordWrapColumn = 40;
       codesandbox.currentWorkspace = "5e446690-3af1-4b63-998b-9c68144a7137";
       editor.unicodeHighlight.includeComments = false;
-      workbench.colorTheme = "Catppuccin Noctis Mocha";
+      workbench.colorTheme = "Catppuccin Mocha";
+      workbench.iconTheme = "catppuccin-mocha";
       window.zoomLevel = 1;
       editor.unicodeHighlight.nonBasicASCII = false;
       git.openRepositoryInParentFolders = "always";
