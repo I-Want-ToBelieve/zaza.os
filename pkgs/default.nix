@@ -23,4 +23,5 @@ final: prev: {
   my-wpsoffice = prev.libsForQt5.callPackage ./applications/office/wpsoffice.nix {};
 
   # ecal = prev.plasma5Packages.callPackage ./development/libraries/ecal.nix {};
+  veyon = prev.callPackage ./applications/veyon/default.nix {};
 }
