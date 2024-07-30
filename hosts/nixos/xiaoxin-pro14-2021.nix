@@ -100,7 +100,7 @@ in {
     extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
-      "i915.enable_psr=0"
+      # "i915.enable_psr=0"
       # "i915.enable_gvt=1"
       # "i915.enable_guc=0"
       # "iommu=pt"
