@@ -351,7 +351,6 @@
       ydotool
       vkbasalt
       vkbasalt-cli
-      veyon
       # inur.systemd-shutdown-diagnose
     ];
   };

@@ -99,7 +99,6 @@
       vscode
 
       my-wpsoffice
-      veyon
 
       wineWowPackages.fonts
       wineWowPackages.unstableFull
