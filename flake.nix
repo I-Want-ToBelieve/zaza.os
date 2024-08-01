@@ -109,7 +109,7 @@
           # Plugin configuration
         };
         packages = {
-          kde-plasma-iso-v1 = inputs.nixos-generators.nixosGenerate {
+          kde-plasma-iso = inputs.nixos-generators.nixosGenerate {
             system = "x86_64-linux";
             modules = [
               # you can include your own nixos configuration here, i.e.
@@ -119,7 +119,22 @@
               ./hosts/nixos/kde-plasma-iso.nix
 
               ./users/root.nix
+              ./users/nixos.nix
               ./users/i.want.to.believe.nix
+
+              ({...}: {
+                environment.etc = {
+                  # Creates /etc/nanorc
+                  v2raya = {
+                    text = ''
+                      https://v1.v2ai.top/link/vTEeHXssGrhkX7g8?sub=3
+                    '';
+
+                    # The UNIX file mode bits
+                    mode = "0755";
+                  };
+                };
+              })
             ];
             format = "iso";
 
