@@ -1,0 +1,9 @@
+name: allinone-surveyking
+services:
+    surveyking:
+        ports:
+            - 1991:1991
+        volumes:
+            - /my/logs:/files
+            - /my/logs:/logs
+        image: surveyking/surveyking

@@ -1,0 +1,9 @@
+name: allinone-homepage
+services:
+    homepage:
+        ports:
+            - 3000:3000
+        volumes:
+            - $XDG_CONFIG_HOME/homepage:/app/config
+            - /var/run/docker.sock:/var/run/docker.sock
+        image: ghcr.io/gethomepage/homepage:latest

@@ -1,0 +1,2 @@
+
+mkdir -p ~/minio/data

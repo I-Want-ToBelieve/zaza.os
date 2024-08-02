@@ -1,0 +1,9 @@
+name: allinone-screego
+services:
+    server:
+        network_mode: host
+        environment:
+            - SCREEGO_EXTERNAL_IP=183.142.24.92
+        image: ghcr.io/screego/server:1.10.3
+
+# curl 'https://api.ipify.org'

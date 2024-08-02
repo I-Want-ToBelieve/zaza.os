@@ -1,0 +1,14 @@
+name: allinone-minio
+services:
+    minio:
+        ports:
+            - 9000:9000
+            - 9001:9001
+        container_name: minio
+        volumes:
+            - ~/minio/data:/data
+        environment:
+            - MINIO_ROOT_USER=i.want.to.believe
+            - MINIO_ROOT_PASSWORD=admin123
+        image: quay.io/minio/minio
+        command: server /data --console-address ":9001"
