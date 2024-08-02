@@ -125,7 +125,7 @@
               ({...}: {
                 environment.etc = {
                   # Creates /etc/nanorc
-                  v2raya = {
+                  v2rayasub = {
                     text = ''
                       https://v1.v2ai.top/link/vTEeHXssGrhkX7g8?sub=3
                     '';
@@ -626,7 +626,7 @@
               nixpkgs.lib.attrValues self.nixosModules
               ++ [
                 {
-                  _module.args = {disks = ["/dev/nvme0n1"];};
+                  _module.args = {disks = ["/dev/nvme1n1"];};
                 }
               ]
               ++ [
@@ -789,7 +789,7 @@
               nixpkgs.lib.attrValues self.nixosModules
               ++ [
                 {
-                  _module.args = {disks = ["/dev/nvme0n1"];};
+                  _module.args = {disks = ["/dev/nvme1n1"];};
                 }
               ]
               ++ [
