@@ -117,7 +117,10 @@
         enable = true;
         efiSupport = true;
         useOSProber = true;
-        configurationLimit = 5;
+        configurationLimit = 4;
+        extraConfig = ''
+          GRUB_DEFAULT=3
+        '';
       };
     };
   };
