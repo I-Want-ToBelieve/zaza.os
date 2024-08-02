@@ -117,10 +117,8 @@
         enable = true;
         efiSupport = true;
         useOSProber = true;
-        configurationLimit = 4;
-        extraConfig = ''
-          GRUB_DEFAULT=3
-        '';
+        configurationLimit = 1;
+        default = "3";
       };
     };
   };
@@ -140,10 +138,10 @@
   # ];
   # networking.interfaces.wlp2s0.wakeOnLan.enable = true;
 
-  my.wakeonwlan.interfaces.phy0.methods = [
-    "magic-packet"
-    "disconnect"
-  ];
+  # my.wakeonwlan.interfaces.phy0.methods = [
+  #   "magic-packet"
+  #   "disconnect"
+  # ];
 
   # compresses half the ram for use as swap
   zramSwap = {
