@@ -626,7 +626,7 @@
               nixpkgs.lib.attrValues self.nixosModules
               ++ [
                 {
-                  _module.args = {disks = ["/dev/nvme1n1"];};
+                  _module.args = {disks = ["/dev/nvme0n1"];};
                 }
               ]
               ++ [
@@ -789,7 +789,7 @@
               nixpkgs.lib.attrValues self.nixosModules
               ++ [
                 {
-                  _module.args = {disks = ["/dev/nvme1n1"];};
+                  _module.args = {disks = ["/dev/nvme0n1"];};
                 }
               ]
               ++ [
