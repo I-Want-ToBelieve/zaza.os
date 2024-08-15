@@ -66,14 +66,6 @@
   ];
 
   hardware = {
-    amdgpu = {
-      amdvlk = true;
-      opencl = true;
-      loadInInitrd = true;
-    };
-
-    opengl = {enable = true;};
-
     steam-hardware = {enable = true;};
 
     bluetooth = {
@@ -296,8 +288,6 @@
       };
     };
   };
-
-  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
 
   services = {
     btrfs.autoScrub.enable = true;

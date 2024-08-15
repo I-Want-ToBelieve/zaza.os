@@ -177,8 +177,6 @@
     };
   };
 
-  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
-
   services = {
     acpid.enable = true;
     thermald.enable = true;

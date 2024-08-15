@@ -227,8 +227,6 @@ in {
     };
   };
 
-  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
-
   services = {
     btrfs.autoScrub.enable = true;
     acpid.enable = true;

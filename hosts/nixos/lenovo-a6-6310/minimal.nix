@@ -302,8 +302,6 @@
     };
   };
 
-  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
-
   services = {
     v2raya.enable = true;
     acpid.enable = true;
