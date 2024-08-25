@@ -65,8 +65,6 @@ in {
   };
 
   hardware = {
-    opengl = {enable = true;};
-
     steam-hardware = {enable = true;};
 
     bluetooth = {
