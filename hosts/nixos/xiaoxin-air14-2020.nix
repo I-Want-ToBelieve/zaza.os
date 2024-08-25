@@ -18,6 +18,7 @@ in {
     ++ [
       inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
       inputs.nixos-hardware.nixosModules.common-gpu-intel
+      inputs.nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
     ];
 
   services.rkvm = {
@@ -43,8 +44,8 @@ in {
 
   services.sunshine.enable = false;
 
-  # amd gpu
-  boot.blacklistedKernelModules = ["nouveau" "nvidia"];
+  # nvidia gpu
+
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.hip-common}"
     "f /dev/shm/looking-glass 0660 i.want.to.believe qemu-libvirtd -"
