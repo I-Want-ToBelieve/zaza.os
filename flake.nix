@@ -615,7 +615,7 @@
                 }
               ];
           };
-          "xiaoxin-air14-2020" = nixpkgs.lib.nixosSystem {
+          "xiaoxin-air14-2020-ly" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
               suites = self.suites.nixos;
