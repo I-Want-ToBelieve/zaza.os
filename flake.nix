@@ -663,7 +663,7 @@
                 }
 
                 inputs.agenix.nixosModules.default
-                ./hosts/nixos/xiaoxin-air-2020.nix
+                ./hosts/nixos/xiaoxin-air14-2020.nix
 
                 ./users/root.nix
 
