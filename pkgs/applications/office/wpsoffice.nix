@@ -30,7 +30,7 @@
     else "https://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/${lib.last (lib.splitVersion pkgVersion)}/wps-office_${pkgVersion}.XA_amd64.deb";
   hash =
     if useChineseVersion
-    then "sha256-LgE5du2ZnMsAqgoQkY63HWyWYA5TLS5I8ArRYrpxffs="
+    then "sha256-d6xi4mKdjkX2JFicDIv5niSzpyI0m/Hnm8GGAIU04kY="
     else "sha256-6fXzHSMzZDGuBubOXsHA0YEUGKcy5QIPg3noyxUbdjA=";
   uri = builtins.replaceStrings ["https://wps-linux-personal.wpscdn.cn"] [""] url;
   securityKey = "7f8faaaa468174dc1c9cd62e5f218a5b";
