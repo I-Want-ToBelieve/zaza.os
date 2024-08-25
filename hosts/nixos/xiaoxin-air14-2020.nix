@@ -42,7 +42,16 @@ in {
     KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
   '';
 
-  services.sunshine.enable = false;
+  services.sunshine.enable = true;
+  services.sunshine.capSysAdmin = true;
+  services.sunshine.openFirewall = true;
+
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [
+      "233ccaac27464775"
+    ];
+  };
 
   # nvidia gpu
 
@@ -56,6 +65,8 @@ in {
   };
 
   hardware = {
+    opengl = {enable = true;};
+
     steam-hardware = {enable = true;};
 
     bluetooth = {
