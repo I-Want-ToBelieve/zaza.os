@@ -16,13 +16,13 @@
 
   system.stateVersion = lib.mkForce "24.05";
 
-  my.wakeonwlan.interfaces.phy0.methods = [
-    "magic-packet"
-    "disconnect"
-    "gtk-rekey-failure"
-    "eap-identity-request"
-    "rfkill-release"
-  ];
+  # my.wakeonwlan.interfaces.phy0.methods = [
+  #   "magic-packet"
+  #   "disconnect"
+  #   "gtk-rekey-failure"
+  #   "eap-identity-request"
+  #   "rfkill-release"
+  # ];
 
   fileSystems."/mnt/samba/public" = lib.mkForce {
     device = "//192.168.0.121/public";
@@ -33,21 +33,21 @@
     in ["${automount_opts}"];
   };
 
-  specialisation = {
-    gpupass = {
-      configuration = {
-        system.nixos.tags = ["with-gpupass"];
-        gpupass = {
-          enable = true;
-          gpuIDs = [
-            "1002:73df" # Graphics
-            "1002:ab28" # Audio
-          ];
-          vendors = "AMD";
-        };
-      };
-    };
-  };
+  # specialisation = {
+  #   gpupass = {
+  #     configuration = {
+  #       system.nixos.tags = ["with-gpupass"];
+  #       gpupass = {
+  #         enable = true;
+  #         gpuIDs = [
+  #           "1002:73df" # Graphics
+  #           "1002:ab28" # Audio
+  #         ];
+  #         vendors = "AMD";
+  #       };
+  #     };
+  #   };
+  # };
 
   users.groups.input.members = ["i.want.to.believe"];
 
@@ -57,6 +57,13 @@
   '';
 
   services.sunshine.enable = false;
+
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [
+      "233ccaac27464775"
+    ];
+  };
 
   # amd gpu
   boot.blacklistedKernelModules = ["nouveau" "nvidia"];
@@ -279,14 +286,14 @@
       };
     };
 
-    kvmgt = {
-      enable = !config.gpupass.enable;
-      vgpus = {
-        "i915-GVTg_V5_4" = {
-          uuid = ["179881f8-f4d8-11ed-8914-23e4dfd5da5b"];
-        };
-      };
-    };
+    # kvmgt = {
+    #   enable = !config.gpupass.enable;
+    #   vgpus = {
+    #     "i915-GVTg_V5_4" = {
+    #       uuid = ["179881f8-f4d8-11ed-8914-23e4dfd5da5b"];
+    #     };
+    #   };
+    # };
   };
 
   services = {

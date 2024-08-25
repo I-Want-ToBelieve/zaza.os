@@ -16,25 +16,23 @@ in {
   imports =
     [(modulesPath + "/installer/scan/not-detected.nix")]
     ++ [
-      inputs.nixos-hardware.nixosModules.common-cpu-amd
-      inputs.nixos-hardware.nixosModules.common-gpu-amd
+      inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+      inputs.nixos-hardware.nixosModules.common-gpu-intel
     ];
 
-  system.stateVersion = lib.mkForce "24.05";
-
-  services.rustdesk-server.enable = false;
-  services.rustdesk-server.openFirewall = false;
-  services.rustdesk-server.relayIP = "192.168.0.121";
-
-  services.rkvm.server = {
-    enable = true;
-    settings = {
-      password = "0123456789";
-      certificate = snakeoil-cert;
-      key = snakeoil-key;
-      switch-keys = ["left-ctrl" "left-alt" "left-shift" "m"];
+  services.rkvm = {
+    client = {
+      enable = true;
+      settings = {
+        password = "0123456789";
+        server = "192.168.0.121:5258";
+        certificate = snakeoil-cert;
+        key = snakeoil-key;
+      };
     };
   };
+
+  system.stateVersion = lib.mkForce "24.05";
 
   users.groups.input.members = ["i.want.to.believe"];
 
@@ -52,7 +50,21 @@ in {
     "f /dev/shm/looking-glass 0660 i.want.to.believe qemu-libvirtd -"
   ];
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
+  };
+
   hardware = {
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+    };
+
     steam-hardware = {enable = true;};
 
     bluetooth = {
@@ -72,7 +84,7 @@ in {
 
   boot = {
     kernelModules = [
-      "kvm-amd" # If using an AMD CPU, use `kvm-amd`
+      "kvm-intel" # If using an AMD CPU, use `kvm-amd`
       # https://www.reddit.com/r/NixOS/comments/p8bqvu/how_to_install_v4l2looback_kernel_module/?onetap_auto=true
       # Virtual Camera
       "v4l2loopback"
@@ -88,6 +100,7 @@ in {
     extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
+      # "i915.enable_psr=0"
       # "i915.enable_gvt=1"
       # "i915.enable_guc=0"
       # "iommu=pt"
@@ -179,11 +192,6 @@ in {
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
 
-  # my.wakeonwlan.interfaces.phy0.methods = [
-  #   "magic-packet"
-  #   "disconnect"
-  # ];
-
   # compresses half the ram for use as swap
   zramSwap = {
     enable = true;
@@ -207,7 +215,7 @@ in {
 
     podman = {
       enable = true;
-      extraPackages = with pkgs; [skopeo conmon runc crun];
+      extraPackages = with pkgs; [skopeo conmon runc];
     };
 
     libvirtd = {
@@ -251,6 +259,7 @@ in {
 
     sessionVariables = {
       # NIXOS_OZONE_WL = "1";
+      LIBVA_DRIVER_NAME = "iHD"; # Force intel-media-driver
     };
 
     systemPackages = with pkgs; [

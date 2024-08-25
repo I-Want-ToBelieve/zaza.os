@@ -137,10 +137,10 @@
   # ];
   # networking.interfaces.wlp2s0.wakeOnLan.enable = true;
 
-  my.wakeonwlan.interfaces.phy0.methods = [
-    "magic-packet"
-    "disconnect"
-  ];
+  # my.wakeonwlan.interfaces.phy0.methods = [
+  #   "magic-packet"
+  #   "disconnect"
+  # ];
 
   # compresses half the ram for use as swap
   zramSwap = {

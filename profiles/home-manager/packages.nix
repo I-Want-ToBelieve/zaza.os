@@ -86,7 +86,7 @@
         (pythonPackages: with pythonPackages; [requests websockets pyclip]))
 
       rsync
-      rustdesk
+      # rustdesk
 
       scrcpy
       scream
