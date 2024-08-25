@@ -98,7 +98,7 @@
       util-linux
       vscode
 
-      my-wpsoffice
+      # my-wpsoffice
 
       wineWowPackages.fonts
       wineWowPackages.unstableFull
