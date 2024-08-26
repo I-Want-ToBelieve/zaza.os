@@ -56,7 +56,9 @@
     KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
   '';
 
-  services.sunshine.enable = false;
+  services.sunshine.enable = true;
+  services.sunshine.capSysAdmin = true;
+  services.sunshine.openFirewall = true;
 
   services.zerotierone = {
     enable = true;
