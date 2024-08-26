@@ -43,7 +43,16 @@ in {
     KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
   '';
 
-  services.sunshine.enable = false;
+  services.sunshine.enable = true;
+  services.sunshine.capSysAdmin = true;
+  services.sunshine.openFirewall = true;
+
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [
+      "db64858fedb64b3a"
+    ];
+  };
 
   # amd gpu
   boot.blacklistedKernelModules = ["nouveau" "nvidia"];
