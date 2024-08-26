@@ -9,24 +9,28 @@
     # User-facing stuff that you really really want to have
     neovim # or some other editor, e.g. nano or neovim
 
+    iproute2
+
+    git
+
     # Some common stuff that people expect to have
-    #procps
-    #killall
-    #diffutils
-    #findutils
-    #utillinux
-    #tzdata
-    #hostname
-    #man
-    #gnugrep
-    #gnupg
-    #gnused
-    #gnutar
-    #bzip2
-    #gzip
-    #xz
-    #zip
-    #unzip
+    procps
+    killall
+    diffutils
+    findutils
+    utillinux
+    tzdata
+    hostname
+    man
+    gnugrep
+    gnupg
+    gnused
+    gnutar
+    bzip2
+    gzip
+    xz
+    zip
+    unzip
   ];
 
   # Backup etc files instead of failing to activate generation if a file already exists in /etc
