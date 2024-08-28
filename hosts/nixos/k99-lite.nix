@@ -67,6 +67,12 @@
     ];
   };
 
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+    user = "i.want.to.believe";
+  };
+
   # amd gpu
   boot.blacklistedKernelModules = ["nouveau" "nvidia"];
   systemd.tmpfiles.rules = [
@@ -351,6 +357,10 @@
       vkbasalt
       vkbasalt-cli
       # inur.systemd-shutdown-diagnose
+
+      jellyfin
+      jellyfin-web
+      jellyfin-ffmpeg
     ];
   };
 }
