@@ -13,18 +13,18 @@
     extraOpts = {
       # homepage
       "ShowHomeButton" = true;
-      "HomepageLocation" = "http://192.168.0.121:3000/";
+      "HomepageLocation" = "http://iwantobelieve.ddns.net:3000/";
       "HomepageIsNewTabPage" = true;
 
       # new page
-      "NewTabPageLocation" = "http://192.168.0.121:3000/";
+      "NewTabPageLocation" = "http://iwantobelieve.ddns.net:3000/";
 
       # bookmarks
       "ImportBookmarks" = false;
       "ManagedBookmarks" = [
         {
           "name" = "主页";
-          "url" = "http://192.168.0.121:3000/";
+          "url" = "http://iwantobelieve.ddns.net:3000/";
         }
         {
           "name" = "MakcooCode";
@@ -63,7 +63,7 @@
       # 6 = Open a list of URLs and restore the last session
       "RestoreOnStartup" = 1;
 
-      "RestoreOnStartupURLs" = ["https://cn.bing.com/" "http://192.168.0.121:3000/"];
+      "RestoreOnStartupURLs" = ["https://cn.bing.com/" "http://iwantobelieve.ddns.net:3000/"];
 
       # search
       "DefaultSearchProviderName" = "bing";
