@@ -75,6 +75,7 @@
       nix-init
 
       openssl
+      obsidian
 
       pamixer
       piper
