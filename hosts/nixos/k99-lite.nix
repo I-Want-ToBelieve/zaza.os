@@ -6,6 +6,22 @@
   modulesPath,
   ...
 }: {
+  specialisation = {
+    gpupass = {
+      configuration = {
+        system.nixos.tags = ["with-gpupass"];
+        gpupass = {
+          enable = true;
+          gpuIDs = [
+            "1002:73df" # Graphics
+            "1002:ab28" # Audio
+          ];
+          vendors = "AMD";
+        };
+      };
+    };
+  };
+
   imports =
     [(modulesPath + "/installer/scan/not-detected.nix")]
     ++ [
@@ -32,22 +48,6 @@
       automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
     in ["${automount_opts}"];
   };
-
-  # specialisation = {
-  #   gpupass = {
-  #     configuration = {
-  #       system.nixos.tags = ["with-gpupass"];
-  #       gpupass = {
-  #         enable = true;
-  #         gpuIDs = [
-  #           "1002:73df" # Graphics
-  #           "1002:ab28" # Audio
-  #         ];
-  #         vendors = "AMD";
-  #       };
-  #     };
-  #   };
-  # };
 
   users.groups.input.members = ["i.want.to.believe"];
 
@@ -231,28 +231,21 @@
     fsType = "ext4";
   };
 
-  fileSystems."/home/i.want.to.believe/Games" = {
-    device = "/dev/disk/by-label/SG";
-    fsType = "ext4";
-    options = ["rw" "nosuid" "nodev" "relatime" "errors=remount-ro"];
-    noCheck = true;
-  };
-
-  fileSystems."/run/media/i.want.to.believe/Games" = {
-    device = "/dev/disk/by-label/Games";
-    fsType = "ntfs3";
-    options = [
-      "rw"
-      "nosuid"
-      "nodev"
-      "relatime"
-      "uid=1000"
-      "gid=100"
-      "iocharset=utf8"
-      "windows_names"
-    ];
-    noCheck = true;
-  };
+  # fileSystems."/home/i.want.to.believe/Games" = {
+  #   device = "/dev/disk/by-label/games";
+  #   fsType = "ntfs3";
+  #   options = [
+  #     "rw"
+  #     "nosuid"
+  #     "nodev"
+  #     "relatime"
+  #     "uid=1000"
+  #     "gid=100"
+  #     "iocharset=utf8"
+  #     "windows_names"
+  #   ];
+  #   noCheck = true;
+  # };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
