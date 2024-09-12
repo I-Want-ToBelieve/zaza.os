@@ -119,6 +119,7 @@
         useOSProber = true;
         configurationLimit = 1;
         default = "3";
+        fontSize = lib.mkForce 28;
       };
     };
   };
