@@ -343,6 +343,7 @@
       qt5ct
       virt-manager
       virt-viewer
+      virtiofsd
       vulkan-tools
       vulkan-loader
       wl-clipboard
