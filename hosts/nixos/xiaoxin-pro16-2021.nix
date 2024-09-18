@@ -22,6 +22,10 @@ in {
 
   system.stateVersion = lib.mkForce "24.05";
 
+  services.openvpn.servers = {
+    officeVPN = {config = ''config /var/nixos/openvpn/officeVPN.conf '';};
+  };
+
   services.rustdesk-server.enable = false;
   services.rustdesk-server.openFirewall = false;
   services.rustdesk-server.relayIP = "192.168.0.121";

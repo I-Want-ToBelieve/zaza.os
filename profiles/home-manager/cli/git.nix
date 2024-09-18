@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     bfg-repo-cleaner
     colordiff
@@ -14,25 +14,25 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userName = "I-Want-ToBelieve";
-    userEmail = "floatshuyin@gmail.com";
+    # userName = "I-Want-ToBelieve";
+    # userEmail = "floatshuyin@gmail.com";
+    userName = "yuzhiyong";
+    userEmail = "yuzhiyong@zhaojiafang.com";
 
     delta = {
       enable = true;
-      options.map-styles =
-        "bold purple => syntax #8839ef, bold cyan => syntax #1e66f5";
+      options.map-styles = "bold purple => syntax #8839ef, bold cyan => syntax #1e66f5";
     };
 
     extraConfig = {
-      init = { defaultBranch = "main"; };
+      init = {defaultBranch = "main";};
       diff.colorMoved = "default";
       merge.conflictstyle = "diff3";
       delta = {
         syntax-theme = "Nord";
         line-numbers = true;
       };
-      credential.helper =
-        "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
+      credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
     };
 
     aliases = {
@@ -59,12 +59,9 @@
       h1rd = "hard HEAD~1";
 
       # logging
-      lg =
-        "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-      plog =
-        "log --graph --pretty='format:%C(red)%d%C(reset) %C(yellow)%h%C(reset) %ar %C(green)%aN%C(reset) %s'";
-      tlog =
-        "log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative";
+      lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+      plog = "log --graph --pretty='format:%C(red)%d%C(reset) %C(yellow)%h%C(reset) %ar %C(green)%aN%C(reset) %s'";
+      tlog = "log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative";
       rank = "shortlog -sn --no-merges";
 
       # delete merged branches
@@ -76,10 +73,9 @@
         log --pretty=format:"%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%C(reset)" --graph --date=relative --decorate --all'';
       llog = ''
         log --graph --name-status --pretty=format:"%C(red)%h %C(reset)(%cd) %C(green)%an %Creset%s %C(yellow)%d%Creset" --date=relative'';
-      edit-unmerged =
-        "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; hx `f`";
+      edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; hx `f`";
     };
 
-    ignores = [ "*~" "*.swp" "*result*" ".direnv" "node_modules" ];
+    ignores = ["*~" "*.swp" "*result*" ".direnv" "node_modules"];
   };
 }

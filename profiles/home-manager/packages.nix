@@ -127,7 +127,7 @@
     ]
     ++ (with pkgs.kdePackages; [qtstyleplugin-kvantum])
     ++ (with pkgs.inur; [krabby leagueoflegends])
-    ++ (with pkgs.nur.repos; [xddxdd.baidupcs-go])
+    ++ (with pkgs.nur.repos; [xddxdd.dingtalk])
     ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
 
   programs = {
