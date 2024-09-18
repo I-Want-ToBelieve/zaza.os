@@ -30,8 +30,7 @@
       ls = "eza --sort type";
       l = "ls -la";
       lt = "ls --tree";
-      ra = "joshuto";
-      jo = "joshuto";
+      ra = "yazi";
       proxy = "proxychains4";
     };
     functions = {
