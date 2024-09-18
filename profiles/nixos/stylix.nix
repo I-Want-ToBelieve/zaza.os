@@ -32,5 +32,9 @@
       package = pkgs.noto-fonts-emoji;
       name = "Noto Color Emoji";
     };
+
+    sizes = {
+      applications = 22;
+    };
   };
 }
