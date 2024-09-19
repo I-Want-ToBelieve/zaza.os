@@ -32,6 +32,7 @@
       lt = "ls --tree";
       ra = "yazi";
       proxy = "proxychains4";
+      g = "git";
     };
     functions = {
       c = {
