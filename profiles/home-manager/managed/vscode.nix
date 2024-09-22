@@ -9,6 +9,7 @@
       ms-ceintl.vscode-language-pack-zh-hans
       catppuccin.catppuccin-vsc
       catppuccin.catppuccin-vsc-icons
+      kamikillerto.vscode-colorize
     ];
     userSettings = {
       "[dart]" = {
