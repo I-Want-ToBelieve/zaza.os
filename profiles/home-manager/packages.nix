@@ -116,7 +116,10 @@
       xh
       xz
       xorg.xhost
+
       yesplaymusic
+      yarn
+
       zenity
       catimg
       duf
