@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   programs.kitty = {
     enable = true;
     settings = {
@@ -73,6 +77,8 @@
       inactive_tab_foreground #444
       inactive_tab_background #999
       inactive_tab_font_style bold
+
+      map ctrl+f launch --type=overlay --stdin-source=@screen_scrollback sh -c "fzf --no-sort --no-mouse --exact -i --tac | kitty +kitten clipboard"
     '';
 
     # Keys
