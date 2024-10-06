@@ -14,18 +14,18 @@
 
   stylix.fonts = {
     serif = {
-      package = pkgs.inur.ttf-ubuntu-mono-ligaturized;
-      name = "Ubuntu Mono Ligaturized";
+      package = pkgs.noto-fonts;
+      name = "Noto Sans Mono";
     };
 
     sansSerif = {
-      package = pkgs.inur.ttf-ubuntu-mono-ligaturized;
-      name = "Ubuntu Mono Ligaturized";
+      package = pkgs.lxgw-wenkai;
+      name = "LXGW WenKai Mono";
     };
 
     monospace = {
-      package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
-      name = "JetBrainsMono Nerd Font Mono";
+      package = pkgs.inconsolata-nerdfont;
+      name = "Inconsolata Nerd Font Mono";
     };
 
     emoji = {
