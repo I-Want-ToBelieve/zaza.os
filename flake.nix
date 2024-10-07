@@ -13,6 +13,10 @@
         (final: prev: {
           inur = inputs.inur.packages."${prev.system}";
         })
+
+        (final: prev: {
+          nvchad = inputs.nvchad4nix.packages."${prev.system}".nvchad;
+        })
       ];
       permittedInsecurePackages = [
         "electron-13.6.9"
@@ -220,7 +224,7 @@
           };
           home-manager = with self.profiles.home-manager; {
             base = [packages nix misc fonts stylix];
-            cli = with cli; [direnv git ssh starship yazi mangohud aria2];
+            cli = with cli; [direnv git ssh starship yazi mangohud aria2 nvchad];
             gui = with gui; [
               firefox.default
               fcitx5
@@ -331,6 +335,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -407,6 +412,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -483,6 +489,8 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
+
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -496,6 +504,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
                       ++ [
@@ -583,6 +592,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -596,6 +606,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
                       ++ [
@@ -682,6 +693,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -695,6 +707,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
                       ++ [
@@ -787,6 +800,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -870,6 +884,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -1076,6 +1091,7 @@
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
                         inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
                     home.stateVersion = "23.11";
@@ -1352,6 +1368,16 @@
 
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
 
+    autohide-tdrop = {
+      url = "github:I-Want-ToBelieve/autohide-tdrop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nvchad4nix = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -1360,11 +1386,6 @@
     # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     darwin = {
       url = "github:lnl7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    autohide-tdrop = {
-      url = "github:I-Want-ToBelieve/autohide-tdrop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
