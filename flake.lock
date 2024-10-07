@@ -70,11 +70,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1701852196,
-        "narHash": "sha256-2eJ2XmXkaogTUVHx7pLiqmLJYgL0Jd2sch7opb+lb1E=",
+        "lastModified": 1728286844,
+        "narHash": "sha256-JkCgvlN9uHltyc+GMHTo+VHZRwKpGMU6hwvL49tpd7U=",
         "owner": "I-Want-ToBelieve",
         "repo": "autohide-tdrop",
-        "rev": "450337fda0f47f26f4b2bc7a3483ef83558de17f",
+        "rev": "c3eb1df4f4311de843179b03673296136ded0d2f",
         "type": "github"
       },
       "original": {
@@ -1408,11 +1408,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1698178769,
-        "narHash": "sha256-Z7AEcskhUDTLAl2U6/JEBmPxU/NO/uRMjdgZbXqbdGg=",
+        "lastModified": 1728286960,
+        "narHash": "sha256-MZqFtl8uJsDUpWgLGLYCSjS3bsHKubPGrWD2en5BIvY=",
         "owner": "I-Want-ToBelieve",
         "repo": "nur",
-        "rev": "81d645b3bcfa010959462843969dfc468f11ec5c",
+        "rev": "7c84e098211d4487edad03713fabd6e40b696afa",
         "type": "github"
       },
       "original": {
@@ -2431,11 +2431,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1728271131,
-        "narHash": "sha256-OBIWZuWPlTwaaSvzl+TnF9IjBToVWCx27aGUVGl+elg=",
+        "lastModified": 1728282432,
+        "narHash": "sha256-ftGSLQ5W9Jq8lQa3+ta/v7RtnY3MNwLQ6ybXtLbbLSw=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "720c805d17c873f7ad6216fdb2f92aaa9f16de46",
+        "rev": "baa11edb344e5715eedaeb2a92b6bc5c220a69e4",
         "type": "github"
       },
       "original": {
