@@ -1,11 +1,15 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs.firefox = {
     enable = true;
 
     profiles = {
       "i.want.to.believe" = {
         id = 0;
-        settings = { "general.smoothScroll" = true; };
+        settings = {"general.smoothScroll" = true;};
 
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           adnauseam
@@ -14,7 +18,7 @@
           octotree
           refined-github
           stylus
-          ublock-origin
+          # ublock-origin
         ];
 
         # userChrome = import ./userChrome-css.nix;
