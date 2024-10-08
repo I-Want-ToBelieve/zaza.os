@@ -224,7 +224,7 @@
           };
           home-manager = with self.profiles.home-manager; {
             base = [packages nix misc fonts stylix];
-            cli = with cli; [direnv git ssh starship yazi mangohud aria2 nvchad];
+            cli = with cli; [direnv git ssh starship yazi mangohud aria2 nvchad.default];
             gui = with gui; [
               firefox.default
               fcitx5

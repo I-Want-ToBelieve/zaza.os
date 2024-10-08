@@ -84,7 +84,14 @@
       pulseaudio
       qimgv
       (pkgs.python3Full.withPackages
-        (pythonPackages: with pythonPackages; [requests websockets pyclip]))
+        (pythonPackages:
+          with pythonPackages; [
+            requests
+            websockets
+            pyclip
+            python-lsp-server
+            flake8
+          ]))
 
       rsync
       # rustdesk
@@ -127,6 +134,12 @@
       fd
       file
       ripgrep
+    ]
+    ++ [
+      lua-language-server
+      nodePackages.bash-language-server
+      emmet-language-server
+      nixd
     ]
     ++ (with pkgs.kdePackages; [qtstyleplugin-kvantum])
     ++ (with pkgs.inur; [krabby leagueoflegends])
