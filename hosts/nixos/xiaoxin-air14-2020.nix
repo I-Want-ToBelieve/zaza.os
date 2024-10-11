@@ -258,7 +258,7 @@ in {
     };
 
     sessionVariables = {
-      # NIXOS_OZONE_WL = "1";
+      NIXOS_OZONE_WL = "1";
       LIBVA_DRIVER_NAME = "iHD"; # Force intel-media-driver
     };
 
