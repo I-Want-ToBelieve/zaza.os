@@ -57,6 +57,7 @@
       iptables
       keepassxc
       killall
+      kooha
 
       lazygit
       libappindicator
