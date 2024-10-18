@@ -1358,8 +1358,8 @@
 
     # Stylix is a NixOS module which applies the same color scheme, font and wallpaper to a wide range of applications and desktop environments. It also exports utilities for you to use the theme in custom parts of your configuration.
     # https://danth.github.io/stylix/installation.html
-    # stylix.url = "github:danth/stylix";
-    stylix.url = "github:danth/stylix/ed91a20c84a80a525780dcb5ea3387dddf6cd2de";
+    stylix.url = "github:danth/stylix";
+    # stylix.url = "github:danth/stylix/ed91a20c84a80a525780dcb5ea3387dddf6cd2de";
 
     # @see https://github.com/nix-community/nix-index-database#usage-in-home-manager
     nix-index-database.url = "github:Mic92/nix-index-database";
