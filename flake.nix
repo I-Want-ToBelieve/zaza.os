@@ -246,11 +246,7 @@
               ]
               ++ [cli.git cli.direnv cli.ssh cli.starship gui.kitty shells.fish shells.zsh shells.nu.default stylix];
             hyprland = with desktop; [
-              dunst
-              waybar
-              window-managers.hyprland
-              rofi
-              swaylock
+              window-managers.hyprland.default
               mime
             ];
 
@@ -291,6 +287,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -367,6 +364,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -445,6 +443,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -457,7 +456,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc games kde-wayland];
+                    nixpkgs.lib.flatten [base misc games hyprland];
                 }
               ]
               ++ [
@@ -485,10 +484,10 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells hyprland])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        # inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
 
                         {programs.nix-index-database.comma.enable = true;}
@@ -500,10 +499,10 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells hyprland])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
+                        # inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
@@ -548,6 +547,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -649,6 +649,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -755,6 +756,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -839,6 +841,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -920,6 +923,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -985,6 +989,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -1046,6 +1051,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -1122,6 +1128,7 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -1241,6 +1248,7 @@
 
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
+                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -1327,6 +1335,10 @@
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib.url = "github:hyprwm/contrib";
     xdg-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    hyprpanel = {
+      url = "github:Jas-SinghFSU/HyprPanel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     plasma-manager.url = "github:pjones/plasma-manager";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";

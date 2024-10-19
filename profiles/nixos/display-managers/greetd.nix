@@ -1,4 +1,8 @@
-{ inputs, pkgs, ... }: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   services.greetd = {
     enable = true;
     settings = rec {
@@ -15,8 +19,7 @@
     Hyprland
   '';
   # add hyprland to display manager sessions
-  services.xserver.displayManager.sessionPackages =
-    [ inputs.hyprland.packages.${pkgs.system}.default ];
+  services.displayManager.sessionPackages = [inputs.hyprland.packages.${pkgs.system}.default];
 
   security = {
     pam.services.swaylock = {

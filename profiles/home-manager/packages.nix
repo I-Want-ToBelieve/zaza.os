@@ -51,6 +51,7 @@
 
       hyperfine
       imagemagick
+      imv
       inotify-tools
       ipset
       iproute2
