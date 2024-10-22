@@ -456,7 +456,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc games hyprland];
+                    nixpkgs.lib.flatten [base misc games kde-wayland];
                 }
               ]
               ++ [
@@ -484,10 +484,10 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells hyprland])
+                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        # inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
 
                         {programs.nix-index-database.comma.enable = true;}
@@ -502,7 +502,7 @@
                           nixpkgs.lib.flatten [base cli gui shells hyprland])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        # inputs.plasma-manager.homeManagerModules.plasma-manager
+                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
@@ -523,7 +523,6 @@
                 }
               ];
           };
-
           "xiaoxin-pro14-2021" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
@@ -626,108 +625,6 @@
                 }
               ];
           };
-          "xiaoxin-air14-2020-ly" = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {
-              suites = self.suites.nixos;
-              inputs = inputs;
-              self = self;
-            };
-            modules =
-              nixpkgs.lib.attrValues self.nixosModules
-              ++ [
-                ({
-                  config,
-                  pkgs,
-                  ...
-                }: {
-                  nixpkgs.hostPlatform = "x86_64-linux";
-                  nixpkgs.overlays =
-                    share.overlays
-                    ++ [
-                      inputs.nur.overlay
-                      inputs.agenix.overlays.default
-                      inputs.nvfetcher.overlays.default
-                      inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
-                      (import ./pkgs)
-                      self.overlays.default
-                    ];
-                  nixpkgs.config = {
-                    allowUnfree = true;
-                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
-                  };
-                })
-              ]
-              ++ [
-                {
-                  imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc games kde-wayland];
-                }
-              ]
-              ++ [
-                inputs.home-manager.nixosModules.home-manager
-                inputs.stylix.nixosModules.stylix
-
-                {
-                  system.stateVersion = "23.11";
-                  system.autoUpgrade.enable = false;
-                }
-
-                inputs.agenix.nixosModules.default
-                ./hosts/nixos/xiaoxin-air14-2020.nix
-
-                ./users/root.nix
-
-                ./users/i.want.to.believe.nix
-
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.backupFileExtension = "homebak";
-                  home-manager.extraSpecialArgs = {inputs = inputs;};
-                  home-manager.users."i.want.to.believe" = {
-                    imports =
-                      nixpkgs.lib.attrValues self.homeManagerModules
-                      ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
-                      ++ [
-                        inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
-                        inputs.nvchad4nix.homeManagerModule
-                        {programs.nix-index-database.comma.enable = true;}
-                      ];
-                    home.stateVersion = "23.11";
-                  };
-
-                  home-manager.users."root" = {
-                    imports =
-                      nixpkgs.lib.attrValues self.homeManagerModules
-                      ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
-                      ++ [
-                        inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
-                        inputs.nvchad4nix.homeManagerModule
-                        {programs.nix-index-database.comma.enable = true;}
-                      ]
-                      ++ [
-                        ({...}: {
-                          programs.ssh = {
-                            enable = true;
-                            matchBlocks = {
-                              "192.168.0.*" = {
-                                identityFile = "~/.ssh/thinkpad_t420s_root_id_rsa";
-                              };
-                            };
-                          };
-                        })
-                      ];
-                    home.stateVersion = "23.11";
-                  };
-                }
-              ];
-          };
           "dell-makcoo" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
@@ -740,91 +637,6 @@
               ++ [
                 {
                   _module.args = {disks = ["/dev/nvme0n1"];};
-                }
-              ]
-              ++ [
-                ({
-                  config,
-                  pkgs,
-                  ...
-                }: {
-                  nixpkgs.hostPlatform = "x86_64-linux";
-                  nixpkgs.overlays =
-                    share.overlays
-                    ++ [
-                      inputs.nur.overlay
-                      inputs.agenix.overlays.default
-                      inputs.nvfetcher.overlays.default
-                      inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
-                      (import ./pkgs)
-                      self.overlays.default
-                    ];
-                  nixpkgs.config = {
-                    allowUnfree = true;
-                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
-                  };
-                })
-              ]
-              ++ [
-                {
-                  imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc kde-wayland];
-                }
-              ]
-              ++ [
-                inputs.home-manager.nixosModules.home-manager
-                inputs.stylix.nixosModules.stylix
-                inputs.disko.nixosModules.disko
-
-                {
-                  system.stateVersion = "23.11";
-                  system.autoUpgrade.enable = false;
-                }
-
-                inputs.agenix.nixosModules.default
-                ./hosts/nixos/dell-makcoo/default.nix
-
-                ./users/root.nix
-
-                ./users/i.want.to.believe.nix
-
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.backupFileExtension = "homebak";
-                  home-manager.extraSpecialArgs = {inputs = inputs;};
-                  home-manager.users."i.want.to.believe" = {
-                    imports =
-                      nixpkgs.lib.attrValues self.homeManagerModules
-                      ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland managed])
-                      ++ [
-                        inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
-                        inputs.nvchad4nix.homeManagerModule
-                        {programs.nix-index-database.comma.enable = true;}
-                      ];
-                    home.stateVersion = "23.11";
-                  };
-                }
-              ];
-          };
-          "dell-makcoo-sda" = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {
-              suites = self.suites.nixos;
-              inputs = inputs;
-              self = self;
-            };
-            modules =
-              nixpkgs.lib.attrValues self.nixosModules
-              ++ [
-                # {
-                #   _module.args = {disks = ["/dev/nvme0n1"];};
-                # }
-                {
-                  _module.args = {disks = ["/dev/sda"];};
                 }
               ]
               ++ [
@@ -961,73 +773,6 @@
                 }
               ];
           };
-          "dell-makcoo-sda-minimal" = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {
-              suites = self.suites.nixos;
-              inputs = inputs;
-              self = self;
-            };
-            modules =
-              nixpkgs.lib.attrValues self.nixosModules
-              ++ [
-                {
-                  _module.args = {disks = ["/dev/sda"];};
-                }
-              ]
-              ++ [
-                ({
-                  config,
-                  pkgs,
-                  ...
-                }: {
-                  nixpkgs.hostPlatform = "x86_64-linux";
-                  nixpkgs.overlays =
-                    share.overlays
-                    ++ [
-                      inputs.nur.overlay
-                      inputs.agenix.overlays.default
-                      inputs.nvfetcher.overlays.default
-                      inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
-                      (import ./pkgs)
-                      self.overlays.default
-                    ];
-                  nixpkgs.config = {
-                    allowUnfree = true;
-                    permittedInsecurePackages = share.permittedInsecurePackages ++ [];
-                  };
-                })
-              ]
-              ++ [
-                inputs.home-manager.nixosModules.home-manager
-
-                inputs.disko.nixosModules.disko
-
-                {
-                  system.stateVersion = "23.11";
-                  system.autoUpgrade.enable = false;
-                }
-
-                inputs.agenix.nixosModules.default
-                ./hosts/nixos/dell-makcoo/minimal.nix
-
-                ./users/root.nix
-
-                ./users/i.want.to.believe.nix
-
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.backupFileExtension = "homebak";
-                  home-manager.extraSpecialArgs = {inputs = inputs;};
-                  home-manager.users."i.want.to.believe" = {
-                    home.stateVersion = "23.11";
-                  };
-                }
-              ];
-          };
-
           "lenovo-a6-6310" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {
@@ -1297,8 +1042,8 @@
 
   inputs = {
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # nixpkgs.url = "github:NixOS/nixpkgs/master";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
@@ -1332,12 +1077,28 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
-    hyprland.url = "github:hyprwm/Hyprland";
+    # Hyprland is **such** eye candy
+    hyprland = {
+      type = "git";
+      url = "https://github.com/hyprwm/Hyprland";
+      submodules = true;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    Hyprspace = {
+      url = "github:KZDKM/Hyprspace";
+      # Hyprspace uses latest Hyprland. We declare this to keep them in sync.
+      inputs.hyprland.follows = "hyprland";
+    };
     hyprland-contrib.url = "github:hyprwm/contrib";
     xdg-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprpanel = {
       url = "github:Jas-SinghFSU/HyprPanel";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.ags.follows = "ags";
     };
 
     plasma-manager.url = "github:pjones/plasma-manager";

@@ -37,10 +37,18 @@
     # Whether to enable hyprland-session.target on hyprland startup
     systemd.enable = true;
 
+    plugins = [
+      pkgs.hyprlandPlugins.hyprexpo
+      # inputs.Hyprspace.packages.${pkgs.system}.Hyprspace
+    ];
+
     settings = {
       "$mod" = "SUPER";
       exec-once = [
         # "${pkgs.hyprpanel}/bin/hyprpanel"
+        "copyq &"
+        "fcitx5 -d"
+        "${pkgs.hyprpanel}/bin/hyprpanel"
       ];
 
       monitor = ",preferred,auto,2";
@@ -52,6 +60,20 @@
       master = {
       };
 
+      plugins = {
+        hyprexpo = {
+          columns = 7;
+          gap_size = 5;
+          bg_col = "rgb(111111)";
+          workspace_method = "center current"; # [center/first] [workspace] e.g. first 1 or center m+1
+
+          enable_gesture = true; # laptop touchpad
+          gesture_fingers = 3; # 3 or 4
+          gesture_distance = 300; # how far is the "max"
+          gesture_positive = true; # positive = swipe down. Negative = swipe up.
+        };
+      };
+
       input = {
         kb_options = "caps:swapescape";
         follow_mouse = 1;
@@ -59,6 +81,10 @@
           natural_scroll = "no";
         };
       };
+
+      windowrulev2 = [
+        "float,class:^com.github.hluk.copyq$"
+      ];
 
       bindm = [
         # mouse movements
@@ -72,9 +98,12 @@
       ];
 
       bind = [
+        # "$mod, W, overview:toggle,"
+        "$mod, G, hyprexpo:expo, toggle"
         "$mod, Q, killactive, "
         "$mod, M, exec, wlogout --protocol layer-shell"
-        "$mod, E, exec, thunar "
+        "$mod, E, exec, thunar"
+        "Control_L, G, exec, copyq toggle"
         "$mod, V, togglefloating, "
         "$mod, D, exec, wofi --show drun"
         "$mod, P, pseudo, # dwindle"
