@@ -194,13 +194,6 @@
       font-awesome
 
       # nerdfonts
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-          "Iosevka"
-        ];
-      })
     ];
   };
 }

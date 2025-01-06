@@ -4,7 +4,7 @@
 in {
   services = {
     karabiner-elements = {
-      enable = true;
+      enable = false;
     };
 
     skhd = {
@@ -12,7 +12,7 @@ in {
       skhdConfig = ''
         ctrl - return : kitty --single-instance -d ~
 
-        cmd - backspace : skhd -k "ctrl - space"
+        cmd - backspace : skhd -k "alt - space"
 
         ctrl - w : skhd -k "ctrl - up"
 
@@ -24,7 +24,7 @@ in {
         ctrl - 6 : yabai -m space --focus 6
         ctrl - 7 : yabai -m space --focus 7
         ctrl - 8 : yabai -m space --focus 8
-        ctrl - 9 : yabai -m space --focus 9
+        ctrl - 9 : yabai -m space --focus 9œ
         ctrl - 0 : yabai -m space --focus 10
 
         ctrl + shift - j : yabai -m window --space prev

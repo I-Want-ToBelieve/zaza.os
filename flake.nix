@@ -30,7 +30,7 @@
     flake-parts.lib.mkFlake {inherit inputs;} ({moduleWithSystem, ...}: {
       imports = [inputs.devenv.flakeModule];
 
-      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
 
       debug = true;
 
@@ -978,7 +978,8 @@
 
         darwinConfigurations = {
           "k99-lite-darwin" = inputs.darwin.lib.darwinSystem {
-            system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
+            system = "aarch64-darwin";
+            # system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
             modules =
               [
                 ({
@@ -989,6 +990,10 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
+                      (_: prev: {
+                        # https://github.com/LnL7/nix-darwin/issues/1041
+                        inherit (inputs.nixpkgs-stable.legacyPackages.${prev.system}) karabiner-elements;
+                      })
                       inputs.nur.overlay
 
                       inputs.nvfetcher.overlays.default
@@ -1002,6 +1007,7 @@
                     permittedInsecurePackages = share.permittedInsecurePackages ++ [];
                   };
                 })
+                {system.stateVersion = 5;}
               ]
               ++ [
                 {
@@ -1044,6 +1050,8 @@
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/master";
+
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
