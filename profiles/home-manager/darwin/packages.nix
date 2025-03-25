@@ -32,6 +32,9 @@
 
       (pkgs.python3Full.withPackages
         (pythonPackages: with pythonPackages; [requests websockets]))
+
+      qemu
+
       rsync
       raycast # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
       scrcpy

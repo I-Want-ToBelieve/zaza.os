@@ -87,6 +87,11 @@
       "node"
       "yakite"
       "yakite-toast"
+      "google-chrome"
+      "lima"
+      "yazi"
+      "fnm"
+      "snipaste"
     ];
 
     # `brew install --cask`

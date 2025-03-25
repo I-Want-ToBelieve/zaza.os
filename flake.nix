@@ -1014,7 +1014,11 @@
                     {
                       hostName = "localhost";
                       sshUser = "builder";
+                      # https://github.com/LnL7/nix-darwin/issues/913#issuecomment-2214340430
+                      # sudo chmod 600 /etc/nix/builder_ed25519
+                      # sudo chown $USER /etc/nix/builder_ed25519
                       sshKey = "/etc/nix/builder_ed25519";
+                      protocol = "ssh-ng";
                       system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
                       maxJobs = 4;
                       supportedFeatures = ["kvm" "benchmark" "big-parallel"];
@@ -1028,9 +1032,11 @@
                           "${nixpkgs}/nixos/modules/profiles/nix-builder-vm.nix"
                           {
                             virtualisation = {
-                              host.pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+                              host.pkgs = nixpkgs.legacyPackages.aarch64-darwin;
                               darwin-builder.workingDirectory = "/var/lib/darwin-builder";
                               darwin-builder.hostPort = 31022;
+                              darwin-builder.diskSize = 5120;
+                              darwin-builder.memorySize = 1024;
                             };
                           }
                         ];
@@ -1044,6 +1050,7 @@
                       RunAtLoad = true;
                       StandardOutPath = "/var/log/darwin-builder.log";
                       StandardErrorPath = "/var/log/darwin-builder.log";
+                      WorkingDirectory = "/etc/nix/";
                     };
                   };
                 }
