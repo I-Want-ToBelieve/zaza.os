@@ -103,7 +103,7 @@
 
       todo
       tdrop
-      thefuck
+      # thefuck
       trash-cli
       util-linux
       vscode

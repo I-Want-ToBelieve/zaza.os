@@ -283,7 +283,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -360,7 +360,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -439,7 +439,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -542,7 +542,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -649,7 +649,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -731,7 +731,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -792,7 +792,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -869,7 +869,7 @@
                   nixpkgs.overlays =
                     share.overlays
                     ++ [
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -994,7 +994,7 @@
                         # https://github.com/LnL7/nix-darwin/issues/1041
                         inherit (inputs.nixpkgs-stable.legacyPackages.${prev.system}) karabiner-elements;
                       })
-                      inputs.nur.overlay
+                      inputs.nur.overlays.default
 
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
@@ -1008,6 +1008,45 @@
                   };
                 })
                 {system.stateVersion = 5;}
+                {
+                  nix.distributedBuilds = true;
+                  nix.buildMachines = [
+                    {
+                      hostName = "localhost";
+                      sshUser = "builder";
+                      sshKey = "/etc/nix/builder_ed25519";
+                      system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
+                      maxJobs = 4;
+                      supportedFeatures = ["kvm" "benchmark" "big-parallel"];
+                    }
+                  ];
+
+                  launchd.daemons.darwin-builder = {
+                    command = "${(nixpkgs.lib.nixosSystem {
+                        system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
+                        modules = [
+                          "${nixpkgs}/nixos/modules/profiles/nix-builder-vm.nix"
+                          {
+                            virtualisation = {
+                              host.pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+                              darwin-builder.workingDirectory = "/var/lib/darwin-builder";
+                              darwin-builder.hostPort = 31022;
+                            };
+                          }
+                        ];
+                      })
+                      .config
+                      .system
+                      .build
+                      .macos-builder-installer}/bin/create-builder";
+                    serviceConfig = {
+                      KeepAlive = true;
+                      RunAtLoad = true;
+                      StandardOutPath = "/var/log/darwin-builder.log";
+                      StandardErrorPath = "/var/log/darwin-builder.log";
+                    };
+                  };
+                }
               ]
               ++ [
                 {

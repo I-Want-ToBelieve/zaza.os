@@ -36,7 +36,7 @@
       raycast # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
       scrcpy
 
-      thefuck
+      # thefuck
       vscode
       xh
       xz
