@@ -87,11 +87,9 @@
       "node"
       "yakite"
       "yakite-toast"
-      "google-chrome"
       "lima"
       "yazi"
       "fnm"
-      "snipaste"
     ];
 
     # `brew install --cask`
@@ -111,6 +109,10 @@
       "keycastr"
       "switchhosts"
       "termius"
+      "zerotier-one"
+      "snipaste"
+      "google-chrome"
+      "maccy"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
