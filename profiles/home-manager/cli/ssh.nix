@@ -26,7 +26,8 @@
         IdentityFile ~/.ssh/id_rsa
     # github
     Host github.com
-        HostName github.com
+        Hostname ssh.github.com
+        Port 443
         PreferredAuthentications publickey
         IdentityFile ~/.ssh/github_id_rsa
     # gitee
@@ -34,6 +35,10 @@
         HostName gitee.com
         PreferredAuthentications publickey
         IdentityFile ~/.ssh/gitee_id_rsa
+    # 001macos
+    Host 001macos
+        Hostname 192.168.192.140
+        Port 22
     # Host github.com
     #     HostName github.com
     #     Port 8022
