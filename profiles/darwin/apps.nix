@@ -87,6 +87,7 @@
       "node"
       "yakite"
       "yakite-toast"
+      "qemu"
       "lima"
       "yazi"
       "fnm"

@@ -9,6 +9,8 @@
       # path
       set -gx PATH $HOME/.cargo/bin $PATH
       set -gx PATH $HOME/.npm/bin $PATH
+      set -gx PATH $HOME/.local/bin $PATH
+      set -gx PATH $HOME/.yarn/bin $PATH
     '';
     interactiveShellInit = ''
       # @see https://fishshell.com/docs/current/interactive.html#vi-mode-commands
