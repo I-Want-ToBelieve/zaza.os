@@ -4,6 +4,7 @@
   pkgs,
   ...
 }: {
+  import = [../../../profiles/home-manager/shells/fish.nix];
   # Read the changelog before changing this value
   home = {
     stateVersion = "24.05";
@@ -28,7 +29,4 @@
       };
     };
   };
-
-  # insert home-manager config
-  programs.fish.enable = true;
 }
