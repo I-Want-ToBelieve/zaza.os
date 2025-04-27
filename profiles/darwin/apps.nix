@@ -71,6 +71,8 @@
       "v2raya/v2raya"
       "FelixKratz/formulae"
       "I-Want-ToBelieve/homebrew-formulae"
+      "LizardByte/homebrew"
+      "jackmordaunt/homebrew-tap"
     ];
 
     # `brew install`
@@ -91,6 +93,9 @@
       "lima"
       "yazi"
       "fnm"
+      "pnpm"
+      "icnsify"
+      # "sunshine"
     ];
 
     # `brew install --cask`

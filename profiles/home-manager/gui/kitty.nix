@@ -121,6 +121,10 @@
 
       "ctrl+shift+right" = "next_tab";
       "ctrl+shift+left" = "previous_tab";
+      "ctrl+shift+tab" = "previous_tab";
+      "ctrl+tab" = "next_tab";
+      "mouse_button4" = "next_tab";
+      "mouse_button5" = "previous_tab";
       "ctrl+shift+t" = "new_tab";
       "ctrl+shift+q" = "close_tab";
       "ctrl+shift+l" = "next_layout";

@@ -57,6 +57,8 @@ in {
 
         ctrl - j : ${yakite} action decrease-layout-master-area-size
         ctrl - l : ${yakite} action increase-layout-master-area-size
+
+        # cmd - tab : skhd --key f13
       '';
     };
 
