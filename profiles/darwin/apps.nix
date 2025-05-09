@@ -119,6 +119,8 @@
       "snipaste"
       "google-chrome"
       "maccy"
+      "spacedrive"
+      "wave"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];
