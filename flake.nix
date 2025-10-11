@@ -105,7 +105,7 @@
           difftastic.enable = true;
 
           # https://devenv.sh/pre-commit-hooks/
-          pre-commit.hooks = {
+          git-hooks.hooks = {
             alejandra.enable = true;
             editorconfig-checker.enable = true;
           };
@@ -257,7 +257,7 @@
           };
 
           darwin = with self.profiles.darwin; {
-            misc = [apps nix stylix services];
+            misc = [apps nix services stylix];
           };
         };
 
@@ -977,7 +977,7 @@
         };
 
         darwinConfigurations = {
-          "k99-lite-darwin" = inputs.darwin.lib.darwinSystem {
+          "k99-lite-darwin" = inputs.nix-darwin.lib.darwinSystem {
             system = "aarch64-darwin";
             # system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
             modules =
@@ -998,7 +998,6 @@
 
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -1008,52 +1007,52 @@
                   };
                 })
                 {system.stateVersion = 5;}
-                {
-                  nix.distributedBuilds = true;
-                  nix.buildMachines = [
-                    {
-                      hostName = "localhost";
-                      sshUser = "builder";
-                      # https://github.com/LnL7/nix-darwin/issues/913#issuecomment-2214340430
-                      # sudo chmod 600 /etc/nix/builder_ed25519
-                      # sudo chown $USER /etc/nix/builder_ed25519
-                      sshKey = "/etc/nix/builder_ed25519";
-                      protocol = "ssh-ng";
-                      system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
-                      maxJobs = 4;
-                      supportedFeatures = ["kvm" "benchmark" "big-parallel"];
-                    }
-                  ];
+                # {
+                #   nix.distributedBuilds = true;
+                #   nix.buildMachines = [
+                #     {
+                #       hostName = "localhost";
+                #       sshUser = "builder";
+                #       # https://github.com/LnL7/nix-darwin/issues/913#issuecomment-2214340430
+                #       # sudo chmod 600 /etc/nix/builder_ed25519
+                #       # sudo chown $USER /etc/nix/builder_ed25519
+                #       sshKey = "/etc/nix/builder_ed25519";
+                #       protocol = "ssh-ng";
+                #       system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
+                #       maxJobs = 4;
+                #       supportedFeatures = ["kvm" "benchmark" "big-parallel"];
+                #     }
+                #   ];
 
-                  launchd.daemons.darwin-builder = {
-                    command = "${(nixpkgs.lib.nixosSystem {
-                        system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
-                        modules = [
-                          "${nixpkgs}/nixos/modules/profiles/nix-builder-vm.nix"
-                          {
-                            virtualisation = {
-                              host.pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-                              darwin-builder.workingDirectory = "/var/lib/darwin-builder";
-                              darwin-builder.hostPort = 31022;
-                              darwin-builder.diskSize = 5120;
-                              darwin-builder.memorySize = 1024;
-                            };
-                          }
-                        ];
-                      })
-                      .config
-                      .system
-                      .build
-                      .macos-builder-installer}/bin/create-builder";
-                    serviceConfig = {
-                      KeepAlive = true;
-                      RunAtLoad = true;
-                      StandardOutPath = "/var/log/darwin-builder.log";
-                      StandardErrorPath = "/var/log/darwin-builder.log";
-                      WorkingDirectory = "/etc/nix/";
-                    };
-                  };
-                }
+                #   launchd.daemons.darwin-builder = {
+                #     command = "${(nixpkgs.lib.nixosSystem {
+                #         system = builtins.replaceStrings ["darwin"] ["linux"] "aarch64-darwin";
+                #         modules = [
+                #           "${nixpkgs}/nixos/modules/profiles/nix-builder-vm.nix"
+                #           {
+                #             virtualisation = {
+                #               host.pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+                #               darwin-builder.workingDirectory = "/var/lib/darwin-builder";
+                #               darwin-builder.hostPort = 31022;
+                #               darwin-builder.diskSize = 5120;
+                #               darwin-builder.memorySize = 1024;
+                #             };
+                #           }
+                #         ];
+                #       })
+                #       .config
+                #       .system
+                #       .build
+                #       .macos-builder-installer}/bin/create-builder";
+                #     serviceConfig = {
+                #       KeepAlive = true;
+                #       RunAtLoad = true;
+                #       StandardOutPath = "/var/log/darwin-builder.log";
+                #       StandardErrorPath = "/var/log/darwin-builder.log";
+                #       WorkingDirectory = "/etc/nix/";
+                #     };
+                #   };
+                # }
               ]
               ++ [
                 {
@@ -1077,10 +1076,10 @@
                       (with self.suites.home-manager;
                           nixpkgs.lib.flatten [darwin])
                       ++ [
-                        inputs.nix-index-database.hmModules.nix-index
+                        inputs.nix-index-database.homeModules.nix-index
                         {programs.nix-index-database.comma.enable = true;}
                       ];
-                    home.stateVersion = "23.11";
+                    home.stateVersion = "24.05";
                   };
                 }
               ];
@@ -1095,9 +1094,9 @@
   inputs = {
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/pull/450512/head";
 
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
@@ -1132,32 +1131,11 @@
 
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     # Hyprland is **such** eye candy
-    hyprland = {
-      type = "git";
-      url = "https://github.com/hyprwm/Hyprland";
-      submodules = true;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    Hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      # Hyprspace uses latest Hyprland. We declare this to keep them in sync.
-      inputs.hyprland.follows = "hyprland";
-    };
-    hyprland-contrib.url = "github:hyprwm/contrib";
-    xdg-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+
     ags = {
       url = "github:Aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.ags.follows = "ags";
-    };
-
-    plasma-manager.url = "github:pjones/plasma-manager";
-    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
-    plasma-manager.inputs.home-manager.follows = "home-manager";
 
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -1172,7 +1150,6 @@
     nil = {
       url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
     };
 
     # my nur repository for my nixos dotfiles
@@ -1185,11 +1162,12 @@
 
     # Stylix is a NixOS module which applies the same color scheme, font and wallpaper to a wide range of applications and desktop environments. It also exports utilities for you to use the theme in custom parts of your configuration.
     # https://danth.github.io/stylix/installation.html
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:nix-community/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
     # stylix.url = "github:danth/stylix/ed91a20c84a80a525780dcb5ea3387dddf6cd2de";
 
     # @see https://github.com/nix-community/nix-index-database#usage-in-home-manager
-    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
@@ -1212,10 +1190,8 @@
     };
 
     # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
-    darwin = {
-      url = "github:lnl7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-24.05";

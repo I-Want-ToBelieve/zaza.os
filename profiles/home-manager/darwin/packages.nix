@@ -30,9 +30,6 @@
 
       openssl
 
-      (pkgs.python3Full.withPackages
-        (pythonPackages: with pythonPackages; [requests websockets]))
-
       rsync
       raycast # (HotKey: alt/option + space)search, caculate and run scripts(with many plugins)
       scrcpy
@@ -46,7 +43,7 @@
       fd
       ripgrep
     ]
-    ++ (with pkgs.inur; [krabby]);
+    ++ (with pkgs.inur; []);
 
   programs = {
     eza.enable = true;

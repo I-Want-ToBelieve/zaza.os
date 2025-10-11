@@ -59,6 +59,7 @@
       keepassxc
       killall
       kooha
+      krabby
 
       lazygit
       libappindicator
@@ -85,15 +86,6 @@
       pavucontrol
       pulseaudio
       qimgv
-      (pkgs.python3Full.withPackages
-        (pythonPackages:
-          with pythonPackages; [
-            requests
-            websockets
-            pyclip
-            python-lsp-server
-            flake8
-          ]))
 
       rsync
       # rustdesk
@@ -144,7 +136,7 @@
       nixd
     ]
     ++ (with pkgs.kdePackages; [qtstyleplugin-kvantum])
-    ++ (with pkgs.inur; [krabby leagueoflegends])
+    ++ (with pkgs.inur; [leagueoflegends])
     ++ (with pkgs.nur.repos; [xddxdd.dingtalk])
     ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
 

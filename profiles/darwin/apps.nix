@@ -110,7 +110,7 @@
       "easy-move-plus-resize"
       "phoenix"
       "hackintool"
-      "docker"
+      # "docker"
       "kap"
       "keycastr"
       "switchhosts"
@@ -119,8 +119,8 @@
       "snipaste"
       "google-chrome"
       "maccy"
-      "spacedrive"
-      "wave"
+      # "spacedrive"
+      # "wave"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
     ];

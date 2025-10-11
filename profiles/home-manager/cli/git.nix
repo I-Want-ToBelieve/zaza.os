@@ -4,7 +4,6 @@
     colordiff
     gist
     gitAndTools.git-absorb
-    gitAndTools.gitui
     gitAndTools.git-machete
     gitAndTools.gh
     git-filter-repo

@@ -8,7 +8,6 @@
     enable = true;
     enableCompletion = true;
     autosuggestion = {enable = true;};
-    dotDir = ".config/zsh";
     history = {
       save = 10000;
       size = 10000;
@@ -34,7 +33,7 @@
       _comp_options+=(globdots)
     '';
 
-    initExtra = ''
+    initContent = ''
       # Environment
       export PATH="''${HOME}/.local/bin:''${HOME}/go/bin:''${HOME}/.npm/bin:''${PATH}"
       export SUDO_PROMPT=$'Password for ->\033[32;05;16m %u\033[0m  '

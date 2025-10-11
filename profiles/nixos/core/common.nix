@@ -81,7 +81,7 @@ in {
     };
   };
 
-  fonts.packages = with pkgs.nerdfonts; [
+  fonts.packages = with pkgs.nerd-fonts; [
     powerline-fonts
     dejavu_fonts
   ];
