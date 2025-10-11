@@ -16,6 +16,8 @@
 
       hyperfine
 
+      krabby
+
       httpie # http client
 
       iina # video player
