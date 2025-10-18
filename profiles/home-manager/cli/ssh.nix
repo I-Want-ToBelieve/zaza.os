@@ -30,6 +30,11 @@
         Port 443
         PreferredAuthentications publickey
         IdentityFile ~/.ssh/github_id_rsa
+    Host github.com-personal
+      Hostname ssh.github.com
+      Port 443
+      PreferredAuthentications publickey
+      IdentityFile ~/.ssh/github_personal_id_rsa
     # gitee
     Host gitee.com
         HostName gitee.com
