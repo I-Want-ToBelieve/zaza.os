@@ -978,8 +978,8 @@
 
         darwinConfigurations = {
           "k99-lite-darwin" = inputs.nix-darwin.lib.darwinSystem {
-            system = "aarch64-darwin";
-            # system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
+            # system = "aarch64-darwin";
+            system = "x86_64-darwin"; # change this to "aarch64-darwin" if you are using Apple Silicon
             modules =
               [
                 ({
@@ -1006,7 +1006,11 @@
                     permittedInsecurePackages = share.permittedInsecurePackages ++ [];
                   };
                 })
-                {system.stateVersion = 5;}
+                {
+                  system.stateVersion = 5;
+                  # 添加这行以解决GID不匹配问题
+                  ids.gids.nixbld = 30000;
+                }
                 # {
                 #   nix.distributedBuilds = true;
                 #   nix.buildMachines = [
