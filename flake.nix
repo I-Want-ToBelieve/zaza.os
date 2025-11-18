@@ -1094,7 +1094,8 @@
   inputs = {
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/pull/450512/head";
+    # nixpkgs.url = "github:NixOS/nixpkgs/pull/450512/head";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
@@ -1115,6 +1116,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     devenv.url = "github:cachix/devenv";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -1162,7 +1164,7 @@
 
     # Stylix is a NixOS module which applies the same color scheme, font and wallpaper to a wide range of applications and desktop environments. It also exports utilities for you to use the theme in custom parts of your configuration.
     # https://danth.github.io/stylix/installation.html
-    stylix.url = "github:nix-community/stylix";
+    stylix.url = "github:nix-community/stylix/pull/1973/head";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     # stylix.url = "github:danth/stylix/ed91a20c84a80a525780dcb5ea3387dddf6cd2de";
 

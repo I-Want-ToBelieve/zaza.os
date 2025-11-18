@@ -13,7 +13,7 @@
         material-design-icons
         noto-fonts
         noto-fonts-cjk
-        noto-fonts-emoji
+        noto-fonts-color-emoji
         dejavu_fonts
         twemoji-color-font
         wqy_microhei

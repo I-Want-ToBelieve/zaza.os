@@ -10,7 +10,7 @@
 
       cachix
 
-      ffmpeg-full
+      ffmpeg
       fzf
       flameshot
 
@@ -41,7 +41,7 @@
       xh
       xz
       duf
-      du-dust
+      dust
       fd
       ripgrep
     ]

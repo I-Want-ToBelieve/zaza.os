@@ -248,7 +248,7 @@
         ${pkgs.yt-dlp}/bin/yt-dlp -x --continue --add-metadata --embed-thumbnail --audio-format mp3 --audio-quality 0 --metadata-from-title="%(artist)s - %(title)s" --prefer-ffmpeg -o "%(title)s.%(ext)s"'';
       cat = "${pkgs.bat}/bin/bat --style=plain";
       grep = "${pkgs.ripgrep}/bin/rg";
-      du = "${pkgs.du-dust}/bin/dust";
+      du = "${pkgs.dust}/bin/dust";
       ps = "${pkgs.procs}/bin/procs";
       rm = "${pkgs.trash-cli}/bin/trash-put";
       m = "mkdir -p";

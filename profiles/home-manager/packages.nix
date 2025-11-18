@@ -34,7 +34,7 @@
       filebrowser
       filelight
       findutils
-      ffmpeg-full
+      ffmpeg
       fzf
       flameshot
       goverlay
@@ -124,7 +124,7 @@
       zenity
       catimg
       duf
-      du-dust
+      dust
       fd
       file
       ripgrep
