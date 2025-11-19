@@ -1095,8 +1095,8 @@
     # nixpkgs.url = "github:I-Want-ToBelieve/nixpkgs/auto-update/v2ray";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:NixOS/nixpkgs/pull/450512/head";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     nixos-generators = {
