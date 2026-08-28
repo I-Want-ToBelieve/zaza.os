@@ -123,8 +123,16 @@
           programs.shfmt.enable = true;
 
           settings.global.excludes = [
-            # nvfetcher 生成，绝不可手改
-            "pkgs/_sources/generated.nix"
+            # nvfetcher 生成，绝不可手改（.nix 与 .json 两份）
+            "pkgs/_sources/**"
+            # 转储的工具产物，Phase 7 删除
+            "audit.json"
+            # Deno 机群脚本：Phase 6 会用 clan inventory 重写、Phase 7 删除。
+            # 现在让 prettier 翻它们的引号风格只会制造 review 噪音。
+            "scripts/makcoo/**"
+            # 上游抄来的窗口管理器配置，不按本仓库风格排版
+            "*.js"
+            "*.lua"
             # 命令式 KDE 主题状态，不是源码
             "mutable/**"
             # 二进制与素材

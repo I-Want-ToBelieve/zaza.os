@@ -1,9 +1,8 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   module = {
     # you will want to add options here to support your filesystem
     # and also maybe ssh to let you in
-    boot.supportedFilesystems = [ "btrfs" "ntfs" ];
+    boot.supportedFilesystems = ["btrfs" "ntfs"];
   };
   netboot = import (pkgs.path + "/nixos/lib/eval-config.nix") {
     modules = [
@@ -15,8 +14,8 @@ in {
   boot.loader.grub.extraEntries = ''
     menuentry "Nixos Installer" {
       linux ($drive1)/rescue-kernel init=${netboot.config.system.build.toplevel}/init ${
-        toString netboot.config.boot.kernelParams
-      }
+      toString netboot.config.boot.kernelParams
+    }
       initrd ($drive1)/rescue-initrd
     }
   '';
