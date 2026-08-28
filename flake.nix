@@ -1114,8 +1114,17 @@
           };
         };
 
-        # This is highly advised, and will prevent many possible mistakes
-        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
+        # deploy-rs 的 deployChecks 里的 activate 检查需要真正**构建**目标系统。
+        # 原来这里 mapAttrs 遍历 deploy-rs.lib 的全部平台，于是 aarch64-darwin 上
+        # 也注册了一份，而 Mac 构不了 x86_64-linux 系统 —— 结果 `nix flake check`
+        # 在开发机上必然失败，并把 treefmt / undeclared-inputs 这些本可通过的
+        # 检查一起挡在后面。
+        #
+        # 本仓库的 deploy 节点全部是 x86_64-linux，所以只在该平台注册。
+        # 这些检查该在 Linux runner 上跑，见 CLAUDE.md 的 CI 说明。
+        checks =
+          nixpkgs.lib.genAttrs ["x86_64-linux"]
+          (system: inputs.deploy-rs.lib.${system}.deployChecks self.deploy);
       };
     });
 
