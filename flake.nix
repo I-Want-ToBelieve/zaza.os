@@ -28,7 +28,7 @@
     };
   in
     flake-parts.lib.mkFlake {inherit inputs;} ({moduleWithSystem, ...}: {
-      imports = [inputs.devenv.flakeModule];
+      imports = [inputs.devenv.flakeModule inputs.treefmt-nix.flakeModule];
 
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
 
@@ -112,7 +112,44 @@
 
           # Plugin configuration
         };
-        packages = {
+        # 让 `nix fmt` 真正可用：treefmt-nix 会填充 formatter.<system>
+        # 与 checks.<system>.treefmt。此前本 flake 没有 formatter 输出，
+        # treefmt.toml 是死配置，.vscode/settings.json 的 nix.formatterPath 也失效。
+        treefmt = {
+          projectRootFile = "flake.nix";
+
+          programs.alejandra.enable = true;
+          programs.prettier.enable = true;
+          programs.shfmt.enable = true;
+
+          settings.global.excludes = [
+            # nvfetcher 生成，绝不可手改
+            "pkgs/_sources/generated.nix"
+            # 命令式 KDE 主题状态，不是源码
+            "mutable/**"
+            # 二进制与素材
+            "assets/**"
+            "*.crx"
+            "*.png"
+            "*.svg"
+            "*.pem"
+            # 转储的 shell 历史，不是文档
+            "history.md"
+            "flake.lock"
+          ];
+        };
+
+        # 未声明 input 的护栏。名单在 eval 期从 `inputs` 取，所以沙箱内也能跑。
+        checks.undeclared-inputs = pkgs.runCommand "undeclared-inputs" {} ''
+          printf '%s\n' ${nixpkgs.lib.escapeShellArgs (["self"] ++ builtins.attrNames inputs)} > declared.txt
+          bash ${self}/scripts/verify/check-undeclared-inputs.sh declared.txt ${self}
+          touch "$out"
+        '';
+
+        # ISO 只在 x86_64-linux 上有意义。此前它在所有 system 上求值，
+        # 而它引用的 nixpkgs 路径已不存在，导致 `nix flake check`
+        # 在任何平台上 1.2 秒内直接失败 —— 早于任何 host 被求值。
+        packages = nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
           kde-plasma-iso = inputs.nixos-generators.nixosGenerate {
             system = "x86_64-linux";
             modules = [
@@ -1117,6 +1154,9 @@
 
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
+
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";

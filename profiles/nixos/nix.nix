@@ -6,13 +6,6 @@
   ...
 }: {
   environment = {
-    # set channels (backwards compatibility)
-    etc = {
-      "nix/flake-channels/system".source = inputs.self;
-      "nix/flake-channels/nixpkgs".source = inputs.nixpkgs;
-      "nix/flake-channels/home-manager".source = inputs.home-manager;
-    };
-
     # we need git for flakes
     systemPackages = [pkgs.git];
     defaultPackages = [];
@@ -34,7 +27,7 @@
     };
 
     # pin the registry to avoid downloading and evaling a new nixpkgs version every time
-    registry = lib.mapAttrs (_: v: {flake = v;}) inputs;
+    registry.nixpkgs.flake = inputs.nixpkgs;
 
     # set the path for channels compat
     # nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;

@@ -65,9 +65,6 @@
       # nix
       nrb = ifSudo "sudo nixos-rebuild";
 
-      # fix nixos-option for flake compat
-      nixos-option = "nixos-option -I nixpkgs=${self}/lib/compat";
-
       # systemd
       ctl = "systemctl";
       stl = ifSudo "s systemctl";
