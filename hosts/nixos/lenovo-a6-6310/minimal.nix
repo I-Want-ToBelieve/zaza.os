@@ -38,9 +38,10 @@
 
   hardware = {
     amdgpu = {
-      amdvlk = true;
-      opencl = true;
-      loadInInitrd = true;
+      # opencl / initrd 从 bool 变成了带 .enable 的子模块（loadInInitrd 改名为 initrd）。
+      # amdvlk 已整体移除：替代驱动 RADV 是 Mesa 的一部分且默认启用。
+      opencl.enable = true;
+      initrd.enable = true;
     };
 
     opengl = {enable = true;};
@@ -277,7 +278,6 @@
     spiceUSBRedirection.enable = false;
 
     waydroid.enable = false;
-    lxd.enable = false;
 
     docker = {
       enable = false;
@@ -296,7 +296,6 @@
     libvirtd = {
       enable = false;
       qemu = {
-        ovmf = {enable = false;};
         runAsRoot = false;
       };
     };
@@ -342,7 +341,7 @@
       libva-utils
       ocl-icd
       qt5.qtwayland
-      qt5ct
+      libsForQt5.qt5ct # 曾在顶层，现已归入 libsForQt5
       # inur.systemd-shutdown-diagnose
     ];
   };

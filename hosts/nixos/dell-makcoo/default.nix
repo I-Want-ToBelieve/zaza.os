@@ -153,7 +153,6 @@
     spiceUSBRedirection.enable = false;
 
     waydroid.enable = false;
-    lxd.enable = false;
 
     docker = {
       enable = false;
@@ -172,7 +171,6 @@
     libvirtd = {
       enable = false;
       qemu = {
-        ovmf = {enable = false;};
         runAsRoot = false;
       };
     };
@@ -216,7 +214,7 @@
       libva-utils
       ocl-icd
       qt5.qtwayland
-      qt5ct
+      libsForQt5.qt5ct # 曾在顶层，现已归入 libsForQt5
       vulkan-tools
       vulkan-loader
       wl-clipboard

@@ -12,7 +12,9 @@
         material-icons
         material-design-icons
         noto-fonts
-        noto-fonts-cjk
+        # noto-fonts-cjk 已拆分为 -sans / -serif
+        noto-fonts-cjk-sans
+        noto-fonts-cjk-serif
         noto-fonts-color-emoji
         dejavu_fonts
         twemoji-color-font

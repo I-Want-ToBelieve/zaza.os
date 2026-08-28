@@ -19,7 +19,7 @@
       with inur;
         [
           fcitx5-gtk
-          fcitx5-chinese-addons
+          qt6Packages.fcitx5-chinese-addons # 曾名 fcitx5-chinese-addons
           libsForQt5.fcitx5-qt
           fcitx5-theme-catppuccin
         ]

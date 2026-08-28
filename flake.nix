@@ -168,7 +168,7 @@
             modules = [
               # you can include your own nixos configuration here, i.e.
               # ./configuration.nix
-              "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-plasma5-new-kernel.nix"
+              "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
               "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
               ./hosts/nixos/kde-plasma-iso.nix
 
@@ -254,8 +254,6 @@
         suites = {
           nixos = with self.profiles.nixos; {
             base = [core.nixos];
-            kde-x11 = [display-managers.sddm desktop-environment.kde];
-            kde-wayland = [display-managers.sddm desktop-environment.kde];
             hyprland = [display-managers.greetd];
             misc = [
               network
@@ -287,7 +285,6 @@
               chromium.default
             ];
             shells = with shells; [fish zsh nu.default];
-            wsl = with wsl; [plasma];
             darwin = with darwin;
               [
                 nix
@@ -299,9 +296,6 @@
               window-managers.hyprland.default
               mime
             ];
-
-            kde-x11 = [desktop.plasma desktop.bismuth desktop.kvantum];
-            kde-wayland = [desktop.plasma desktop.bismuth desktop.kvantum];
 
             managed = with managed; [vscode];
           };
@@ -337,7 +331,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -350,7 +343,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc games kde-wayland];
+                    nixpkgs.lib.flatten [base misc games];
                 }
               ]
               ++ [
@@ -378,10 +371,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
@@ -414,7 +406,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -427,7 +418,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc kde-wayland];
+                    nixpkgs.lib.flatten [base misc];
                 }
               ]
               ++ [
@@ -456,10 +447,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
@@ -493,7 +483,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -506,7 +495,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc games kde-wayland];
+                    nixpkgs.lib.flatten [base misc games];
                 }
               ]
               ++ [
@@ -534,10 +523,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
 
                         {programs.nix-index-database.comma.enable = true;}
@@ -552,7 +540,6 @@
                           nixpkgs.lib.flatten [base cli gui shells hyprland])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
@@ -596,7 +583,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -609,7 +595,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc games kde-wayland];
+                    nixpkgs.lib.flatten [base misc games];
                 }
               ]
               ++ [
@@ -637,10 +623,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
@@ -651,10 +636,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland])
+                          nixpkgs.lib.flatten [base cli gui shells])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ]
@@ -703,7 +687,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -716,7 +699,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc kde-wayland];
+                    nixpkgs.lib.flatten [base misc];
                 }
               ]
               ++ [
@@ -745,10 +728,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland managed])
+                          nixpkgs.lib.flatten [base cli gui shells managed])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
@@ -785,7 +767,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -846,7 +827,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -859,7 +839,7 @@
               ++ [
                 {
                   imports = with self.suites.nixos;
-                    nixpkgs.lib.flatten [base misc kde-wayland];
+                    nixpkgs.lib.flatten [base misc];
                 }
               ]
               ++ [
@@ -888,10 +868,9 @@
                     imports =
                       nixpkgs.lib.attrValues self.homeManagerModules
                       ++ (with self.suites.home-manager;
-                          nixpkgs.lib.flatten [base cli gui shells kde-wayland managed])
+                          nixpkgs.lib.flatten [base cli gui shells managed])
                       ++ [
                         inputs.nix-index-database.hmModules.nix-index
-                        inputs.plasma-manager.homeManagerModules.plasma-manager
                         inputs.nvchad4nix.homeManagerModule
                         {programs.nix-index-database.comma.enable = true;}
                       ];
@@ -923,7 +902,6 @@
                       inputs.agenix.overlays.default
                       inputs.nvfetcher.overlays.default
                       inputs.rust-overlay.overlays.default
-                      inputs.hyprpanel.overlay
                       (import ./pkgs)
                       self.overlays.default
                     ];
@@ -1170,6 +1148,16 @@
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # 353f738f（2025-10-11 "fix: types"）把 hyprpanel / plasma-manager 从 inputs
+    # 里删掉了，却只修了 darwin 配置的引用，导致全部 8 个 nixosConfigurations
+    # 无法求值十个月。
+    #
+    # 两者都不恢复：
+    #   - hyprpanel 已被 nixpkgs 打包（pkgs.hyprpanel），上游 flake 的 overlay 现在
+    #     只是个废弃桩，求值时会打印 "Overlay has been removed, ...". 8 处引用已删。
+    #   - plasma-manager 随 KDE 一起弃用，见下方 KDE 移除说明。
+    # 同理 greetd.nix 改用 pkgs.hyprland，省掉一个带 submodule 的重型 git input。
 
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";

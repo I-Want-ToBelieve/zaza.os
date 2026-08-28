@@ -28,7 +28,8 @@ in {
 
   services.rustdesk-server.enable = false;
   services.rustdesk-server.openFirewall = false;
-  services.rustdesk-server.relayIP = "192.168.0.121";
+  # relayIP 已被 signal.relayHosts 取代
+  services.rustdesk-server.signal.relayHosts = ["192.168.0.121"];
 
   services.rkvm.server = {
     enable = true;
@@ -213,7 +214,8 @@ in {
     spiceUSBRedirection.enable = true;
 
     waydroid.enable = true;
-    lxd.enable = true;
+    # LXD 已从 nixpkgs 移除（官方建议迁移到 Incus）。原为 lxd.enable = true;
+    # TODO: 如仍需容器，改用 virtualisation.incus.enable = true;
 
     docker = {
       enable = true;
@@ -232,7 +234,6 @@ in {
     libvirtd = {
       enable = true;
       qemu = {
-        ovmf = {enable = true;};
         runAsRoot = false;
       };
     };
@@ -286,7 +287,7 @@ in {
       libva-utils
       ocl-icd
       qt5.qtwayland
-      qt5ct
+      libsForQt5.qt5ct # 曾在顶层，现已归入 libsForQt5
       virt-manager
       virt-viewer
       vulkan-tools

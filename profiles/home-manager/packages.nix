@@ -32,7 +32,6 @@
       evtest
       fuzzel
       filebrowser
-      filelight
       findutils
       ffmpeg
       fzf
@@ -40,7 +39,7 @@
       goverlay
       gamemode
       glib
-      glxinfo
+      mesa-demos # 曾名 glxinfo
       gnumake
       gnuplot
       gnused
@@ -118,7 +117,7 @@
       xz
       xorg.xhost
 
-      yesplaymusic
+      # yesplaymusic 已从 nixpkgs 移除（上游项目归档），无替代包
       yarn
 
       zenity

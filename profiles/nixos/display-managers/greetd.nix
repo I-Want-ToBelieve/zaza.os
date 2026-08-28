@@ -19,7 +19,7 @@
     Hyprland
   '';
   # add hyprland to display manager sessions
-  services.displayManager.sessionPackages = [inputs.hyprland.packages.${pkgs.system}.default];
+  services.displayManager.sessionPackages = [pkgs.hyprland];
 
   security = {
     pam.services.swaylock = {

@@ -81,7 +81,10 @@ in {
     };
   };
 
-  fonts.packages = with pkgs.nerd-fonts; [
+  # 这里原本写的是 `with pkgs.nerd-fonts;`，但 powerline-fonts 和 dejavu_fonts
+  # 都是顶层包，不在 nerd-fonts 命名空间下 —— 旧版 nixpkgs 里 nerdfonts 是单个包，
+  # 拆成命名空间后这个作用域就成了未定义变量。
+  fonts.packages = with pkgs; [
     powerline-fonts
     dejavu_fonts
   ];

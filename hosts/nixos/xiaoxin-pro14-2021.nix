@@ -60,7 +60,7 @@ in {
       extraPackages = with pkgs; [
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
         intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-        vaapiVdpau
+        libva-vdpau-driver # 曾名 vaapiVdpau
         libvdpau-va-gl
       ];
     };
@@ -202,7 +202,8 @@ in {
     spiceUSBRedirection.enable = true;
 
     waydroid.enable = true;
-    lxd.enable = true;
+    # LXD 已从 nixpkgs 移除（官方建议迁移到 Incus）。原为 lxd.enable = true;
+    # TODO: 如仍需容器，改用 virtualisation.incus.enable = true;
 
     docker = {
       enable = true;
@@ -221,7 +222,6 @@ in {
     libvirtd = {
       enable = true;
       qemu = {
-        ovmf = {enable = true;};
         runAsRoot = false;
       };
     };
@@ -271,7 +271,7 @@ in {
       libva-utils
       ocl-icd
       qt5.qtwayland
-      qt5ct
+      libsForQt5.qt5ct # 曾在顶层，现已归入 libsForQt5
       virt-manager
       virt-viewer
       vulkan-tools

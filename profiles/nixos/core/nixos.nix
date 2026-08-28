@@ -116,6 +116,11 @@
 
   programs.ssh.startAgent = true;
 
+  # services.gnome.gnome-keyring.enable 会带出 services.gnome.gcr-ssh-agent，
+  # 而它和上面的 programs.ssh.startAgent 互斥（同时只能有一个 ssh agent）。
+  # 关掉新来的那个，保持本仓库既有的 ssh-agent 行为不变。
+  services.gnome.gcr-ssh-agent.enable = false;
+
   # Service that makes Out of Memory Killer more effective
   services.earlyoom.enable = true;
 
@@ -178,10 +183,11 @@
     logind = {
       lidSwitch = "suspend-then-hibernate";
       lidSwitchExternalPower = "lock";
-      extraConfig = ''
-        HandlePowerKey=suspend-then-hibernate
-        HibernateDelaySec=3600
-      '';
+      # services.logind.extraConfig 已被移除，改用结构化的 settings.Login
+      settings.Login = {
+        HandlePowerKey = "suspend-then-hibernate";
+        HibernateDelaySec = 3600;
+      };
     };
   };
 

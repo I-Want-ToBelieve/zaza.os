@@ -263,7 +263,8 @@
     spiceUSBRedirection.enable = true;
 
     waydroid.enable = true;
-    lxd.enable = true;
+    # LXD 已从 nixpkgs 移除（官方建议迁移到 Incus）。原为 lxd.enable = true;
+    # TODO: 如仍需容器，改用 virtualisation.incus.enable = true;
 
     docker = {
       enable = true;
@@ -282,7 +283,6 @@
     libvirtd = {
       enable = true;
       qemu = {
-        ovmf = {enable = true;};
         runAsRoot = false;
       };
     };
@@ -340,7 +340,7 @@
       libva-utils
       ocl-icd
       qt5.qtwayland
-      qt5ct
+      libsForQt5.qt5ct # 曾在顶层，现已归入 libsForQt5
       virt-manager
       virt-viewer
       virtiofsd

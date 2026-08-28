@@ -25,7 +25,7 @@
     ++ [
       {
         services.xrdp.enable = true;
-        services.xrdp.defaultWindowManager = "startplasma-x11";
+        # 桌面待定（KDE 已移除），选定后在此填入对应的 session 启动命令。
         services.xrdp.openFirewall = true;
       }
     ]

@@ -26,24 +26,27 @@ else
   } | sort -u >"$tmp/declared"
 fi
 
-# 先剥掉行内注释（^[^#]*），再抓 inputs.<name>
+# 先剥掉行内注释（^[^#]*），再抓 inputs.<name>。
+# 边界必须排除连字符和点，否则文件名 check-undeclared-inputs.sh 里的
+# "inputs.sh" 会被 \binputs\. 匹配成一个叫 sh 的 input（\b 在连字符后成立）。
 grep -rh --include='*.nix' -oE '^[^#]*' "$root" 2>/dev/null |
-  grep -ohE '\binputs\.[A-Za-z0-9_-]+' |
-  sed 's/^inputs\.//' |
+  grep -ohE '(^|[^-[:alnum:]_.])inputs\.[[:alnum:]_-]+' |
+  sed -E 's/.*inputs\.//' |
+  grep -v '^[[:space:]]*$' |
   sort -u >"$tmp/used"
 
-if ! missing=$(comm -23 "$tmp/used" "$tmp/declared") || [ -n "$missing" ]; then
-  if [ -n "$missing" ]; then
-    echo "以下 flake input 被引用但未声明：" >&2
-    echo "$missing" | sed 's/^/  - /' >&2
-    echo >&2
-    echo "引用位置：" >&2
-    while IFS= read -r name; do
-      grep -rn --include='*.nix' "inputs\.${name}\b" "$root" 2>/dev/null |
-        grep -v '^\s*#' | sed 's/^/  /' >&2 || true
-    done <<<"$missing"
-    exit 1
-  fi
+missing=$(comm -23 "$tmp/used" "$tmp/declared" | grep -v '^[[:space:]]*$' || true)
+
+if [ -n "$missing" ]; then
+  echo "以下 flake input 被引用但未声明：" >&2
+  echo "$missing" | sed 's/^/  - /' >&2
+  echo >&2
+  echo "引用位置：" >&2
+  while IFS= read -r name; do
+    grep -rn --include='*.nix' "inputs\.${name}\b" "$root" 2>/dev/null |
+      grep -v '^[[:space:]]*#' | sed 's/^/  /' >&2 || true
+  done <<<"$missing"
+  exit 1
 fi
 
 echo "OK: 所有被引用的 flake input 都已声明"

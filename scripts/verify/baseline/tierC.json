@@ -1,0 +1,187 @@
+{
+  "dell-makcoo": {
+    "amdgpuInitrd": true,
+    "etcCount": 153,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 1,
+      "default": "3",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "nixos",
+    "kernelParams": [
+      "apparmor=1",
+      "loglevel=4",
+      "lsm=landlock,yama,bpf,apparmor",
+      "vt.default_blu=0x2e,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xf4,0x5a,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xfe",
+      "vt.default_grn=0x1e,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xd6,0x47,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xbe",
+      "vt.default_red=0x1e,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xcd,0x45,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xb4"
+    ],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 221,
+    "unitCount": 77,
+    "warnCount": 9
+  },
+  "dell-makcoo-minimal": {
+    "amdgpuInitrd": true,
+    "etcCount": 113,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 5,
+      "default": "0",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "nixos",
+    "kernelParams": ["loglevel=4", "lsm=landlock,yama,bpf"],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 143,
+    "unitCount": 64,
+    "warnCount": 3
+  },
+  "k99-lite": {
+    "amdgpuInitrd": true,
+    "etcCount": 168,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 5,
+      "default": "0",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "nixos",
+    "kernelParams": [
+      "apparmor=1",
+      "intel_iommu=on",
+      "iommu=pt",
+      "loglevel=4",
+      "lsm=landlock,yama,bpf,apparmor",
+      "pcie_aspm=off",
+      "psi=1",
+      "vt.default_blu=0x2e,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xf4,0x5a,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xfe",
+      "vt.default_grn=0x1e,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xd6,0x47,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xbe",
+      "vt.default_red=0x1e,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xcd,0x45,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xb4"
+    ],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 243,
+    "unitCount": 92,
+    "warnCount": 6
+  },
+  "k99-lite-wsl": {
+    "amdgpuInitrd": false,
+    "etcCount": 137,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 100,
+      "default": "0",
+      "useOSProber": false
+    },
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "nixos",
+    "kernelParams": ["apparmor=1", "lsm=landlock,yama,bpf,apparmor"],
+    "nixosRelease": "25.11",
+    "stateVersion": "23.11",
+    "sysPkgCount": 199,
+    "unitCount": 66,
+    "warnCount": 6
+  },
+  "lenovo-a6-6310": {
+    "amdgpuInitrd": true,
+    "etcCount": 153,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 5,
+      "default": "0",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "nixos",
+    "kernelParams": [
+      "apparmor=1",
+      "loglevel=4",
+      "lsm=landlock,yama,bpf,apparmor",
+      "vt.default_blu=0x2e,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xf4,0x5a,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xfe",
+      "vt.default_grn=0x1e,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xd6,0x47,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xbe",
+      "vt.default_red=0x1e,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xcd,0x45,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xb4"
+    ],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 220,
+    "unitCount": 77,
+    "warnCount": 9
+  },
+  "lenovo-a6-6310-minimal": {
+    "amdgpuInitrd": true,
+    "etcCount": 113,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 5,
+      "default": "0",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "nixos",
+    "kernelParams": ["loglevel=4", "lsm=landlock,yama,bpf"],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 143,
+    "unitCount": 64,
+    "warnCount": 3
+  },
+  "xiaoxin-pro14-2021": {
+    "amdgpuInitrd": true,
+    "etcCount": 168,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 5,
+      "default": "0",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe", "root"],
+    "hostName": "nixos",
+    "kernelParams": [
+      "apparmor=1",
+      "loglevel=4",
+      "lsm=landlock,yama,bpf,apparmor",
+      "psi=1",
+      "vt.default_blu=0x2e,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xf4,0x5a,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xfe",
+      "vt.default_grn=0x1e,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xd6,0x47,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xbe",
+      "vt.default_red=0x1e,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xcd,0x45,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xb4"
+    ],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 238,
+    "unitCount": 92,
+    "warnCount": 10
+  },
+  "xiaoxin-pro16-2021": {
+    "amdgpuInitrd": true,
+    "etcCount": 170,
+    "gcOptions": "--delete-older-than 7d",
+    "grub": {
+      "configurationLimit": 5,
+      "default": "0",
+      "useOSProber": true
+    },
+    "hmUsers": ["i.want.to.believe", "root"],
+    "hostName": "nixos",
+    "kernelParams": [
+      "apparmor=1",
+      "loglevel=4",
+      "lsm=landlock,yama,bpf,apparmor",
+      "psi=1",
+      "vt.default_blu=0x2e,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xf4,0x5a,0xa8,0xa1,0xaf,0xfa,0xf7,0xd5,0xfe",
+      "vt.default_grn=0x1e,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xd6,0x47,0x8b,0xe3,0xe2,0xb4,0xa6,0xe2,0xbe",
+      "vt.default_red=0x1e,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xcd,0x45,0xf3,0xa6,0xf9,0x89,0xcb,0x94,0xb4"
+    ],
+    "nixosRelease": "25.11",
+    "stateVersion": "24.05",
+    "sysPkgCount": 244,
+    "unitCount": 96,
+    "warnCount": 7
+  }
+}
