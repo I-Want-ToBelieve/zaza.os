@@ -110,6 +110,11 @@
             editorconfig-checker.enable = true;
           };
 
+          # devenv 默认生成 container-shell / container-processes 两个 OCI 输出，
+          # 它们依赖 Linux-only 的 shadow，会让 `nix flake check` 在 darwin 上
+          # 直接失败。本仓库从不构建容器，关掉。
+          containers = nixpkgs.lib.mkForce {};
+
           # Plugin configuration
         };
         # 让 `nix fmt` 真正可用：treefmt-nix 会填充 formatter.<system>
