@@ -23,14 +23,14 @@ CAND=""
 ALLOW=()
 while [ $# -gt 0 ]; do
   case "$1" in
-    --allow)
-      ALLOW+=("$2")
-      shift 2
-      ;;
-    *)
-      CAND="$1"
-      shift
-      ;;
+  --allow)
+    ALLOW+=("$2")
+    shift 2
+    ;;
+  *)
+    CAND="$1"
+    shift
+    ;;
   esac
 done
 

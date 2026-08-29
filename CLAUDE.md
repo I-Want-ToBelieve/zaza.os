@@ -248,13 +248,20 @@ Nerd Font, wallpaper fetched from the author's `wallpapers` repo. `profiles/home
 disables eight targets, several of which (`kde`, `gtk`, `gnome`, `xfce`) no longer have anything
 to theme.
 
-**`mutable/synchronous/` is now dead weight.** It held imperative KDE theme state
-(`color-schemes`, `kwin`, `Kvantum`, `aurorae`, …) rsync'd by `nu scripts/backup.nu` and
-`nu scripts/apply.nu`, driven by `snapshot_needed` in [scripts/share.nu](scripts/share.nu).
-Nothing under `mutable/` was ever referenced from Nix, and with KDE gone there is nothing left
-for it to sync. Those three scripts are also broken independently: `apply.nu:17` calls `copy`,
-which is not a nushell command (it is `cp`), and `share.nu`'s `original` points at
-`./mutable/synchronous/k99-lite`, a directory that has never existed.
+`mutable/synchronous/` and its three nushell sync scripts have been deleted. It held
+imperative KDE theme state and was **96,050 of the repo's 96,224 tracked files** (436 MB),
+which made `git worktree add` — and therefore the equivalence harness — glacial. Nothing under
+it was ever referenced from Nix, and with KDE gone there was nothing left to sync. The scripts
+(`backup.nu`, `apply.nu`, `share.nu`) were independently broken anyway: `apply.nu` called
+`copy`, which is not a nushell command, and `share.nu`'s `original` pointed at a directory that
+never existed.
+
+What remains under `mutable/` is seven files: `docker-compose/` service definitions and one
+libvirt domain XML (`kvm/AtlasOS-GPUPASS.xml`, a Windows guest with GPU passthrough — despite
+the macOS-styled theme names elsewhere, nothing here is Hackintosh-related). The only
+Hackintosh thing in the repo is a GRUB `menuentry "OC & HACKINTOSH"` at
+[hosts/nixos/k99-lite.nix:174](hosts/nixos/k99-lite.nix:174), which chainloads OpenCore from a
+`DARWIN-BOOT` partition.
 
 ### Fleet operations (`scripts/makcoo/`)
 
@@ -300,11 +307,11 @@ scaffolding placeholders. Don't infer intent from them.
 - **`nixpkgs` tracks `master`**, not a Hydra jobset, so binary-cache hits are chancy — a
   stdenv-touching commit means rebuilding the world on ten classroom machines. Lock is from
   2025-11-24. Moving to `nixos-unstable` is Phase 4.
-- **No NixOS host sets `networking.hostName`.** All eight fall back to the default `nixos`.
-  Consequence: `scripts/backup.nu` names its output directory with `(hostname)`, so
-  `mutable/synchronous/` holds exactly one directory, `nixos/` — the whole fleet's KDE theme
-  state has been overwriting one place. `scripts/share.nu`'s `original` points at
-  `./mutable/synchronous/k99-lite`, which has never existed.
+- **No NixOS host sets `networking.hostName`.** All eight fall back to the default `nixos`,
+  confirmed by every drv being named `nixos-system-nixos-*`. The clearest evidence of the
+  consequences is now deleted: `mutable/synchronous/` contained exactly one directory, `nixos/`,
+  because `backup.nu` named its output with `(hostname)` — the whole fleet's theme state had
+  been overwriting one place for years.
 - **The fleet may have no rollback target.** `profiles/nixos/nix.nix` runs
   `nix.gc.options = "--delete-older-than 7d"` weekly while
   [hosts/nixos/dell-makcoo/default.nix:120](hosts/nixos/dell-makcoo/default.nix:120) sets
