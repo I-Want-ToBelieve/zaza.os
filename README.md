@@ -15,7 +15,7 @@ This flake is configured with the use of [digga][digga].
 
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-informational.svg?style=flat&logo=nixos)](https://github.com/nixos/nixpkgs)
 
-[![NixOS_Check](https://github.com/I-Want-ToBelieve/dotfiles/actions/workflows/check.yml/badge.svg)](https://github.com/I-Want-ToBelieve/dotfiles/actions/workflows/check.yml) [![NixOS_Fmt](https://github.com/I-Want-ToBelieve/dotfiles/actions/workflows/fmt.yml/badge.svg)](https://github.com/I-Want-ToBelieve/dotfiles/actions/workflows/fmt.yml)
+[![check](https://github.com/I-Want-ToBelieve/zaza.os/actions/workflows/check.yml/badge.svg)](https://github.com/I-Want-ToBelieve/zaza.os/actions/workflows/check.yml)
 
 <br>
 

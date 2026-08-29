@@ -1,0 +1,88 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# 这个 flake 的 nixConfig.extra-substituters 把清华/中科大镜像排在最前面。
+# 那对国内机器合理，对 GitHub runner 是纯粹的超时来源，所以每个 job 都显式覆盖。
+env:
+  NIX_OPTS: >-
+    --accept-flake-config
+    --option substituters "https://cache.nixos.org https://nix-community.cachix.org"
+
+jobs:
+  # 最快的失败面：不求值任何主机，几十秒内跑完。
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      # 这一条本可以在十个月前就拦住 353f738f —— 那个 commit 删掉六个 flake input
+      # 却只修了 darwin 配置的引用，导致全部八个 nixosConfigurations 无法求值。
+      # 耗时约 0.3 秒，不需要求值。
+      - name: undeclared flake inputs
+        run: ./scripts/verify/check-undeclared-inputs.sh
+
+      - name: treefmt
+        run: nix fmt $NIX_OPTS -- --ci
+
+      # statix / deadnix 用棘轮而不是硬门槛：仓库里还有存量问题，
+      # 这里只保证不再增加。基线数字见 scripts/verify/lint-baseline.txt。
+      - name: statix ratchet
+        run: |
+          have=$(nix run $NIX_OPTS nixpkgs#statix -- check -o errfmt . | wc -l | tr -d ' ')
+          want=$(grep '^statix=' scripts/verify/lint-baseline.txt | cut -d= -f2)
+          echo "statix: $have（基线 $want）"
+          if [ "$have" -gt "$want" ]; then
+            echo "::error::statix 问题数从 $want 增加到 $have"
+            exit 1
+          fi
+
+  # 八台 NixOS 主机都是 x86_64-linux，所以求值放在 Linux runner 上。
+  # 只求值、不构建：runner 大约只有 14GB 磁盘，而 nixpkgs 一次 stdenv 变动
+  # 就足以让构建整个世界。
+  eval-nixos:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - k99-lite
+          - k99-lite-wsl
+          - xiaoxin-pro14-2021
+          - xiaoxin-pro16-2021
+          - dell-makcoo
+          - dell-makcoo-minimal
+          - lenovo-a6-6310
+          - lenovo-a6-6310-minimal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: evaluate ${{ matrix.host }}
+        run: |
+          nix eval --impure $NIX_OPTS --raw \
+            ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.drvPath"
+
+  # darwin 只能在 macOS runner 上求值。
+  eval-darwin:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: evaluate k99-lite-darwin
+        run: |
+          nix eval --impure $NIX_OPTS --raw \
+            ".#darwinConfigurations.k99-lite-darwin.config.system.build.toplevel.drvPath"
+
+  # flake check 在 darwin 上只跑 treefmt 与 undeclared-inputs 两个 check
+  # （deploy-rs 那套已随其本身一起删除）。放在 Linux 上跑覆盖面更全。
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - run: nix flake check --impure $NIX_OPTS
