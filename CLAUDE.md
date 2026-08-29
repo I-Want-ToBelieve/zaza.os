@@ -18,41 +18,44 @@ is an explicit, hand-copied block.
 
 [digga]: https://github.com/divnix/digga
 
-## Known-broken state (verified 2026-08-28)
+## Current state (verified 2026-08-29)
 
-**Every `nixosConfigurations.*` fails to evaluate, and it is a chain of five failures, not one
-bug.** Fixing each reveals the next:
+All eight `nixosConfigurations` and `darwinConfigurations.k99-lite-darwin` evaluate, and
+`nix flake check --impure` exits 0 on darwin. This was not true from 2025-10-11 until
+2026-08-29: commit `353f738f` ("fix: types") deleted six inputs and fixed only the _darwin_
+config's uses of them, and reviving it turned out to be a chain of failures, three of which
+were Plasma-5-removal errors.
 
-1. `inputs.hyprpanel` undeclared — 8 sites in `flake.nix`
-2. `inputs.plasma-manager` undeclared — 8 sites in `flake.nix`
-3. `defaultSession = "plasmawayland"` — Plasma 6 renamed it to `plasma`
-   ([profiles/nixos/display-managers/sddm.nix:4](profiles/nixos/display-managers/sddm.nix:4))
-4. `services.xserver.desktopManager.plasma5` — removed from nixpkgs, now a hard
-   `mkRemovedOptionModule` error
-   ([profiles/nixos/desktop-environment/kde.nix:3](profiles/nixos/desktop-environment/kde.nix:3))
-5. `libsForQt5.kdeplasma-addons` and two `libsForQt5.qt5.*` throw "KDE Gear 5 and Plasma 5 have
-   reached end of life" ([kde.nix:11](profiles/nixos/desktop-environment/kde.nix:11))
+**KDE has been removed** rather than migrated to Plasma 6, which deleted most of that chain.
+Consequence, and it matters:
 
-**So the repo cannot be revived mechanically — it needs a real Plasma 5 → 6 migration.**
+> **The machines currently have no graphical session.** Nothing has been deployed, so the tree
+> is safe as it stands, but this must not reach the ten classroom machines until a desktop is
+> chosen. No replacement has been picked yet.
 
-Root cause: commit `353f738f` (2025-10-11, "fix: types") deleted six inputs — `hyprland`,
-`Hyprspace`, `hyprland-contrib`, `xdg-portal-hyprland`, `hyprpanel`, `plasma-manager` — and
-fixed only the _darwin_ config's uses of them. The last state that plausibly built the fleet is
-around `7c036b34` (2025-03-25), whose nixpkgs still had `plasma5.nix`.
-
-A seventh breakage is latent: `inputs.hyprland` at
-[profiles/nixos/display-managers/greetd.nix:22](profiles/nixos/display-managers/greetd.nix:22)
-is also undeclared. It does not fire only because no wired host pulls
-`display-managers.greetd` — the `suites.nixos.hyprland` that would is unused.
-
-Only `darwinConfigurations.k99-lite-darwin` evaluates today.
+Of the three undeclared inputs, none needed restoring: `hyprpanel` is now packaged in nixpkgs
+(its upstream flake's overlay is a deprecation stub), `greetd.nix` now uses `pkgs.hyprland`,
+and `plasma-manager` went with KDE.
 
 **A refactor is in progress.** The phased plan (L3 `mkHost` factory + L4' clan-core) lives at
-`~/.claude/plans/mcp-reactive-meerkat.md`. Phase 0 has landed on branch
-`refactor/p0-hygiene`; the eval chain above is Phase 1's job. Read the plan before making
-structural changes — several "obvious" fixes are wrong for reasons documented there (for
-example, the naive fix to `gpupass`'s `amdgpu` line is wrong because `nixos-hardware`'s
-`common-gpu-amd` sets `mkDefault true`).
+`~/.claude/plans/mcp-reactive-meerkat.md`. Phases 0 and 1 have landed on branches
+`refactor/p0-hygiene` and `refactor/p1-baseline`, the latter tagged `baseline-p1`. Read the
+plan before making structural changes — several "obvious" fixes are wrong for reasons
+documented there.
+
+`scripts/verify/baseline/` records the evaluated state at that tag. Four facts in it were
+previously assumed rather than known; see that directory's README. The two that constrain what
+you may safely change:
+
+- **`system.stateVersion` is `24.05` on seven hosts and `23.11` on `k99-lite-wsl` alone.** The
+  flake's inline `"23.11"` is dead for the other seven (each `hosts/*.nix` `mkForce`s `"24.05"`).
+  WSL works only because its host file sets a _plain_ `"23.11"` equal to the inline value — so
+  "cleaning up" that inline default to `"24.05"` turns WSL into a hard eval error.
+- **`modules/nixos/gpupass.nix` sets `hardware.amdgpu.initrd.enable = mkForce (!cfg.enable)`
+  outside any `mkIf`**, so disabling passthrough force-_enables_ amdgpu in the initrd — measured
+  `true` on seven hosts including Intel-only ones. Do not "fix" it by wrapping in
+  `mkIf cfg.enable` and dropping the negation: `nixos-hardware`'s `common-gpu-amd` sets
+  `mkDefault true`, which the `mkForce` exists to beat.
 
 ## Commands
 
@@ -94,12 +97,12 @@ macOS:
 nix run nix-darwin --accept-flake-config -- switch --flake .#k99-lite-darwin
 ```
 
-`deploy-rs` nodes exist too (`deploy.nodes."dell-makcoo"` → `192.168.0.218`, `remoteBuild = true`,
-both rollbacks deliberately disabled — see the Chinese comments in `flake.nix` for why):
-
-```bash
-nix run github:serokell/deploy-rs -- .#dell-makcoo
-```
+deploy-rs has been removed. It had one node, at `192.168.0.218` — an address that is in
+neither the classroom fleet nor `scripts/makcoo/computer.ts` — and `history.md` shows its
+twelve appearances are twelve consecutive failed attempts at argument passthrough, after which
+it was abandoned. It never ran successfully. Use `nixos-rebuild --target-host`; for the safety
+property `magicRollback` would have given, `nixos-rebuild test` activates without touching the
+bootloader, so a power cycle recovers.
 
 ### Provision a brand-new machine
 
@@ -118,6 +121,12 @@ Target disk is overridable: `disk-config.nix` reads `_module.args.disks` (set pe
 nix build .#kde-plasma-iso
 ```
 
+The attribute name is now a misnomer: with KDE gone it builds from
+`installation-cd-minimal-new-kernel.nix` and contains no desktop. Renaming it is a
+user-facing change and has been left alone deliberately. It is also gated to `x86_64-linux`
+— it used to be evaluated on every system, and its dead nixpkgs module path made
+`nix flake check` fail in 1.2s everywhere.
+
 ### Formatting and checks
 
 ```bash
@@ -133,14 +142,14 @@ in `flake.nix`; the latter is authoritative and carries the exclude list (`pkgs/
 devenv's git hooks also run `alejandra` + `editorconfig-checker`, but on **staged files only** —
 which is why many files stayed unformatted until Phase 0 ran `nix fmt` over the whole tree.
 
-`nix flake check --impure` now evaluates `checks.<system>.treefmt` and
-`checks.<system>.undeclared-inputs` successfully, then **fails** on
-`checks.<system>.deploy-schema`, which evaluates `nixosConfigurations.dell-makcoo` and hits the
-chain above. It still builds no host.
+`nix flake check --impure` exits 0 on darwin, building `checks.<system>.treefmt` and
+`checks.<system>.undeclared-inputs`. It still builds no host: nothing here can build
+x86_64-linux on a Mac, so host builds belong on a Linux runner.
 
 `scripts/verify/check-undeclared-inputs.sh` catches "referenced but undeclared flake input" in
-~0.3s with no evaluation. It currently reports exactly three: `hyprland`, `hyprpanel`,
-`plasma-manager`.
+~0.3s with no evaluation, and is wired as `checks.<system>.undeclared-inputs`. It would have
+caught `353f738f` at commit time. Note its regex boundary deliberately excludes `-` and `.`,
+otherwise its own filename (`check-undeclared-inputs.sh`) matches as an input named `sh`.
 
 ### Dependency updates
 
@@ -168,7 +177,7 @@ deno run --allow-all scripts/makcoo/lock.test.ts
 `modules/{nixos,home-manager}` and `profiles/{nixos,home-manager,darwin}` are loaded with
 `haumea.lib.loaders.path`, producing attrsets of **paths** mirroring the directory tree:
 
-- `profiles/nixos/desktop-environment/kde.nix` → `self.profiles.nixos.desktop-environment.kde`
+- `profiles/nixos/display-managers/greetd.nix` → `self.profiles.nixos.display-managers.greetd`
 - `profiles/home-manager/shells/nu/default.nix` → `self.profiles.home-manager.shells.nu.default`
 
 Add a file and the attribute appears automatically — but it is inert until a suite lists it.
@@ -186,12 +195,16 @@ Add a file and the attribute appears automatically — but it is inert until a s
 ### suites
 
 `flake.suites.{nixos,home-manager,darwin}` are named lists of profile paths (`base`, `misc`,
-`games`, `kde-wayland`, `kde-x11`, `hyprland`, `cli`, `gui`, `shells`, `managed`, `wsl`,
-`darwin`). A host selects them by flattening:
+`games`, `hyprland`, `cli`, `gui`, `shells`, `managed`, `darwin`). A host selects them by
+flattening:
 
 ```nix
-{ imports = with self.suites.nixos; nixpkgs.lib.flatten [base misc games kde-wayland]; }
+{ imports = with self.suites.nixos; nixpkgs.lib.flatten [base misc games]; }
 ```
+
+The `kde-x11` / `kde-wayland` suites and the home-manager `wsl` suite were deleted with KDE.
+No host currently selects any desktop suite; `suites.nixos.hyprland` exists but has no
+consumer.
 
 **A profile file has zero effect unless some suite references it.** Several files under
 `profiles/` are currently unreferenced. The exception: `profiles/home-manager/bin/*.nix` are
@@ -215,25 +228,33 @@ home-manager receives `extraSpecialArgs = { inputs = …; }` only — HM profile
 or `suites`, unlike NixOS profiles.
 
 Overlay chain order: `share.overlays` (`inur`, `nvchad`) → `nur` → `agenix` → `nvfetcher` →
-`rust-overlay` → `hyprpanel` → `(import ./pkgs)` → `self.overlays.default`.
+`rust-overlay` → `(import ./pkgs)` → `self.overlays.default`.
 
 ### pkgs and overlays
 
-`pkgs/default.nix` is itself an overlay (`final: prev: { … }`), not a package set — it exposes
-`sources` from the nvfetcher output plus locally-packaged derivations.
+`pkgs/default.nix` is itself an overlay (`final: prev: { … }`), not a package set.
+
+**Do not re-export `sources` from it.** It used to, and `callPackage` then injected the
+nvfetcher source set into every upstream package taking a `sources` argument — `pkgs.dart`
+broke on it (`attribute 'versionUsed' missing`) while being fine on bare nixpkgs. It is now a
+`let` binding passed explicitly to the two local packages that need it.
+
 `overlays/default.nix` is the last overlay in the chain, for patching nixpkgs.
 
 ### Theming
 
-Two layers, both live:
+**stylix** at system and HM level — catppuccin-mocha, Ubuntu Mono Ligaturized / JetBrains Mono
+Nerd Font, wallpaper fetched from the author's `wallpapers` repo. `profiles/home-manager/stylix.nix`
+disables eight targets, several of which (`kde`, `gtk`, `gnome`, `xfce`) no longer have anything
+to theme.
 
-- **stylix** at system and HM level — catppuccin-mocha, Ubuntu Mono Ligaturized / JetBrains Mono
-  Nerd Font, wallpaper fetched from the author's `wallpapers` repo. HM disables most stylix
-  targets so KDE/plasma-manager owns them instead.
-- **`mutable/synchronous/<hostname>/`** — imperative KDE theme state (`color-schemes`, `kwin`,
-  `Kvantum`, `aurorae`, …) rsync'd in and out by `nu scripts/backup.nu` and
-  `nu scripts/apply.nu`, driven by `snapshot_needed` in
-  [scripts/share.nu](scripts/share.nu). **Nothing under `mutable/` is referenced from Nix.**
+**`mutable/synchronous/` is now dead weight.** It held imperative KDE theme state
+(`color-schemes`, `kwin`, `Kvantum`, `aurorae`, …) rsync'd by `nu scripts/backup.nu` and
+`nu scripts/apply.nu`, driven by `snapshot_needed` in [scripts/share.nu](scripts/share.nu).
+Nothing under `mutable/` was ever referenced from Nix, and with KDE gone there is nothing left
+for it to sync. Those three scripts are also broken independently: `apply.nu:17` calls `copy`,
+which is not a nushell command (it is `cp`), and `share.nu`'s `original` points at
+`./mutable/synchronous/k99-lite`, a directory that has never existed.
 
 ### Fleet operations (`scripts/makcoo/`)
 

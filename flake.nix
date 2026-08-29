@@ -941,37 +941,6 @@
           };
         };
 
-        # 新增下面几行
-        deploy = {
-          sshUser = "root"; # SSH 登录用户名
-          user = "root"; # 远程操作的用户
-          sshOpts = ["-i" "~/.ssh/thinkpad_t420s_root_id_rsa"]; # SSH 参数
-
-          # 部署失败自动回滚，建议关闭
-          # 因为 NixOS（尤其是 Unstable 分支）部署不太稳定，有时需要部署两次才成功
-          # 如果自动回滚了，反而适得其反，导致连续部署失败
-          autoRollback = false;
-
-          # 断网自动回滚，建议关闭
-          # 在你配置防火墙或 IP 出错把网络干掉时，自动回滚，这样你就不用去主机商控制面板连 VNC 或 IPMI 了
-          # 但如果你就是在调整防火墙或者 IP 配置，会有当时断网、但重启机器就可以应用新配置恢复正常的情况
-          # 自动回滚反而适得其反，因此建议关闭
-          magicRollback = false;
-
-          remoteBuild = true;
-
-          nodes = {
-            "dell-makcoo" = {
-              # 目标机器的地址，IP 或域名或 .ssh/config 中配置的别名均可
-              hostname = "192.168.0.218";
-              profiles.system = {
-                # 调用上面的 nixosConfigurations."nixos"
-                path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."dell-makcoo";
-              };
-            };
-          };
-        };
-
         nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
           modules = [
             ./hosts/termux/redmi-k70pro/nix-on-droid.nix
@@ -1113,18 +1082,6 @@
               ];
           };
         };
-
-        # deploy-rs 的 deployChecks 里的 activate 检查需要真正**构建**目标系统。
-        # 原来这里 mapAttrs 遍历 deploy-rs.lib 的全部平台，于是 aarch64-darwin 上
-        # 也注册了一份，而 Mac 构不了 x86_64-linux 系统 —— 结果 `nix flake check`
-        # 在开发机上必然失败，并把 treefmt / undeclared-inputs 这些本可通过的
-        # 检查一起挡在后面。
-        #
-        # 本仓库的 deploy 节点全部是 x86_64-linux，所以只在该平台注册。
-        # 这些检查该在 Linux runner 上跑，见 CLAUDE.md 的 CI 说明。
-        checks =
-          nixpkgs.lib.genAttrs ["x86_64-linux"]
-          (system: inputs.deploy-rs.lib.${system}.deployChecks self.deploy);
       };
     });
 
@@ -1138,11 +1095,6 @@
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
