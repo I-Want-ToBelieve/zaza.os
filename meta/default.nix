@@ -1,3 +1,0 @@
-{}: {
-  meta = import ./meta.nix;
-}

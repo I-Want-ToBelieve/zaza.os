@@ -1,100 +1,82 @@
 {
-    "dell-makcoo": {
-        "amdgpuInitrd": false,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 1,
-        "hmUsers": [
-            "i.want.to.believe"
-        ],
-        "hostName": "dell-makcoo",
-        "stateVersion": "24.05",
-        "sysPkgCount": 221,
-        "warnCount": 9
-    },
-    "dell-makcoo-minimal": {
-        "amdgpuInitrd": false,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 5,
-        "hmUsers": [
-            "i.want.to.believe"
-        ],
-        "hostName": "dell-makcoo-minimal",
-        "stateVersion": "24.05",
-        "sysPkgCount": 143,
-        "warnCount": 3
-    },
-    "k99-lite": {
-        "amdgpuInitrd": true,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 5,
-        "hmUsers": [
-            "i.want.to.believe"
-        ],
-        "hostName": "k99-lite",
-        "stateVersion": "24.05",
-        "sysPkgCount": 243,
-        "warnCount": 6
-    },
-    "k99-lite-wsl": {
-        "amdgpuInitrd": false,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 100,
-        "hmUsers": [
-            "i.want.to.believe"
-        ],
-        "hostName": "k99-lite-wsl",
-        "stateVersion": "23.11",
-        "sysPkgCount": 199,
-        "warnCount": 6
-    },
-    "lenovo-a6-6310": {
-        "amdgpuInitrd": true,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 5,
-        "hmUsers": [
-            "i.want.to.believe"
-        ],
-        "hostName": "lenovo-a6-6310",
-        "stateVersion": "24.05",
-        "sysPkgCount": 220,
-        "warnCount": 9
-    },
-    "lenovo-a6-6310-minimal": {
-        "amdgpuInitrd": true,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 5,
-        "hmUsers": [
-            "i.want.to.believe"
-        ],
-        "hostName": "lenovo-a6-6310-minimal",
-        "stateVersion": "24.05",
-        "sysPkgCount": 143,
-        "warnCount": 3
-    },
-    "xiaoxin-pro14-2021": {
-        "amdgpuInitrd": false,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 5,
-        "hmUsers": [
-            "i.want.to.believe",
-            "root"
-        ],
-        "hostName": "xiaoxin-pro14-2021",
-        "stateVersion": "24.05",
-        "sysPkgCount": 238,
-        "warnCount": 10
-    },
-    "xiaoxin-pro16-2021": {
-        "amdgpuInitrd": true,
-        "gcOptions": "--delete-older-than 7d",
-        "grubLimit": 5,
-        "hmUsers": [
-            "i.want.to.believe",
-            "root"
-        ],
-        "hostName": "xiaoxin-pro16-2021",
-        "stateVersion": "24.05",
-        "sysPkgCount": 244,
-        "warnCount": 7
-    }
+  "dell-makcoo": {
+    "amdgpuInitrd": false,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 1,
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "dell-makcoo",
+    "stateVersion": "24.05",
+    "sysPkgCount": 221,
+    "warnCount": 9
+  },
+  "dell-makcoo-minimal": {
+    "amdgpuInitrd": false,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 5,
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "dell-makcoo-minimal",
+    "stateVersion": "24.05",
+    "sysPkgCount": 143,
+    "warnCount": 3
+  },
+  "k99-lite": {
+    "amdgpuInitrd": true,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 5,
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "k99-lite",
+    "stateVersion": "24.05",
+    "sysPkgCount": 243,
+    "warnCount": 6
+  },
+  "k99-lite-wsl": {
+    "amdgpuInitrd": false,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 100,
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "k99-lite-wsl",
+    "stateVersion": "23.11",
+    "sysPkgCount": 199,
+    "warnCount": 6
+  },
+  "lenovo-a6-6310": {
+    "amdgpuInitrd": true,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 5,
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "lenovo-a6-6310",
+    "stateVersion": "24.05",
+    "sysPkgCount": 220,
+    "warnCount": 9
+  },
+  "lenovo-a6-6310-minimal": {
+    "amdgpuInitrd": true,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 5,
+    "hmUsers": ["i.want.to.believe"],
+    "hostName": "lenovo-a6-6310-minimal",
+    "stateVersion": "24.05",
+    "sysPkgCount": 143,
+    "warnCount": 3
+  },
+  "xiaoxin-pro14-2021": {
+    "amdgpuInitrd": false,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 5,
+    "hmUsers": ["i.want.to.believe", "root"],
+    "hostName": "xiaoxin-pro14-2021",
+    "stateVersion": "24.05",
+    "sysPkgCount": 238,
+    "warnCount": 10
+  },
+  "xiaoxin-pro16-2021": {
+    "amdgpuInitrd": true,
+    "gcOptions": "--delete-older-than 7d",
+    "grubLimit": 5,
+    "hmUsers": ["i.want.to.believe", "root"],
+    "hostName": "xiaoxin-pro16-2021",
+    "stateVersion": "24.05",
+    "sysPkgCount": 244,
+    "warnCount": 7
+  }
 }

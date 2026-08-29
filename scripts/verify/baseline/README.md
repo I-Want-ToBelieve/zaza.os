@@ -7,24 +7,24 @@ semantic facts below are recorded rather than remembered.
 - `tierA.json` — `config.system.build.toplevel.drvPath` per host. **Volatile**: every
   `flake.lock` change moves these. Only meaningful against the tag it was captured at.
 - `tierC.json` — option-level fingerprint. Stable enough to review by eye, and the thing to
-  diff when `tierA` moves and you need to know *what* moved.
+  diff when `tierA` moves and you need to know _what_ moved.
 
 Earlier snapshots are in git history; `baseline-p1` holds the state at the first commit that
 evaluated at all, before the mkHost refactor.
 
 ## Facts this snapshot pins down
 
-| fact | value |
-| ---- | ----- |
-| `system.stateVersion` | `24.05` on seven hosts, `23.11` on `k99-lite-wsl` alone |
-| `networking.hostName` | now equals the machine name on all eight (it was `nixos` everywhere until Phase 3) |
-| `hardware.amdgpu.initrd.enable` | `true` only on the four hosts that import `nixos-hardware`'s `common-gpu-amd` |
-| `boot.loader.grub.configurationLimit` | **`1` on `dell-makcoo`** — the config deployed to all ten classroom machines |
+| fact                                  | value                                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------------- |
+| `system.stateVersion`                 | `24.05` on seven hosts, `23.11` on `k99-lite-wsl` alone                            |
+| `networking.hostName`                 | now equals the machine name on all eight (it was `nixos` everywhere until Phase 3) |
+| `hardware.amdgpu.initrd.enable`       | `true` only on the four hosts that import `nixos-hardware`'s `common-gpu-amd`      |
+| `boot.loader.grub.configurationLimit` | **`1` on `dell-makcoo`** — the config deployed to all ten classroom machines       |
 
 ## Two traps recorded here because they are easy to "fix" wrongly
 
 **stateVersion.** The `"23.11"` that `mkHost` sets inline is dead for seven hosts — each
-`hosts/*.nix` `mkForce`s `"24.05"` over it. `hosts/wsl/k99-lite-wsl.nix` sets a *plain*
+`hosts/*.nix` `mkForce`s `"24.05"` over it. `hosts/wsl/k99-lite-wsl.nix` sets a _plain_
 `"23.11"` that merges only because it equals the inline value. Changing the inline default to
 `"24.05"` turns `k99-lite-wsl` into a hard evaluation error.
 
@@ -34,7 +34,7 @@ evaluated at all, before the mkHost refactor.
 
 and not the apparently-simpler `lib.mkIf cfg.enable false`. `nixos-hardware`'s
 `common-gpu-amd` sets `mkDefault true`, which the `mkForce` exists to beat. Before Phase 3 the
-condition sat *outside* the `mkIf`, so disabling passthrough force-*enabled* amdgpu in the
+condition sat _outside_ the `mkIf`, so disabling passthrough force-_enabled_ amdgpu in the
 initrd — on seven of eight hosts, including two with no AMD GPU at all.
 
 ## The row that still needs action

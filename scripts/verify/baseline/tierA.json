@@ -1,10 +1,10 @@
 {
-    "dell-makcoo": "/nix/store/pj98qqcyhcjn871ybrg594qiypivid1l-nixos-system-dell-makcoo-25.11.20251124.b9bb613.drv",
-    "dell-makcoo-minimal": "/nix/store/95shvi8jgis4plpv7qjp43a05nqra1np-nixos-system-dell-makcoo-minimal-25.11.20251124.b9bb613.drv",
-    "k99-lite": "/nix/store/pnx7dslkypia9sh6r5ivs6ndbyr6xnz4-nixos-system-k99-lite-25.11.20251124.b9bb613.drv",
-    "k99-lite-wsl": "/nix/store/d71xr0r497wzknl827jmga3xyzkjkqh5-nixos-system-k99-lite-wsl-25.11.20251124.b9bb613.drv",
-    "lenovo-a6-6310": "/nix/store/zbfy9lajxxiavl1sxsi1ixima30wk4k5-nixos-system-lenovo-a6-6310-25.11.20251124.b9bb613.drv",
-    "lenovo-a6-6310-minimal": "/nix/store/9yq637h2frmyacn2adjcdrmqjacv2gxn-nixos-system-lenovo-a6-6310-minimal-25.11.20251124.b9bb613.drv",
-    "xiaoxin-pro14-2021": "/nix/store/74vvvr7vf8iciikaykpvb1qk9inl3kym-nixos-system-xiaoxin-pro14-2021-25.11.20251124.b9bb613.drv",
-    "xiaoxin-pro16-2021": "/nix/store/sl732264jg6mc63whr9r7lfz06qlji8a-nixos-system-xiaoxin-pro16-2021-25.11.20251124.b9bb613.drv"
+  "dell-makcoo": "/nix/store/pj98qqcyhcjn871ybrg594qiypivid1l-nixos-system-dell-makcoo-25.11.20251124.b9bb613.drv",
+  "dell-makcoo-minimal": "/nix/store/95shvi8jgis4plpv7qjp43a05nqra1np-nixos-system-dell-makcoo-minimal-25.11.20251124.b9bb613.drv",
+  "k99-lite": "/nix/store/pnx7dslkypia9sh6r5ivs6ndbyr6xnz4-nixos-system-k99-lite-25.11.20251124.b9bb613.drv",
+  "k99-lite-wsl": "/nix/store/d71xr0r497wzknl827jmga3xyzkjkqh5-nixos-system-k99-lite-wsl-25.11.20251124.b9bb613.drv",
+  "lenovo-a6-6310": "/nix/store/zbfy9lajxxiavl1sxsi1ixima30wk4k5-nixos-system-lenovo-a6-6310-25.11.20251124.b9bb613.drv",
+  "lenovo-a6-6310-minimal": "/nix/store/9yq637h2frmyacn2adjcdrmqjacv2gxn-nixos-system-lenovo-a6-6310-minimal-25.11.20251124.b9bb613.drv",
+  "xiaoxin-pro14-2021": "/nix/store/74vvvr7vf8iciikaykpvb1qk9inl3kym-nixos-system-xiaoxin-pro14-2021-25.11.20251124.b9bb613.drv",
+  "xiaoxin-pro16-2021": "/nix/store/sl732264jg6mc63whr9r7lfz06qlji8a-nixos-system-xiaoxin-pro16-2021-25.11.20251124.b9bb613.drv"
 }

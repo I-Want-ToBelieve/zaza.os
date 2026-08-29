@@ -116,8 +116,6 @@
           settings.global.excludes = [
             # nvfetcher 生成，绝不可手改（.nix 与 .json 两份）
             "pkgs/_sources/**"
-            # 转储的工具产物，Phase 7 删除
-            "audit.json"
             # Deno 机群脚本：Phase 6 会用 clan inventory 重写、Phase 7 删除。
             # 现在让 prettier 翻它们的引号风格只会制造 review 噪音。
             "scripts/makcoo/**"
@@ -337,10 +335,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix2container.url = "github:nlewo/nix2container";
-
-    nix2container.inputs = {nixpkgs.follows = "nixpkgs";};
-
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     devenv.url = "github:cachix/devenv";
@@ -372,26 +366,13 @@
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     # Hyprland is **such** eye candy
-
-    ags = {
-      url = "github:Aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    helix.url = "github:helix-editor/helix";
-
-    nil = {
-      url = "github:oxalica/nil";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -412,10 +393,6 @@
     # @see https://github.com/nix-community/nix-index-database#usage-in-home-manager
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-gaming.url = "github:fufexan/nix-gaming";
-
-    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
 
     autohide-tdrop = {
       url = "github:I-Want-ToBelieve/autohide-tdrop";
