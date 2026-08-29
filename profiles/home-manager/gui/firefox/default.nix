@@ -11,7 +11,9 @@
         id = 0;
         settings = {"general.smoothScroll" = true;};
 
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        # home-manager 把扩展安装从 profiles.<p>.extensions 移到了
+        # profiles.<p>.extensions.packages（前者现在是子模块）。
+        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           adnauseam
           enhanced-github
           enhancer-for-youtube

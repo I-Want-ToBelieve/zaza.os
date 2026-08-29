@@ -327,8 +327,11 @@
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:NixOS/nixpkgs/pull/450512/head";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # 用 nixos-unstable 而不是 master：master 不是 Hydra 的 jobset，任意 commit 的
+    # 二进制缓存命中靠运气，一旦碰上动 stdenv 的提交，十台教室机就要从源码重建世界。
+    # nixos-unstable 只比 master 落后几天，但都是 Hydra 实际构建过的 commit。
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
@@ -386,7 +389,10 @@
 
     # Stylix is a NixOS module which applies the same color scheme, font and wallpaper to a wide range of applications and desktop environments. It also exports utilities for you to use the theme in custom parts of your configuration.
     # https://danth.github.io/stylix/installation.html
-    stylix.url = "github:nix-community/stylix/pull/1973/head";
+    # 曾钉在 pull/1973/head（"fix evaluation on darwin"）。该 PR 已于 2025-11-20
+    # 合入 master，所以主线严格包含它，继续钉住只会停在 2025-11 并卡住 kmscon
+    # 等选项的迁移。
+    stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     # stylix.url = "github:danth/stylix/ed91a20c84a80a525780dcb5ea3387dddf6cd2de";
 

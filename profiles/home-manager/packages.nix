@@ -130,13 +130,14 @@
     ]
     ++ [
       lua-language-server
-      nodePackages.bash-language-server
+      bash-language-server # nodePackages 已整体移除，此包升到了顶层
       emmet-language-server
       nixd
     ]
     ++ (with pkgs.kdePackages; [qtstyleplugin-kvantum])
     ++ (with pkgs.inur; [leagueoflegends])
-    ++ (with pkgs.nur.repos; [xddxdd.dingtalk])
+    # xddxdd.dingtalk 已从该 NUR 仓库消失，nixpkgs 顶层也没有，无替代包。
+    # 若仍需要钉钉，得自己打包或用其它渠道。
     ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
 
   programs = {

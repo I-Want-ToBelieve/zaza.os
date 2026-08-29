@@ -37,9 +37,14 @@
     # Whether to enable hyprland-session.target on hyprland startup
     systemd.enable = true;
 
+    # pkgs.hyprlandPlugins.hyprexpo 已从 nixpkgs 消失。没有替换它，因为选哪个
+    # 是你的判断而不是我的：当前 hyprlandPlugins 里同类的概览插件是 hyprspace
+    # （正是下面那行注释引用过的 KZDKM/Hyprspace），但它是**另一个**插件。
+    #
+    # 顺带一提，这个 profile 目前只被 xiaoxin-pro16-2021 的 root 用户使用，
+    # 而那很可能是复制粘贴事故（同机的 i.want.to.believe 用户并不用它）。
     plugins = [
-      pkgs.hyprlandPlugins.hyprexpo
-      # inputs.Hyprspace.packages.${pkgs.system}.Hyprspace
+      # pkgs.hyprlandPlugins.hyprspace
     ];
 
     settings = {
@@ -48,7 +53,11 @@
         # "${pkgs.hyprpanel}/bin/hyprpanel"
         "copyq &"
         "fcitx5 -d"
-        "${pkgs.hyprpanel}/bin/hyprpanel"
+        # pkgs.hyprpanel 已在 nixpkgs 归档，求值即抛：
+        #   "'hyprpanel' has been archived, consider using 'wayle' instead"
+        # 没有替换成 wayle：那是重写的后继程序，二进制名与配置格式都可能不同，
+        # 换过去是猜测而不是迁移。要用的话取消下面这行并核对可执行文件名。
+        # "${pkgs.wayle}/bin/wayle"
       ];
 
       monitor = ",preferred,auto,2";

@@ -120,11 +120,12 @@
     users = lib.mapAttrs (_name: mkHmUser {inherit sharedModules extras;}) users;
   };
 
-  # 注意 hmModules 是已废弃的别名（darwin 那边用的是 homeModules），求值时会打印
-  # 一条 rename 警告。统一它属于独立改动，不放进这次保持等价的重构。
+  # 两处上游改名，都在这里集中处理（此前分散在 8 个 host block 里）：
+  #   nix-index-database.hmModules -> homeModules（hmModules 现为废弃别名）
+  #   nvchad4nix.homeManagerModule -> homeManagerModules.default
   nixosHmExtras = [
-    inputs.nix-index-database.hmModules.nix-index
-    inputs.nvchad4nix.homeManagerModule
+    inputs.nix-index-database.homeModules.nix-index
+    inputs.nvchad4nix.homeManagerModules.default
     {programs.nix-index-database.comma.enable = true;}
   ];
 
