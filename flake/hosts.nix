@@ -139,6 +139,7 @@
 
   mkHost = {
     # ---- 身份 ----
+    name, # 机器名，同时用作 networking.hostName
     hostFile, # ./hosts/** 下的主机文件
     system ? "x86_64-linux", # 目前 8 台全是它
     # ---- 内容 ----
@@ -158,6 +159,17 @@
     # 改成 "24.05" 会让 k99-lite-wsl 变成硬求值错误。
     systemStateVersion ? "23.11",
   }: {
+    # 此前**没有任何** NixOS 主机设置过 hostName，8 台全部落到默认值 `nixos` ——
+    # 每个 drv 都叫 nixos-system-nixos-* 就是证据。
+    #
+    # 用 mkDefault，这样各主机文件仍可覆盖，Phase 6 里 clan 自己的
+    # `networking.hostName = lib.mkDefault name` 也不会冲突。
+    #
+    # 注意这不能算「修好了机群身份」：dell-makcoo 这一份配置被部署到十台机器上，
+    # 于是那十台会同时叫 dell-makcoo。相比现在十台都叫 nixos 不算退步，但真正的
+    # 逐机身份要等 clan 给出十个独立的 machine。
+    networking.hostName = lib.mkDefault name;
+
     imports =
       lib.attrValues self.nixosModules
       ++ lib.optional (disko != null && disko ? disks) {
@@ -373,8 +385,13 @@
     };
   };
 in {
-  flake.nixosConfigurations =
-    lib.mapAttrs (_name: def: mkNixos ({system = "x86_64-linux";} // def)) machines;
+  flake.nixosConfigurations = lib.mapAttrs (name: def:
+    mkNixos ({
+        system = "x86_64-linux";
+        inherit name;
+      }
+      // def))
+  machines;
 
   flake.darwinConfigurations."k99-lite-darwin" = mkDarwin {
     system = "aarch64-darwin";
