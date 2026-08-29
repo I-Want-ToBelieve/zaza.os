@@ -205,15 +205,14 @@
   mkNixos = args:
     lib.nixosSystem {
       inherit (args) system;
-      # inputs 必须留在 specialArgs：12 个主机文件在 imports 内部使用它，而
-      # 实测用 _module.args 替代会无限递归（nixpkgs 自带提示 "argument is not
+      # 只剩 inputs。它必须留在 specialArgs：12 个主机文件在 imports 内部使用它，
+      # 而实测用 _module.args 替代会无限递归（nixpkgs 自带提示 "argument is not
       # externally provided, so querying `_module.args` instead, requiring `config`"）。
-      # self 与 suites 目前保留，各自留给独立的 commit 去掉。
-      specialArgs = {
-        suites = self.suites.nixos;
-        inputs = inputs;
-        self = self;
-      };
+      #
+      # self 与 suites 已移除，两者都没有真实消费者：
+      #   - suites 只被 hosts/nixos/NixOS.nix 读取，而该文件不被任何配置引用（已删）
+      #   - self 的唯一 body 用法是 ${self}/lib/compat，指向一个不存在的目录
+      specialArgs = {inputs = inputs;};
       modules = [(mkHost args)];
     };
 

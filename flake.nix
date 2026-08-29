@@ -183,12 +183,9 @@
             # pkgs = nixpkgs.legacyPackages.x86_64-linux;
             # lib = nixpkgs.legacyPackages.x86_64-linux.lib;
             # additional arguments to pass to modules:
-            specialArgs = {
-              suites = self.suites.nixos;
-              profiles = self.profiles.nixos;
-              inputs = inputs;
-              self = self;
-            };
+            # hosts/nixos/kde-plasma-iso.nix 只用 lib 与 inputs；
+            # suites / profiles / self 从来没有消费者。
+            specialArgs = {inputs = inputs;};
 
             # you can also define your own custom formats
             # customFormats = { "myFormat" = <myFormatModule>; ... };
