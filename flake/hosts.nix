@@ -152,10 +152,6 @@
     # （硬编码 lib.mkDefault "/dev/sda"），而 dell-makcoo 的接 disks ? ["/dev/nvme1n1"]。
     # 若无条件传 disks = null，会顶掉 dell-makcoo 自己的默认值并在 elemAt 处崩。
     disko ? null,
-    # 临时开关。k99-lite-wsl 是唯一不导入 self.nixosModules 的主机，而这么做的唯一
-    # 原因是 modules/nixos/gpupass.nix 在 mkIf 之外设 amdgpu.initrd.enable。
-    # 修掉那个根因后这个开关就该删除。
-    selfNixosModules ? true,
     # flake 内联的 stateVersion。**不要**把它「清理」成 "24.05"：
     # 7 台主机各自的 hosts/*.nix 用 lib.mkForce "24.05" 覆盖了它，唯独
     # hosts/wsl/k99-lite-wsl.nix:72 写的是平凡的 "23.11"，仅因与此处相等才没冲突。
@@ -163,7 +159,7 @@
     systemStateVersion ? "23.11",
   }: {
     imports =
-      lib.optionals selfNixosModules (lib.attrValues self.nixosModules)
+      lib.attrValues self.nixosModules
       ++ lib.optional (disko != null && disko ? disks) {
         _module.args = {inherit (disko) disks;};
       }
@@ -303,8 +299,6 @@
       suites = with nixosSuites; [base misc];
       # 唯一需要额外顶层 NixOS module 的主机。它是列表里的一项，不是 wsl = true 开关。
       modules = [inputs.nixos-wsl.nixosModules.wsl];
-      # 见 mkHost 里 selfNixosModules 的说明 —— 这是待消除的临时开关。
-      selfNixosModules = false;
       users = iwtb (with hmSuites; [base cli gui shells]);
     };
 
