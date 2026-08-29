@@ -20,8 +20,6 @@ in {
       inputs.nixos-hardware.nixosModules.common-gpu-amd
     ];
 
-  system.stateVersion = lib.mkForce "24.05";
-
   services.openvpn.servers = {
     officeVPN = {config = ''config /var/nixos/openvpn/officeVPN.conf '';};
   };

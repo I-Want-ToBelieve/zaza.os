@@ -30,8 +30,6 @@
       inputs.nixos-hardware.nixosModules.common-gpu-amd
     ];
 
-  system.stateVersion = lib.mkForce "24.05";
-
   # my.wakeonwlan.interfaces.phy0.methods = [
   #   "magic-packet"
   #   "disconnect"

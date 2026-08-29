@@ -18,8 +18,6 @@
   # services.rkvm.client.settings.password = "0123456789";
   # services.rkvm.client.settings.server = "192.168.0.121:5258";
 
-  system.stateVersion = lib.mkForce "24.05";
-
   users.groups.input.members = ["i.want.to.believe"];
 
   services.udev.extraRules = ''

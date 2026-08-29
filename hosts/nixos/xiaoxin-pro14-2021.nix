@@ -32,8 +32,6 @@ in {
     };
   };
 
-  system.stateVersion = lib.mkForce "24.05";
-
   users.groups.input.members = ["i.want.to.believe"];
 
   services.udev.extraRules = ''

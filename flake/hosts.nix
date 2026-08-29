@@ -154,11 +154,13 @@
     # （硬编码 lib.mkDefault "/dev/sda"），而 dell-makcoo 的接 disks ? ["/dev/nvme1n1"]。
     # 若无条件传 disks = null，会顶掉 dell-makcoo 自己的默认值并在 elemAt 处崩。
     disko ? null,
-    # flake 内联的 stateVersion。**不要**把它「清理」成 "24.05"：
-    # 7 台主机各自的 hosts/*.nix 用 lib.mkForce "24.05" 覆盖了它，唯独
-    # hosts/wsl/k99-lite-wsl.nix:72 写的是平凡的 "23.11"，仅因与此处相等才没冲突。
-    # 改成 "24.05" 会让 k99-lite-wsl 变成硬求值错误。
-    systemStateVersion ? "23.11",
+    # stateVersion 现在只存在于这一处。
+    #
+    # 此前它散在 9 个地方：这里一个内联的 "23.11"，7 个 hosts/*.nix 用
+    # lib.mkForce "24.05" 盖掉它，外加 k99-lite-wsl 一个平凡的 "23.11" ——
+    # 后者仅因与内联值**恰好相等**才没冲突，把内联默认改成 "24.05" 就会让它
+    # 变成硬求值错误。那些覆盖已全部删除，所以这个巧合不再是任何东西的前提。
+    systemStateVersion ? "26.05",
   }: {
     # 此前**没有任何** NixOS 主机设置过 hostName，8 台全部落到默认值 `nixos` ——
     # 每个 drv 都叫 nixos-system-nixos-* 就是证据。
