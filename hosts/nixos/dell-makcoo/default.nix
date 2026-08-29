@@ -117,7 +117,18 @@
         enable = true;
         efiSupport = true;
         useOSProber = true;
-        configurationLimit = 1;
+        # 曾是 1 —— 而这份配置部署在全部十台教室机上，等于没有任何 GRUB 回滚项。
+        # 其余主机一直是 5。
+        configurationLimit = 20;
+        # TODO（需要实机信息，故未改动）：这是**菜单序号**，不是条目名。
+        # useOSProber = true 会把探测到的其它系统插进菜单，profiles/nixos/rescue-boot.nix
+        # 又通过 extraEntries 注入一个 "Nixos Installer"，而上面刚把
+        # configurationLimit 从 1 提到 20 —— 三者都会移动序号 3 指向的东西。
+        # 十台教室机断电重启会进入那个位置上的系统。
+        #
+        # 修法需要先在实机上确认序号 3 当前是什么：
+        #   grep -n menuentry /boot/grub/grub.cfg
+        # 然后把这里换成该条目的**标题字符串**，或改用 "saved"。
         default = "3";
       };
     };

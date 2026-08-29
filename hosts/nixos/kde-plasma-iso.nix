@@ -11,7 +11,9 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 7d";
+      # 曾是 7d。配合 dell-makcoo 的 grub configurationLimit = 1，这意味着教室机
+      # 极可能只剩一个 generation、GRUB 里零个回滚项 —— 推坏了就只能走去教室。
+      options = "--delete-older-than 90d";
     };
 
     # pin the registry to avoid downloading and evaling a new nixpkgs version every time
