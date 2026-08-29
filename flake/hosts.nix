@@ -11,13 +11,118 @@
 # 会立刻报 "called with unexpected argument 'stylyx'"。attrset + recursiveUpdate 或嵌套
 # evalModules 都给不了这个，而这是 Nix 里最便宜的正确性保障。
 {
-  self,
+  config,
   inputs,
   ...
 }: let
   # 显式用 nixpkgs 的 lib，不用 flake-parts 注入的那个 —— 后者来自 flake-parts 自己的
   # nixpkgs-lib 输入，可能与本仓库的 nixpkgs 漂移。
   inherit (inputs.nixpkgs) lib;
+
+  ## ------------------------------------------------------------------ ##
+  ## 0. 目录树加载与 suites。                                           ##
+  ##                                                                    ##
+  ## 这些**必须**在本文件里作为 let 绑定，不能放在 flake.nix 里再通过     ##
+  ## config.flake.* 读回来。读 config.flake.suites 会强制 flake submodule ##
+  ## 的合并，而合并结果包含 clan 产出的 nixosConfigurations —— 于是       ##
+  ##   clan.machines -> mkHost -> config.flake.suites -> flake 合并       ##
+  ##   -> nixosConfigurations -> clan.machines                            ##
+  ## 成环，求值时在 clan 的 machineModules/forName.nix 处报               ##
+  ## "stack overflow; max-call-depth exceeded"。用纯 let 绑定就没有这个   ##
+  ## 不动点，下面再把同样的值导出为 flake 输出。                          ##
+  ## ------------------------------------------------------------------ ##
+
+  modules = {
+    nixos = inputs.haumea.lib.load {
+      src = ../modules/nixos;
+      loader = inputs.haumea.lib.loaders.path;
+    };
+    home-manager = inputs.haumea.lib.load {
+      src = ../modules/home-manager;
+      loader = inputs.haumea.lib.loaders.path;
+    };
+  };
+
+  nixosModules = builtins.listToAttrs (builtins.map (k: {
+    name = k;
+    value = import modules.nixos.${k};
+  }) (builtins.attrNames modules.nixos));
+
+  homeManagerModules = builtins.listToAttrs (builtins.map (k: {
+    name = k;
+    value = import modules.home-manager.${k};
+  }) (builtins.attrNames modules.home-manager));
+
+  profiles = {
+    nixos = inputs.haumea.lib.load {
+      src = ../profiles/nixos;
+      loader = inputs.haumea.lib.loaders.path;
+    };
+    home-manager = inputs.haumea.lib.load {
+      src = ../profiles/home-manager;
+      loader = inputs.haumea.lib.loaders.path;
+    };
+    darwin = inputs.haumea.lib.load {
+      src = ../profiles/darwin;
+      loader = inputs.haumea.lib.loaders.path;
+    };
+  };
+
+  suites = {
+    nixos = with profiles.nixos; {
+      base = [core.nixos];
+      hyprland = [display-managers.greetd];
+      misc = [
+        network
+        nix
+        locale
+        fonts
+        stylix
+        share-via-wifi
+        samba
+        rescue-boot
+        development.android
+        applications.chromium
+        packages
+      ];
+      games = [game.steam game.uudeck.default];
+    };
+    home-manager = with profiles.home-manager; {
+      base = [packages nix misc fonts stylix];
+      cli = with cli; [direnv git ssh starship yazi mangohud aria2 nvchad.default];
+      gui = with gui; [
+        firefox.default
+        fcitx5
+        kitty
+        obs-studio
+        zathura
+        copyq
+        looking-glass-client
+        mpv
+        chromium.default
+      ];
+      shells = with shells; [fish zsh nu.default];
+      darwin = with darwin;
+        [
+          nix
+          packages
+          misc
+        ]
+        ++ [cli.git cli.direnv cli.ssh cli.starship gui.kitty shells.fish shells.zsh shells.nu.default stylix];
+      hyprland = with desktop; [
+        window-managers.hyprland.default
+        mime
+      ];
+
+      managed = with managed; [vscode];
+    };
+
+    darwin = with profiles.darwin; {
+      misc = [apps nix services stylix];
+    };
+  };
+
+  overlaysDefault = import ../overlays;
 
   ## ------------------------------------------------------------------ ##
   ## 1. 全部主机逐字节相同的部分。经逐行比对确认，在出现第二个不同的      ##
@@ -42,11 +147,10 @@
     commonOverlays
     ++ [
       inputs.nur.overlays.default
-      inputs.agenix.overlays.default
       inputs.nvfetcher.overlays.default
       inputs.rust-overlay.overlays.default
       (import ../pkgs)
-      self.overlays.default
+      overlaysDefault
     ];
 
   # darwin 少了 agenix，多一个 karabiner-elements 的 stable 固定。
@@ -61,7 +165,7 @@
       inputs.nvfetcher.overlays.default
       inputs.rust-overlay.overlays.default
       (import ../pkgs)
-      self.overlays.default
+      overlaysDefault
     ];
 
   mkNixpkgsModule = {
@@ -174,7 +278,7 @@
     networking.hostName = lib.mkDefault name;
 
     imports =
-      lib.attrValues self.nixosModules
+      lib.attrValues nixosModules
       ++ lib.optional (disko != null && disko ? disks) {
         _module.args = {inherit (disko) disks;};
       }
@@ -188,14 +292,16 @@
       ++ modules
       ++ [inputs.home-manager.nixosModules.home-manager]
       ++ lib.optional stylix inputs.stylix.nixosModules.stylix
-      ++ lib.optional (disko != null) inputs.disko.nixosModules.disko
+      # 不导入 inputs.disko：clan-core 自带 disko，重复导入会在同一台机器上
+      # 引入两个版本。已实测 k99-lite（不含下面任何 disko 配置）也有 options.disko。
       ++ [
+        # clan vars 骨架。惰性：在 `clan vars generate` 之前不产生任何文件。
+        ./vars.nix
         {
           system.stateVersion = systemStateVersion;
           system.autoUpgrade.enable = false;
         }
 
-        inputs.agenix.nixosModules.default
         hostFile
 
         ../users/root.nix
@@ -203,29 +309,13 @@
 
         {
           home-manager = mkHmBlock {
-            sharedModules = lib.attrValues self.homeManagerModules; # 目前是 []
+            sharedModules = lib.attrValues homeManagerModules; # 目前是 []
             extras = nixosHmExtras;
             inherit users;
           };
         }
       ];
   };
-
-  # 过渡适配器。它的存在只是为了让工厂在 clan 进场之前就能被证明等价；
-  # Phase 6 换成 clan.machines 后即可删除。
-  mkNixos = args:
-    lib.nixosSystem {
-      inherit (args) system;
-      # 只剩 inputs。它必须留在 specialArgs：12 个主机文件在 imports 内部使用它，
-      # 而实测用 _module.args 替代会无限递归（nixpkgs 自带提示 "argument is not
-      # externally provided, so querying `_module.args` instead, requiring `config`"）。
-      #
-      # self 与 suites 已移除，两者都没有真实消费者：
-      #   - suites 只被 hosts/nixos/NixOS.nix 读取，而该文件不被任何配置引用（已删）
-      #   - self 的唯一 body 用法是 ${self}/lib/compat，指向一个不存在的目录
-      specialArgs = {inputs = inputs;};
-      modules = [(mkHost args)];
-    };
 
   ## ------------------------------------------------------------------ ##
   ## 4. mkDarwin —— 独立函数，不做 mkSystem { platform = … }。          ##
@@ -259,7 +349,7 @@
       inputs.stylix.darwinModules.stylix
       {
         home-manager = mkHmBlock {
-          sharedModules = []; # darwin 刻意不含 attrValues self.homeManagerModules
+          sharedModules = []; # darwin 刻意不含 attrValues homeManagerModules
           extras = darwinHmExtras;
           inherit users;
         };
@@ -275,9 +365,9 @@
       modules = mkDarwinModules (builtins.removeAttrs args ["system"]);
     };
 
-  nixosSuites = self.suites.nixos;
-  hmSuites = self.suites.home-manager;
-  darwinSuites = self.suites.darwin;
+  nixosSuites = suites.nixos;
+  hmSuites = suites.home-manager;
+  darwinSuites = suites.darwin;
 
   # 为 root 用户配置指向机群的 ssh key。xiaoxin 两台共用，逐字保留。
   fleetRootSsh = _: {
@@ -388,13 +478,37 @@
     };
   };
 in {
-  flake.nixosConfigurations = lib.mapAttrs (name: def:
-    mkNixos ({
-        system = "x86_64-linux";
-        inherit name;
-      }
-      // def))
-  machines;
+  # 目录树与 suites 同时导出为 flake 输出（供外部消费与文档），但 mkHost 用的是
+  # 上面的 let 绑定，不经过 config.flake —— 见第 0 节关于成环的说明。
+  flake = {
+    inherit modules nixosModules homeManagerModules profiles suites;
+    overlays.default = overlaysDefault;
+  };
+
+  # clan-core 接管 nixosConfigurations。mkHost 返回的就是一个 NixOS module，
+  # 正是 clan.machines.<name> 需要的形状 —— 这也是当初让它返回 module 而不是
+  # 构建好的系统的原因（见文件开头）。
+  clan = {
+    meta.name = "zaza";
+
+    # 显式给出纯路径。clan 的 machineModules/forName.nix 会去读
+    # ${directory}/machines/<name>/… ，默认取 self。
+    directory = ../.;
+
+    # 必须显式转发。12 个主机文件在自己的 imports 里使用 inputs；若它不在
+    # specialArgs 里，模块系统会退回 _module.args 去取，而那需要先有 config，
+    # 结果是无限递归（nixpkgs 自己的提示："argument is not externally
+    # provided, so querying `_module.args` instead, requiring `config`"）。
+    specialArgs = {inputs = inputs;};
+
+    machines = lib.mapAttrs (name: def:
+      mkHost ({
+          system = "x86_64-linux";
+          inherit name;
+        }
+        // def))
+    machines;
+  };
 
   flake.darwinConfigurations."k99-lite-darwin" = mkDarwin {
     system = "aarch64-darwin";

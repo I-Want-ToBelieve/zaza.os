@@ -8,10 +8,15 @@
     haumea,
     ...
   }:
-    flake-parts.lib.mkFlake {inherit inputs;} ({moduleWithSystem, ...}: {
+    flake-parts.lib.mkFlake {inherit inputs;} ({
+      config,
+      moduleWithSystem,
+      ...
+    }: {
       imports = [
         inputs.devenv.flakeModule
         inputs.treefmt-nix.flakeModule
+        inputs.clan-core.flakeModules.default
         # L3 主机工厂：nixosConfigurations 与 darwinConfigurations 都由它产出
         ./flake/hosts.nix
       ];
@@ -196,98 +201,6 @@
         # agnostic ones like nixosModule and system-enumerating ones, although
         # those are more easily expressed in perSystem.
 
-        modules = {
-          nixos = haumea.lib.load {
-            src = ./modules/nixos;
-            loader = haumea.lib.loaders.path;
-          };
-          home-manager = haumea.lib.load {
-            src = ./modules/home-manager;
-            loader = haumea.lib.loaders.path;
-          };
-        };
-
-        nixosModules = builtins.listToAttrs (builtins.map (k: {
-          name = k;
-          value = import self.modules.nixos.${k};
-        }) (builtins.attrNames self.modules.nixos));
-
-        homeManagerModules = builtins.listToAttrs (builtins.map (k: {
-          name = k;
-          value = import self.modules.home-manager.${k};
-        }) (builtins.attrNames self.modules.home-manager));
-
-        profiles = {
-          nixos = haumea.lib.load {
-            src = ./profiles/nixos;
-            loader = haumea.lib.loaders.path;
-          };
-          home-manager = haumea.lib.load {
-            src = ./profiles/home-manager;
-            loader = haumea.lib.loaders.path;
-          };
-          darwin = haumea.lib.load {
-            src = ./profiles/darwin;
-            loader = haumea.lib.loaders.path;
-          };
-        };
-
-        suites = {
-          nixos = with self.profiles.nixos; {
-            base = [core.nixos];
-            hyprland = [display-managers.greetd];
-            misc = [
-              network
-              nix
-              locale
-              fonts
-              stylix
-              share-via-wifi
-              samba
-              rescue-boot
-              development.android
-              applications.chromium
-              packages
-            ];
-            games = [game.steam game.uudeck.default];
-          };
-          home-manager = with self.profiles.home-manager; {
-            base = [packages nix misc fonts stylix];
-            cli = with cli; [direnv git ssh starship yazi mangohud aria2 nvchad.default];
-            gui = with gui; [
-              firefox.default
-              fcitx5
-              kitty
-              obs-studio
-              zathura
-              copyq
-              looking-glass-client
-              mpv
-              chromium.default
-            ];
-            shells = with shells; [fish zsh nu.default];
-            darwin = with darwin;
-              [
-                nix
-                packages
-                misc
-              ]
-              ++ [cli.git cli.direnv cli.ssh cli.starship gui.kitty shells.fish shells.zsh shells.nu.default stylix];
-            hyprland = with desktop; [
-              window-managers.hyprland.default
-              mime
-            ];
-
-            managed = with managed; [vscode];
-          };
-
-          darwin = with self.profiles.darwin; {
-            misc = [apps nix services stylix];
-          };
-        };
-
-        overlays.default = import ./overlays;
-
         nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
           modules = [
             ./hosts/termux/redmi-k70pro/nix-on-droid.nix
@@ -346,6 +259,14 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # L4'：机群管理。clan-core 自带 disko 与 sops-nix，所以本仓库不再单独声明
+    # disko，agenix 也由 clan 的 vars 取代。
+    clan-core = {
+      url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
+
     # 353f738f（2025-10-11 "fix: types"）把 hyprpanel / plasma-manager 从 inputs
     # 里删掉了，却只修了 darwin 配置的引用，导致全部 8 个 nixosConfigurations
     # 无法求值十个月。
@@ -355,9 +276,6 @@
     #     只是个废弃桩，求值时会打印 "Overlay has been removed, ...". 8 处引用已删。
     #   - plasma-manager 随 KDE 一起弃用，见下方 KDE 移除说明。
     # 同理 greetd.nix 改用 pkgs.hyprland，省掉一个带 submodule 的重型 git input。
-
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     haumea.url = "github:nix-community/haumea";
 
@@ -370,9 +288,6 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     # Hyprland is **such** eye candy
-
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
