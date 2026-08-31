@@ -165,9 +165,17 @@ runner has ~14GB of disk.
 nix flake update
 ```
 
-Pinned third-party sources live in `pkgs/sources.toml`; run `nvfetcher` from `pkgs/` to
-regenerate `pkgs/_sources/generated.nix` (generated — never hand-edit, and it is excluded from
-treefmt).
+Pinned third-party sources live in `pkgs/sources.toml` — down to **two** entries,
+`mpv-iptvplus` and `gtk3-nocsd`, which are exactly the two packages `pkgs/default.nix` exports.
+Six others (`manix`, `swhkd`, `ecal`, `wallpaper-engine-kde-plugin`, `lightly-shaders`,
+`plasma5-applets-window-appmenu`) had no consumer and were removed. Run `nvfetcher` from `pkgs/`
+to regenerate `pkgs/_sources/generated.nix` (generated — never hand-edit, and it is excluded
+from treefmt).
+
+The six deletions were applied to `generated.nix`/`generated.json` **by hand**, knowingly
+breaking that rule: `nvfetcher` also checks upstream for new versions, so regenerating would
+have folded version bumps for the two survivors into a pure-deletion commit. The next real
+`nvfetcher` run converges to the same file, minus those bumps.
 
 ### Tests
 
@@ -244,10 +252,15 @@ Add a file and the attribute appears automatically — but it is inert until a s
 ### suites
 
 `suites.{nixos,home-manager,darwin}` are named lists of profile paths (`base`, `misc`, `games`,
-`hyprland`, `cli`, `gui`, `shells`, `managed`, `darwin`). **A profile file has zero effect
-unless some suite references it.** No host currently selects a desktop suite;
-`suites.nixos.hyprland` exists with no consumer, kept because it is the most likely candidate
-if Hyprland is chosen.
+`cli`, `gui`, `shells`, `hyprland`, `darwin`). **A profile file has zero effect unless some
+suite references it.** No host currently selects a desktop suite.
+
+`suites.nixos.hyprland` (greetd) and `suites.home-manager.managed` (vscode) were deleted for
+having zero consumers. Their profile files — `profiles/nixos/display-managers/greetd.nix` and
+`profiles/home-manager/managed/vscode.nix` — are still on disk and still auto-loaded by haumea,
+so reviving either is one line in `suites`. Note the asymmetry that remains:
+`suites.home-manager.hyprland` **is** consumed, by `xiaoxin-pro16-2021`'s **root** user, while
+nothing selects a display manager — that is the "no graphical session" state, not an oversight.
 
 The exception to the suite rule: `profiles/home-manager/bin/*.nix` are plain string-returning
 functions `import`ed directly by `profiles/home-manager/misc.nix`.
@@ -272,6 +285,12 @@ locks you out. The file carries the exact sequence.
 Overlay chain: `inur` → `nvchad` → `nur` → `nvfetcher` → `rust-overlay` → `(import ../pkgs)` →
 `overlays.default`. darwin swaps agenix-that-no-longer-exists for a `karabiner-elements` pin
 from `nixpkgs-stable`.
+
+`overlays/default.nix` is now an **explicitly empty** overlay. It used to be
+`skhd = prev.skhd.overrideAttrs (_: _: {})` — an override changing nothing, verified byte-identical
+to bare nixpkgs, which read as "skhd is patched here" when it wasn't. The file is kept rather than
+deleted because `flake.overlays.default` is a public output and this is where a local package
+override belongs.
 
 ### Theming
 

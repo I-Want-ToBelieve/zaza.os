@@ -67,7 +67,6 @@
   suites = {
     nixos = with profiles.nixos; {
       base = [core.nixos];
-      hyprland = [display-managers.greetd];
       misc = [
         network
         nix
@@ -79,7 +78,6 @@
         rescue-boot
         development.android
         applications.chromium
-        packages
       ];
       games = [game.steam game.uudeck.default];
     };
@@ -109,8 +107,6 @@
         window-managers.hyprland.default
         mime
       ];
-
-      managed = with managed; [vscode];
     };
 
     darwin = with profiles.darwin; {
