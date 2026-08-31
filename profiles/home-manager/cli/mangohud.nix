@@ -1,1 +1,1 @@
-{...}: {programs.mangohud = {enable = true;};}
+_: {programs.mangohud = {enable = true;};}

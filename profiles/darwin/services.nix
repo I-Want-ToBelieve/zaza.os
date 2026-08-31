@@ -1,4 +1,4 @@
-{...}: let
+_: let
   # yakite = "/Users/i.want.to.believe/git.workspaces/js.workspaces/yakite/apps/yakite/target/release/yakite";
   yakite = "yakite";
 in {

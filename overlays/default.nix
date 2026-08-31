@@ -1,5 +1,5 @@
-final: prev: {
+_final: prev: {
   skhd =
-    prev.skhd.overrideAttrs (finalAttrs: previousAttrs: {
+    prev.skhd.overrideAttrs (_finalAttrs: _previousAttrs: {
     });
 }

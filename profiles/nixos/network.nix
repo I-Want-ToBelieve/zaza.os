@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+_:
 #  let
 #   github520 = pkgs.fetchurl {
 #     url = "https://raw.hellogithub.com/hosts";

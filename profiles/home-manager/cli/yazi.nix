@@ -1,1 +1,1 @@
-{...}: {programs.yazi = {enable = true;};}
+_: {programs.yazi = {enable = true;};}

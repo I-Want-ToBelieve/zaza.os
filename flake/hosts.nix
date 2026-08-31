@@ -10,11 +10,7 @@
 # 形态选择：普通函数 + 严格命名参数。理由是免费的拼写检查 —— mkHost { stylyx = false; }
 # 会立刻报 "called with unexpected argument 'stylyx'"。attrset + recursiveUpdate 或嵌套
 # evalModules 都给不了这个，而这是 Nix 里最便宜的正确性保障。
-{
-  config,
-  inputs,
-  ...
-}: let
+{inputs, ...}: let
   # 显式用 nixpkgs 的 lib，不用 flake-parts 注入的那个 —— 后者来自 flake-parts 自己的
   # nixpkgs-lib 输入，可能与本仓库的 nixpkgs 漂移。
   inherit (inputs.nixpkgs) lib;
@@ -140,7 +136,7 @@
   # 原来的 share.overlays
   commonOverlays = [
     (_final: prev: {inur = inputs.inur.packages."${prev.system}";})
-    (_final: prev: {nvchad = inputs.nvchad4nix.packages."${prev.system}".nvchad;})
+    (_final: prev: {inherit (inputs.nvchad4nix.packages."${prev.system}") nvchad;})
   ];
 
   nixosOverlays =
@@ -220,7 +216,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "homebak";
-    extraSpecialArgs = {inputs = inputs;};
+    extraSpecialArgs = {inherit inputs;};
     users = lib.mapAttrs (_name: mkHmUser {inherit sharedModules extras;}) users;
   };
 
@@ -458,7 +454,7 @@ in {
     # specialArgs 里，模块系统会退回 _module.args 去取，而那需要先有 config，
     # 结果是无限递归（nixpkgs 自己的提示："argument is not externally
     # provided, so querying `_module.args` instead, requiring `config`"）。
-    specialArgs = {inputs = inputs;};
+    specialArgs = {inherit inputs;};
 
     # clan 用 machineClass 分流到 nixosSystem / darwinSystem，并据此把结果
     # 拆进 nixosConfigurations 与 darwinConfigurations（module.nix:95-96）。

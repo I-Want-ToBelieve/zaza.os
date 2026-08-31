@@ -1,4 +1,4 @@
-final: prev: let
+_final: prev: let
   # nvfetcher 生成的源集合。
   #
   # 绝不能把它作为 `sources` 暴露在 nixpkgs 顶层：callPackage 会按名字自动注入，

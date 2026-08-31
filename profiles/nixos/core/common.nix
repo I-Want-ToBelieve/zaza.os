@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: let
-  inherit (lib) fileContents;
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 in {
   # Sets binary caches which speeds up some builds

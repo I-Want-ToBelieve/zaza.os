@@ -1,9 +1,4 @@
-{
-  inputs,
-  config,
-  pkgs,
-  ...
-}: {
+_: {
   programs.nvchad = {
     enable = true;
     hm-activation = true;

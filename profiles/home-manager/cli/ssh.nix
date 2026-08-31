@@ -1,8 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
+_: {
   home.file.".ssh/config".text = ''
     UserKnownHostsFile ~/.ssh/known_hosts
     StrictHostKeyChecking accept-new

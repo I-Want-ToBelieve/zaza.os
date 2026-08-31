@@ -1,4 +1,4 @@
-{...}: {
+_: {
   # @see https://raw.githubusercontent.com/lakinduakash/linux-wifi-hotspot/master/src/scripts/create_ap.conf
   services.create_ap = {
     enable = false;

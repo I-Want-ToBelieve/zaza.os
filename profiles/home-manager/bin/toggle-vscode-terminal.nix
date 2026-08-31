@@ -1,4 +1,4 @@
-{pkgs, ...}: ''
+_: ''
   #! /usr/bin/env nu
   #> Syntax: nushell
 

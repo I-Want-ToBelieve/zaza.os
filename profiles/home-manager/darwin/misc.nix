@@ -1,4 +1,4 @@
-{...}: {
+_: {
   home.file.".phoenix.js".source = ./phoenix.js;
 
   home.file.".hammerspoon/init.lua".source = ./hammerspoon.lua;

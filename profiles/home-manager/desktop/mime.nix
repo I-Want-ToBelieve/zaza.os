@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
+_: let
   browser = ["firefox.desktop"];
   associations = {
     "application/x-extension-htm" = browser;

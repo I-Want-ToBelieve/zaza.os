@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+_: {
   programs.chromium = {
     enable = true;
     extensions = [

@@ -7,7 +7,7 @@
 }: let
   inherit (sources.mpv-iptvplus) pname src version;
 in
-  stdenvNoCC.mkDerivation (finalAttrs: {
+  stdenvNoCC.mkDerivation (_finalAttrs: {
     inherit pname src version;
 
     postPatch = ''

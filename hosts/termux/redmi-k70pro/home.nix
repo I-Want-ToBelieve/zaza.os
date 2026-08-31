@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   import = [../../../profiles/home-manager/shells/fish.nix];
   # Read the changelog before changing this value
   home = {
