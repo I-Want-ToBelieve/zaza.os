@@ -38,7 +38,7 @@
       curl
       gcc
       git
-      hddtemp
+      smartmontools # 取代 hddtemp：上游已死，smartctl -A 给同样的温度
       jq
       lm_sensors
       lz4

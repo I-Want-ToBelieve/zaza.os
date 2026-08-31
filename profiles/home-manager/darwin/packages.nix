@@ -6,7 +6,6 @@
       bandwhich
       bc
       btop
-      bottom
 
       cachix
 
@@ -26,7 +25,7 @@
 
       localsend
 
-      nil
+      nixd # 与 NixOS 侧一致：两个 Nix LSP 留 nixd
 
       nix-init
 
@@ -50,18 +49,12 @@
   programs = {
     eza.enable = true;
 
-    fzf = {
-      enable = false;
-      enableBashIntegration = false;
-      enableZshIntegration = false;
-      enableFishIntegration = false;
-    };
-
-    mcfly = {
+    atuin = {
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
       enableFishIntegration = true;
+      enableNushellIntegration = true;
     };
 
     zoxide = {

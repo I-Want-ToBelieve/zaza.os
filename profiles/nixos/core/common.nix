@@ -19,7 +19,6 @@ in {
       dnsutils
       fd
       git
-      bottom
       jq
       manix
       moreutils

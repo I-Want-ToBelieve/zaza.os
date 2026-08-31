@@ -16,8 +16,7 @@ _: let
     "x-scheme-handler/unknown" = browser;
 
     "audio/*" = ["mpv.desktop"];
-    "video/*" = ["mpv.dekstop"];
-    "image/*" = ["imv.desktop"];
+    "video/*" = ["mpv.desktop"];
     "application/json" = browser;
     "application/pdf" = ["org.pwmt.zathura.desktop.desktop"];
     "x-scheme-handler/discord" = ["discordcanary.desktop"];

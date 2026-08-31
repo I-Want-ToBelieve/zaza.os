@@ -224,11 +224,6 @@ in {
       };
     };
 
-    podman = {
-      enable = true;
-      extraPackages = with pkgs; [skopeo conmon runc crun];
-    };
-
     libvirtd = {
       enable = true;
       qemu = {
