@@ -5,14 +5,9 @@
     self,
     flake-parts,
     nixpkgs,
-    haumea,
     ...
   }:
-    flake-parts.lib.mkFlake {inherit inputs;} ({
-      config,
-      moduleWithSystem,
-      ...
-    }: {
+    flake-parts.lib.mkFlake {inherit inputs;} ({...}: {
       imports = [
         inputs.devenv.flakeModule
         inputs.treefmt-nix.flakeModule
@@ -26,9 +21,6 @@
       debug = true;
 
       perSystem = {
-        config,
-        self',
-        inputs',
         pkgs,
         system,
         ...
@@ -79,6 +71,28 @@
           git-hooks.hooks = {
             alejandra.enable = true;
             editorconfig-checker.enable = true;
+
+            # 不开 statix / deadnix 这两个内置 hook —— 它们要求「零发现」，
+            # 而现存 48 条 W20 会让每一次 commit 都被拒。改成跑棘轮：
+            # 现有债务放过，新增债务拦下。
+            lint-ratchet = let
+              runner = pkgs.writeShellApplication {
+                name = "lint-ratchet";
+                runtimeInputs = [pkgs.statix pkgs.deadnix];
+                text = ''
+                  root=$(git rev-parse --show-toplevel)
+                  exec bash "$root/scripts/verify/lint-ratchet.sh" "$root" 48 0
+                '';
+              };
+            in {
+              enable = true;
+              name = "lint 棘轮 (statix/deadnix 只降不升)";
+              entry = "${runner}/bin/lint-ratchet";
+              language = "system";
+              # 整仓库计数，不是逐文件检查，所以不接受文件名参数。
+              pass_filenames = false;
+              files = "\\.nix$";
+            };
           };
 
           # devenv 默认生成 container-shell / container-processes 两个 OCI 输出，
@@ -125,6 +139,22 @@
           touch "$out"
         '';
 
+        # lint 棘轮：statix / deadnix 的发现数只允许下降。
+        #
+        # 上限不是零，因为 statix 剩下的 48 条全是 W20（重复 key），它只报不修 ——
+        # 需要人工把 a.b = …; a.c = …; 合并成 a = { b = …; c = …; };。那是代码形态
+        # 偏好而不是缺陷，为它改二十几个文件属于零收益的 churn。
+        # deadnix 一侧已清到 0（生成文件之外），所以那边就是硬零。
+        #
+        # 改这两个数字的唯一正当理由是**调低**。调高等于承认新引入了 lint 债。
+        checks.lint-ratchet =
+          pkgs.runCommand "lint-ratchet" {
+            nativeBuildInputs = [pkgs.statix pkgs.deadnix];
+          } ''
+            bash ${self}/scripts/verify/lint-ratchet.sh ${self} 48 0
+            touch "$out"
+          '';
+
         # ISO 只在 x86_64-linux 上有意义。此前它在所有 system 上求值，
         # 而它引用的 nixpkgs 路径已不存在，导致 `nix flake check`
         # 在任何平台上 1.2 秒内直接失败 —— 早于任何 host 被求值。
@@ -142,7 +172,7 @@
               ./users/nixos.nix
               ./users/i.want.to.believe.nix
 
-              ({...}: {
+              (_: {
                 environment.etc = {
                   # Creates /etc/nanorc
                   v2rayasub = {
@@ -165,7 +195,7 @@
             # additional arguments to pass to modules:
             # hosts/nixos/kde-plasma-iso.nix 只用 lib 与 inputs；
             # suites / profiles / self 从来没有消费者。
-            specialArgs = {inputs = inputs;};
+            specialArgs = {inherit inputs;};
 
             # you can also define your own custom formats
             # customFormats = { "myFormat" = <myFormatModule>; ... };
@@ -193,7 +223,7 @@
           # list of extra special args for Nix-on-Droid modules
           extraSpecialArgs = {
             # rootPath = ./.;
-            inputs = inputs;
+            inherit inputs;
           };
 
           # set nixpkgs instance, it is recommended to apply `nix-on-droid.overlays.default`
