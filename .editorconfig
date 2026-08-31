@@ -4,3 +4,13 @@ root = true
 end_of_line = lf
 indent_style = space
 charset = utf-8
+
+# 二进制与素材文件。editorconfig 的行尾/缩进/编码规则对它们没有意义，
+# 而 editorconfig-checker 会逐字节检查并报错 —— 两个 .crx 上共 12 处，
+# 这让 devenv shell 进入和 `prek run --all-files` 一直以非零退出。
+# commit 路径只看 staged 文件，所以从没暴露过。
+# treefmt 的 excludes 里本就有这几类，这里与它对齐。
+[*.{crx,png,svg,pem,jpg,jpeg,ico,woff,woff2,ttf}]
+end_of_line = unset
+indent_style = unset
+charset = unset
