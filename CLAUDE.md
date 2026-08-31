@@ -133,13 +133,22 @@ change, deliberately not done. It is gated to `x86_64-linux`.
 nix fmt
 nix flake check --impure
 ./scripts/verify/check-undeclared-inputs.sh
+./scripts/verify/lint-ratchet.sh . 48 0
 ./scripts/verify/equiv.sh <base-ref> [<cand-ref>]
 ```
 
 `treefmt-nix` populates `formatter.<system>` (alejandra + prettier + shfmt); the exclude list
 lives in the `perSystem.treefmt` block in `flake.nix` and the root `treefmt.toml` is redundant
-with it. devenv's git hooks also run alejandra + editorconfig-checker, but on **staged files
-only**.
+with it. devenv's git hooks run alejandra + editorconfig-checker on **staged files only**, plus
+`lint-ratchet` on the whole tree.
+
+`scripts/verify/lint-ratchet.sh` freezes the statix/deadnix counts at **48 / 0** and fails only
+when they rise. The upper bound is not zero because all 48 remaining statix findings are `W20`
+(repeated keys), which statix reports but cannot fix — merging `a.b = …; a.c = …;` into
+`a = { b = …; c = …; };` across two dozen files is churn with no payoff. deadnix is at a hard
+zero outside `pkgs/_sources`. The built-in `statix`/`deadnix` git hooks are deliberately **not**
+enabled: they demand zero findings, so the 48 would reject every commit. Raising either bound
+means admitting new lint debt; lowering it is the only legitimate edit.
 
 `scripts/verify/equiv.sh` is the equivalence harness: it checks out two refs, **refuses to run
 if their `flake.lock` differ** (a differing lock makes the comparison meaningless), evaluates
