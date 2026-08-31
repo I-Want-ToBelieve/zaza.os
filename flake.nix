@@ -242,6 +242,10 @@
       url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
+      # clan 自带一份 nix-darwin。目前两边恰好锁在同一个 rev，但它们是独立节点，
+      # 下次 nix flake update 就会各自漂 —— 而 k99-lite-darwin 现在由 clan 构建，
+      # 用哪一份 nix-darwin 直接决定这台机的结果。
+      inputs.nix-darwin.follows = "nix-darwin";
     };
 
     # 353f738f（2025-10-11 "fix: types"）把 hyprpanel / plasma-manager 从 inputs

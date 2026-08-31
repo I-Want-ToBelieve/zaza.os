@@ -188,7 +188,7 @@
   };
 
   ## ------------------------------------------------------------------ ##
-  ## 2. home-manager。mkHost 与 mkDarwin 唯一共用的实质代码。            ##
+  ## 2. home-manager。mkHost 与 mkDarwinModules 唯一共用的实质代码。     ##
   ## ------------------------------------------------------------------ ##
 
   # sharedModules 前置、extras 后置，复现原来的顺序：
@@ -323,8 +323,9 @@
   };
 
   ## ------------------------------------------------------------------ ##
-  ## 4. mkDarwin —— 独立函数，不做 mkSystem { platform = … }。          ##
+  ## 4. mkDarwinModules —— 独立函数，不做 mkSystem { platform = … }。    ##
   ##    两者有 13 处结构性差异对 5 处相似，统一只会把布尔汤搬进工厂内部。 ##
+  ##    darwin 与 NixOS 现在都由 clan 构建，靠 machineClass 分流。        ##
   ## ------------------------------------------------------------------ ##
 
   # 返回的是**模块列表**，不是单个 module —— 这一点与 mkHost 不同，且是必须的。
@@ -361,14 +362,6 @@
       }
     ]
     ++ modules;
-
-  mkDarwin = {system, ...} @ args:
-    inputs.nix-darwin.lib.darwinSystem {
-      inherit system;
-      # 刻意不传 specialArgs：hosts/darwin/k99-lite-darwin.nix 和四个
-      # profiles/darwin/*.nix 只用 pkgs / lib，且都带 ...
-      modules = mkDarwinModules (builtins.removeAttrs args ["system"]);
-    };
 
   nixosSuites = suites.nixos;
   hmSuites = suites.home-manager;
@@ -467,22 +460,34 @@ in {
     # provided, so querying `_module.args` instead, requiring `config`"）。
     specialArgs = {inputs = inputs;};
 
-    machines = lib.mapAttrs (name: def:
-      mkHost ({
-          system = "x86_64-linux";
-          inherit name;
-        }
-        // def))
-    machines;
-  };
+    # clan 用 machineClass 分流到 nixosSystem / darwinSystem，并据此把结果
+    # 拆进 nixosConfigurations 与 darwinConfigurations（module.nix:95-96）。
+    inventory.machines."k99-lite-darwin".machineClass = "darwin";
 
-  flake.darwinConfigurations."k99-lite-darwin" = mkDarwin {
-    system = "aarch64-darwin";
-    hostFile = ../hosts/darwin/k99-lite-darwin.nix;
-    suites = with darwinSuites; [misc];
-    users."i.want.to.believe" = {
-      suites = with hmSuites; [darwin];
-      stateVersion = "24.05"; # 对比每台 Linux 主机的 "23.11"
-    };
+    machines =
+      lib.mapAttrs (name: def:
+        mkHost ({
+            system = "x86_64-linux";
+            inherit name;
+          }
+          // def))
+      machines
+      // {
+        "k99-lite-darwin" = {
+          # clan 调用 darwinSystem 时**不传** system —— module.nix:63 只给
+          # modules 与 specialArgs。原来的 mkDarwin 是靠 darwinSystem 的 system
+          # 参数指定平台的，交给 clan 之后必须由模块自己声明。
+          nixpkgs.hostPlatform = "aarch64-darwin";
+
+          imports = mkDarwinModules {
+            hostFile = ../hosts/darwin/k99-lite-darwin.nix;
+            suites = with darwinSuites; [misc];
+            users."i.want.to.believe" = {
+              suites = with hmSuites; [darwin];
+              stateVersion = "24.05"; # 对比每台 Linux 主机的 "26.05"
+            };
+          };
+        };
+      };
   };
 }
