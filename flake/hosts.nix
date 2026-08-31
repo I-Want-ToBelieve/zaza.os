@@ -253,10 +253,15 @@
     modules ? [], # 逐机逃生口（nixos-wsl 走这里）
     # ---- 真正的单机例外 ----
     stylix ? true, # 两个 -minimal 不要
-    # 三态：null 完全不导入 disko / {} 导入但不传 disks / {disks=[…];} 两者都做。
-    # 必须三态：hosts/nixos/lenovo-a6-6310/disk-config.nix 根本不接 disks 参数
-    # （硬编码 lib.mkDefault "/dev/sda"），而 dell-makcoo 的接 disks ? ["/dev/nvme1n1"]。
-    # 若无条件传 disks = null，会顶掉 dell-makcoo 自己的默认值并在 elemAt 处崩。
+    # 三态：null 不传任何 disko 配置 / {} 什么都不传 / {disks=[…];} 传 disks。
+    #
+    # 目前**没有消费者** —— 用 disko 的四台都是教室机，已随机群删除。保留这个
+    # 字段是因为它编码了一条不显然的约束：不同主机的 disk-config.nix 函数签名
+    # 不同，有的接 `disks ? [...]` 有的完全不接，所以不能无条件传 disks
+    # （传 null 会顶掉对方自己的默认值并在 elemAt 处崩）。将来再加装机变体时
+    # 直接用这个三态即可。
+    #
+    # 注意 disko 模块本身现在由 clan-core 提供，不需要再单独导入。
     disko ? null,
     # stateVersion 现在只存在于这一处。
     #
@@ -436,45 +441,6 @@
             stateVersion = "23.11";
           };
         };
-    };
-
-    dell-makcoo = {
-      hostFile = ../hosts/nixos/dell-makcoo/default.nix;
-      suites = with nixosSuites; [base misc];
-      disko = {disks = ["/dev/nvme0n1"];};
-      users = iwtb (with hmSuites; [base cli gui shells managed]);
-    };
-
-    dell-makcoo-minimal = {
-      hostFile = ../hosts/nixos/dell-makcoo/minimal.nix;
-      # nixos-anywhere 用的裸装变体：不导入任何 nixos suite（故省略 suites），
-      # 也不要主题。
-      stylix = false;
-      disko = {disks = ["/dev/sda"];};
-      users."i.want.to.believe" = {
-        # 连标准 HM 附加项也不要：那会把 nvchad / nix-index / comma 拉进一台
-        # 存在意义就是小闭包的机器。
-        standardExtras = false;
-        stateVersion = "23.11";
-      };
-    };
-
-    lenovo-a6-6310 = {
-      hostFile = ../hosts/nixos/lenovo-a6-6310/default.nix;
-      suites = with nixosSuites; [base misc];
-      # 导入 disko，但**不传** disks —— 它的 disk-config.nix 不接这个参数。
-      disko = {};
-      users = iwtb (with hmSuites; [base cli gui shells managed]);
-    };
-
-    lenovo-a6-6310-minimal = {
-      hostFile = ../hosts/nixos/lenovo-a6-6310/minimal.nix;
-      stylix = false;
-      disko = {};
-      users."i.want.to.believe" = {
-        standardExtras = false;
-        stateVersion = "23.11";
-      };
     };
   };
 in {

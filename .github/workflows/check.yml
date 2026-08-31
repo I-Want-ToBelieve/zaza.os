@@ -55,10 +55,6 @@ jobs:
           - k99-lite-wsl
           - xiaoxin-pro14-2021
           - xiaoxin-pro16-2021
-          - dell-makcoo
-          - dell-makcoo-minimal
-          - lenovo-a6-6310
-          - lenovo-a6-6310-minimal
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main

@@ -59,38 +59,11 @@
           # https://devenv.sh/basics/
           env = {
             GREET = "🛠️ Let's hack 🧑🏻‍💻";
-            NIX_SSHOPTS = "-i /home/i.want.to.believe/.ssh/thinkpad_t420s_root_id_rsa";
           };
 
           # https://devenv.sh/scripts/
           scripts.hello.exec = "echo $GREET";
           scripts.rebuild.exec = "nix run nix-darwin --accept-flake-config -- switch --flake .#k99-lite-darwin";
-
-          scripts."10r".exec = ''
-            cd $DEVENV_ROOT
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.100\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.101\n"' &
-
-            sh -c $'sleep 0.414;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.102\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.103\n"' &
-
-            sh -c $'sleep 0.414;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.104\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.105\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.106\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.107\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.108\n"' &
-
-            sh -c $'sleep 0.314;zellij -s r10 -s r10 action write-chars "zellij run -- nixos-rebuild switch --flake .#dell-makcoo --verbose --show-trace --impure --target-host root@192.168.0.109\n"' &
-
-            zellij --session r10 || zellij attach r10
-          '';
 
           enterShell = ''
             hello
@@ -128,9 +101,6 @@
           settings.global.excludes = [
             # nvfetcher 生成，绝不可手改（.nix 与 .json 两份）
             "pkgs/_sources/**"
-            # Deno 机群脚本：Phase 6 会用 clan inventory 重写、Phase 7 删除。
-            # 现在让 prettier 翻它们的引号风格只会制造 review 噪音。
-            "scripts/makcoo/**"
             # 上游抄来的窗口管理器配置，不按本仓库风格排版
             "*.js"
             "*.lua"
