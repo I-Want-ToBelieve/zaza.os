@@ -292,6 +292,30 @@ to bare nixpkgs, which read as "skhd is patched here" when it wasn't. The file i
 deleted because `flake.overlays.default` is a public output and this is where a local package
 override belongs.
 
+### Package inventory — decisions that look wrong but aren't
+
+`home.packages` went 161 → 133 and `systemPackages` 249 → 247 in `9cb90c5d`. Four of the
+things _not_ removed are the interesting ones:
+
+- **`pulseaudio` stays in `home.packages`.** It looks redundant next to pipewire, but no system
+  package provides `pactl` — NixOS's pipewire pulse-compat layer does not install it. Removing
+  it takes `pactl` off `PATH`.
+- **`fzf` stays even though `programs.fzf` was deleted.** The deleted block was
+  `enable = false` plus three `enableXIntegration = false` — all defaults, six no-op lines. The
+  _binary_ is load-bearing: zoxide's `zi` and yazi both shell out to `fzf`.
+- **`skim` stays** for the same reason: `profiles/nixos/core/common.nix`'s `manix` shellAlias
+  pipes through `sk --preview=…`, system-wide, for every user.
+- **`htop` is not ours to remove.** It comes from clan-core's
+  `nixosModules/clanCore/defaults.nix`. The three-system-monitor situation resolves to `btop`
+  (ours, kept) + `bottom` (ours, removed) + `htop` (clan's, untouchable without disabling
+  clan defaults).
+
+Also: `lm_sensors` and `wirelesstools` **are** the canonical attribute names (`lm-sensors`
+does not exist — that is only the package's `name`). `utillinux` was the one real alias and is
+now `util-linux`. And `networking.nftables.enable` was deliberately **not** flipped: it is the
+actual iptables→nftables migration, but it moves the path docker/libvirt/waydroid depend on,
+and `networking.firewall.enable = false` makes it a no-win today.
+
 ### Theming
 
 **stylix** at system and HM level — catppuccin-mocha, Ubuntu Mono Ligaturized / JetBrains Mono
@@ -348,11 +372,11 @@ and passes it to dax as a single argv element.
 - **Files on disk ≠ hosts in the flake** is no longer true — the orphans were deleted. Do not
   auto-discover hosts from `hosts/`; the machine list in `flake/hosts.nix` is explicit on
   purpose.
-- **Hardcoded absolute paths** referencing an older checkout location
-  (`~/git.workspace/nix.workspace/zaza.os/...`) exist in
-  [profiles/home-manager/desktop/plasma.nix](profiles/home-manager/desktop/plasma.nix) — a moved
-  repo silently breaks those settings. That file also pins a `/nix/store` hash for
-  `breeze-qt5-5.27.10`.
+- **Inert profiles that grep will find but nothing imports.** `profiles/home-manager/desktop/`
+  holds `sxhkd.nix` and `window-managers/niri/default.nix`, neither named by any suite;
+  `display-managers/greetd.nix` and `managed/vscode.nix` likewise. haumea loads them all, so
+  they appear as `profiles.*` attributes and read as live config. Only `window-managers/hyprland`
+  and `mime` are actually selected (by `xiaoxin-pro16-2021`'s **root** user).
 - `history.md` is a dumped shell history, not documentation, but it is the best record of which
   commands are actually used against this flake.
 
