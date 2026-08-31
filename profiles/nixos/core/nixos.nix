@@ -34,7 +34,7 @@
       gptfdisk
       iputils
       usbutils
-      utillinux
+      util-linux
       curl
       gcc
       git
