@@ -1,5 +1,6 @@
 {pkgs, ...}: {
-  # age.secrets.i.want.to.believe.file = "${self}/secrets/i.want.to.believe.age";
+  # 密钥现在由 clan vars 管理，见 flake/vars.nix。
+  # 这里曾经是 agenix 的引用，指向已删除的 secrets/ 目录。
   programs.fish.enable = true;
 
   users.mutableUsers = true;
@@ -38,6 +39,7 @@
       "mysql"
       "lxd" # waydroid
     ];
-    # passwordFile = config.age.secrets.i.want.to.believe.path;
+    # 启用 clan vars 托管的口令时，取消 flake/vars.nix 末尾那段注释，
+    # 并删掉上面的 initialPassword。
   };
 }

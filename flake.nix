@@ -47,7 +47,14 @@
           ];
 
           # https://devenv.sh/reference/options/
-          packages = with pkgs; [nvfetcher] ++ [zellij] ++ [amber-lang] ++ [deno];
+          packages =
+            [
+              # clan CLI。用 clan-core 自己产出的那份，保证和 flake 里锁定的
+              # clan-core 版本一致；`nix run github:clan-lol/clan-core#clan`
+              # 每次都要走网络，而且版本可能与 lock 里的不一致。
+              inputs.clan-core.packages.${system}.clan-cli
+            ]
+            ++ (with pkgs; [nvfetcher zellij amber-lang deno]);
 
           # https://devenv.sh/basics/
           env = {
