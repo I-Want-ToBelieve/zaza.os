@@ -80,6 +80,10 @@
         applications.chromium
       ];
       games = [game.steam game.uudeck.default];
+      # zaza-vm 专用。刻意**不**复用 misc：那里面的 network（NetworkManager）
+      # 在 QEMU 的 SLIRP 后面只会添乱，samba / share-via-wifi / android /
+      # chromium 对一台开发 VM 无用，而 games 里的 steam 是 x86_64-only。
+      vm = [nix locale fonts stylix remote-desktop];
     };
     home-manager = with profiles.home-manager; {
       base = [packages nix misc fonts stylix];
@@ -412,6 +416,18 @@
             stateVersion = "23.11";
           };
         };
+    };
+
+    # macOS 上的 aarch64 开发 VM —— 桌面选型与 shell 开发在这里做。
+    # 唯一一台非 x86_64 的 NixOS 机器，理由见 hosts/virtual/zaza-vm.nix 顶部。
+    zaza-vm = {
+      hostFile = ../hosts/virtual/zaza-vm.nix;
+      system = "aarch64-linux";
+      suites = with nixosSuites; [base vm];
+      users = iwtb (with hmSuites; [base cli shells hyprland]);
+      # disk-config.nix 由 host 文件自己 import；这里只注入 disks 参数，
+      # 让 nixos-anywhere 知道往哪个块设备装。
+      disko = {disks = ["/dev/vda"];};
     };
 
     xiaoxin-pro14-2021 = {

@@ -27,9 +27,13 @@ A multi-phase refactor took it from there to here. The plan is at
 and `refactor/p1-baseline`, tagged `baseline-p1` (first evaluable state) and `baseline-p3`
 (post-mkHost).
 
-> **The machines have no graphical session.** KDE was removed rather than migrated to Plasma 6,
-> and no replacement has been chosen. Nothing has been deployed, so the tree is safe as it
-> stands, but this must not reach the ten classroom machines until a desktop is picked.
+> **The real machines have no graphical session.** KDE was removed rather than migrated to
+> Plasma 6, and no replacement has been chosen. Nothing has been deployed, so the tree is safe
+> as it stands, but this must not reach the ten classroom machines until a desktop is picked.
+>
+> The exception is `zaza-vm` — an aarch64 NixOS VM on the macOS host, added specifically as the
+> vehicle for picking one. It is the only host that selects a compositor. See
+> [scripts/vm/README.md](scripts/vm/README.md).
 
 **Nothing in this repo has been deployed to any machine.** Every phase so far is code only.
 
@@ -252,7 +256,11 @@ Add a file and the attribute appears automatically — but it is inert until a s
 ### suites
 
 `suites.{nixos,home-manager,darwin}` are named lists of profile paths (`base`, `misc`, `games`,
-`cli`, `gui`, `shells`, `hyprland`, `darwin`). **A profile file has zero effect unless some
+`vm`, `cli`, `gui`, `shells`, `hyprland`, `darwin`).
+
+`suites.nixos.vm` is `zaza-vm`'s, and deliberately does **not** reuse `misc`: that pulls in
+NetworkManager (pointless behind QEMU's SLIRP), samba / share-via-wifi / android / chromium
+(useless on a dev VM), and `games` would pull `steam`, which is x86_64-only. **A profile file has zero effect unless some
 suite references it.** No host currently selects a desktop suite.
 
 `suites.nixos.hyprland` (greetd) and `suites.home-manager.managed` (vscode) were deleted for
@@ -315,6 +323,34 @@ does not exist — that is only the package's `name`). `utillinux` was the one r
 now `util-linux`. And `networking.nftables.enable` was deliberately **not** flipped: it is the
 actual iptables→nftables migration, but it moves the path docker/libvirt/waydroid depend on,
 and `networking.firewall.enable = false` makes it a no-win today.
+
+### zaza-vm — the aarch64 development VM
+
+`nixosConfigurations.zaza-vm` is the only non-x86_64 NixOS host, and the only one with a
+compositor. It exists because the desktop has to be chosen somewhere, and the author's daily
+machine is an Apple Silicon Mac.
+
+Three facts that are not obvious and were each verified rather than assumed:
+
+- **It is aarch64 because HVF requires matching architecture.** x86_64 would mean TCG
+  emulation. The cost is that this VM cannot validate the classroom machines' actual closure —
+  only architecture-independent desktop work transfers.
+- **The VM is given no GPU at all.** Homebrew's qemu 9.2.3 and nixpkgs' qemu 11.1.0 both lack
+  `virtio-gpu-gl` and are not linked against virglrenderer (checked directly, on this host).
+  Plain `virtio-gpu-pci` offers only dumb buffers, and Hyprland is GLES-only since it dropped
+  the pixman renderer — so its DRM backend would fail. `profiles/nixos/remote-desktop.nix`
+  sidesteps DRM entirely: wlroots' **headless** backend, llvmpipe for GLES, wayvnc to export
+  the buffer, noVNC so a browser can open it.
+- **The runner is deliberately outside the flake.** `scripts/vm/run.sh` is a plain QEMU
+  launcher; the guest is a normal `mkHost` machine. Swapping to a runner that _can_ do 3D
+  (UTM bundles a patched QEMU with virglrenderer/ANGLE) requires no guest change.
+
+The x86-only packages are guarded **in place** — `lib.optionals onX86` splices in
+`profiles/home-manager/packages.nix`, not a move to the end of the list. `home.packages` feeds
+`buildEnv`'s `paths`, so order is part of the derivation; reordering would change all four
+x86 hosts' drvPath. As written, they are byte-identical (verified). `mangohud` is guarded in
+its own profile because on aarch64 it pulls `libstrangle`, which is x86-only — and the
+resulting error names libstrangle, two layers away from the actual cause.
 
 ### Theming
 

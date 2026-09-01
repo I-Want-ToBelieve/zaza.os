@@ -1,8 +1,18 @@
 {
   inputs,
+  lib,
   pkgs,
   ...
-}: {
+}: let
+  # lutris / wine / leagueoflegends 只有 x86_64 版本。zaza-vm 是 aarch64
+  # （宿主是 Apple Silicon，要 HVF 加速就只能同架构），不守卫会让整台机器
+  # 求值失败 —— 报错还是从 mangohud 的依赖 libstrangle 那里冒出来的，
+  # 与真正的原因隔着两层。
+  #
+  # 用原位切分而不是把它们挪到列表末尾：home.packages 会进 buildEnv 的
+  # `paths`，顺序是 derivation 的一部分，挪位置会改掉四台 x86 机器的 drvPath。
+  onX86 = pkgs.stdenv.hostPlatform.isx86_64;
+in {
   home.packages = with pkgs;
     [
       alsa-tools
@@ -46,8 +56,9 @@
       lazygit
       localsend
       # libreoffice-fresh
-      lutris
-
+    ]
+    ++ lib.optionals onX86 [lutris]
+    ++ [
       moonlight-qt
 
       netease-cloud-music-gtk
@@ -75,10 +86,13 @@
       vscode
 
       # my-wpsoffice
-
+    ]
+    ++ lib.optionals onX86 [
       wineWowPackages.fonts
       wineWowPackages.unstableFull
       winetricks
+    ]
+    ++ [
       iw # 取代 wireless-tools：iwconfig 一套早已废弃
 
       waypipe
@@ -107,7 +121,7 @@
       emmet-language-server
       nixd
     ]
-    ++ (with pkgs.inur; [leagueoflegends])
+    ++ lib.optionals onX86 (with pkgs.inur; [leagueoflegends])
     # xddxdd.dingtalk 已从该 NUR 仓库消失，nixpkgs 顶层也没有，无替代包。
     # 若仍需要钉钉，得自己打包或用其它渠道。
     ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
