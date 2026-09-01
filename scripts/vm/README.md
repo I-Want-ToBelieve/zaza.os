@@ -29,34 +29,56 @@
 ./scripts/vm/run.sh install        # 从 ISO 引导
 ```
 
-`install` 之后你会拿到 ISO 的串口终端。在里面：
+`install` 之后你会拿到 ISO 的串口终端。**唯一需要你手工做的一步**是设一个临时
+口令 —— 安装 ISO 上 sshd 默认开着、`PermitRootLogin = yes`，但 root 和 nixos
+的口令都是**空**的，而 sshd 拒绝空口令登录（见 nixpkgs 的
+`nixos/modules/profiles/installation-device.nix`）：
 
 ```bash
-sudo -i
-passwd            # 给 root 设一个临时口令，装完就没用了
-ip -4 addr show   # 应当是 10.0.2.15/24（QEMU 用户态 NAT）
+sudo passwd root   # getty 自动登录为 nixos，故用 sudo
 ```
 
-sshd 在安装 ISO 上默认是开的，QEMU 已把宿主 `127.0.0.1:2222` 转发到 guest 的 22。
-**另开一个终端**，从仓库根目录：
+然后**另开一个终端**，从 Mac 这侧：
 
 ```bash
-nix run github:nix-community/nixos-anywhere -- \
-  --flake '.#zaza-vm' \
-  --option pure-eval false \
-  --build-on-remote --print-build-logs \
-  --ssh-port 2222 root@127.0.0.1
+ssh -p 2222 root@127.0.0.1
 ```
 
-`--build-on-remote` 是必须的：macOS 造不出 Linux derivation。绝大部分闭包会从
-cache.nixos.org 直接替换（aarch64-linux 是 Hydra 全量构建的平台），真正需要在
-guest 里构建的只有 `nixos-system-zaza-vm` 这类很小的东西。
-
-装完关掉 QEMU（串口里 `Ctrl-a` 然后 `x`），改用：
+进去之后，在 **guest 内部**装机：
 
 ```bash
-./scripts/vm/run.sh run
+sudo nix --extra-experimental-features 'nix-command flakes' \
+  run 'github:nix-community/disko/latest#disko-install' -- \
+  --flake 'github:I-Want-ToBelieve/zaza.os/refactor/p1-baseline#zaza-vm' \
+  --disk main /dev/vda
 ```
+
+`main` 是 `hosts/virtual/zaza-vm/disk-config.nix` 里 `disko.devices.disk.main`
+的名字；`--disk` 会覆盖掉配置里的 `device` 默认值。
+
+装完关掉 QEMU（串口里 `Ctrl-a` 然后 `x`），改用 `./scripts/vm/run.sh run`。
+
+### 为什么是 disko-install 而不是 nixos-anywhere
+
+`nixos-anywhere` 是为**够不着的远程机器**设计的：它要处理 kexec 进安装环境、
+SSH 密钥编排、把闭包推过去。这里一样都用不上 —— 这是一台本地 VM，串口就在
+手边，guest 自己能上网。
+
+而且 macOS 造不出 Linux derivation，走 nixos-anywhere 就必须加
+`--build-on-remote`，绕一圈之后**实际构建仍然发生在 guest 里** —— 那还不如
+一开始就在 guest 里装。`disko-install` 把 disko 分区和 `nixos-install` 合成
+一步，没有 SSH 编排、没有宿主侧工具、也不需要额外拉一个 GitHub 项目
+（disko 本来就是 clan-core 带进来的 input）。
+
+**`clan machines install` 不是替代品** —— 已核实它内部就是 exec
+`nixos-anywhere --flake <flake>#<machine>`（clan-core 的
+`clan_lib/machines/install.py:139`），只是额外做了 vars 下发和 kexec 密钥。
+等 `clan vars generate` 真正跑起来之后它才有独立价值，现在 `flake/vars.nix`
+还是惰性的。
+
+其余考虑过但不适用的：`nixos-generators` / `nixos-rebuild build-image` 要在
+Linux 上构建镜像，这台 Mac 做不到；`nixos-rebuild --target-host` 要求目标机
+已经装好 NixOS。
 
 ## 日常
 
