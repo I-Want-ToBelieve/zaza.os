@@ -1,103 +1,69 @@
-# 把图形会话通过 VNC / noVNC 导出。
+# zaza-vm 的图形会话：KineticWE（KWin 分支 + noctalia shell）。
 #
-# 存在的理由：zaza-vm 没有物理显示器，而 QEMU 的 virtio-gpu-pci 只提供
-# dumb buffer、没有 virgl，所以 Hyprland 的 DRM 后端很可能起不来 ——
-# Hyprland 已经砍掉 pixman 软件渲染器，是纯 GLES 的。
+# ── 为什么是 KWin 系而不是 Hyprland ────────────────────────────────────
+# 目标是精确模仿 macOS，而 macOS 最标志性的是全局菜单栏。承载它的
+# `kde-appmenu` Wayland 协议**只有 KWin 系实现** —— Hyprland 结构上给不了。
+# 这是整个桌面选型的唯一决定性理由。
 #
-# 正解是绕开 DRM：用 wlroots 的 **headless 后端**建一个纯内存的虚拟输出，
-# GLES 交给 Mesa 的 llvmpipe 做软件渲染，再由 wayvnc 把这块 buffer 推出去。
-# 这条链路不碰任何显卡，所以宿主有没有 3D 转发都不影响它能不能跑。
+# ── 画面怎么出来 ──────────────────────────────────────────────────────
+# 走 **QEMU 侧的 VNC**，guest 里一个 VNC 软件都不装。此前这里用的是 wayvnc，
+# 那是错的：nixpkgs 对它的描述就是 "VNC server for **wlroots based** Wayland
+# compositors"，而 KWin 不是 wlroots，这条链路对它根本不成立。
 #
-# noVNC 那一层是为了**能被浏览器打开** —— 这样开发桌面时可以直接在浏览器里
-# 看到并操作这个会话，不需要本地装 VNC 客户端。
+# QEMU 侧还有两个附带好处：
+#   - 键鼠由 QEMU 经 virtio-input 注入，libinput 直接看到，不用额外配置；
+#   - **合成器起不来时照样看得见**引导过程和 tty —— 调一个可能起不来的桌面
+#     时，这条性质比清晰度重要得多。
+#
+# 之所以敢让 KWin 直接画到 QEMU 那块没有 3D 的 virtio-gpu 上：KWin 保留了
+# 软件合成后端（源码里的 src/backends/drm/drm_qpainter_backend.cpp），
+# 正是 Hyprland 砍掉的那个。KWIN_COMPOSE=Q 强制选它。
 {
-  lib,
+  inputs,
   pkgs,
   ...
 }: let
   user = "i.want.to.believe";
-
-  # 分辨率取小是刻意的：llvmpipe 是纯 CPU 渲染，像素数直接决定合成开销。
-  # 1280x800 在 6 GB / 软件渲染下仍然跟手，且在浏览器窗口里读得清。
-  width = 1280;
-  height = 800;
-
-  vncPort = 5900; # wayvnc
-  webPort = 6080; # noVNC 的 http
-
-  # Hyprland 在 headless 后端下不会自动建输出，要显式 create。
-  hyprlandConf = pkgs.writeText "hyprland-headless.conf" ''
-    monitor = HEADLESS-1, ${toString width}x${toString height}@60, 0x0, 1
-
-    # 没有物理输入设备；输入全部来自 wayvnc 的 VNC 通道。
-    exec-once = ${pkgs.wayvnc}/bin/wayvnc --output=HEADLESS-1 0.0.0.0 ${toString vncPort}
-
-    misc {
-      disable_hyprland_logo = true
-      disable_splash_rendering = true
-    }
-
-    # 一个能开出来的终端，作为「会话确实活着」的最小证据。
-    bind = SUPER, Return, exec, ${pkgs.foot}/bin/foot
-  '';
 in {
-  programs.hyprland.enable = true;
+  imports = [inputs.kineticwe.nixosModules.default];
 
-  # wlroots 默认拒绝在软件渲染器上跑，必须显式放行。
-  # 注意变量名是 WLR_BACKENDS（复数，选后端）和 WLR_RENDERER（选渲染器）——
-  # profiles/nixos/display-managers/greetd.nix 里的 `WLR_BACKEND = "vulkan"`
-  # 是单数且赋的是渲染器的值，那一处是无效设置（该 profile 目前无消费者）。
+  # 一个开关装齐 kwin-we + noctalia + 装饰件，并把 KineticWE 注册成一个
+  # 真正的 Wayland session（走 services.displayManager.sessionPackages，
+  # 不是会生成 X11 包装器的老 displayManager.session）。
+  programs.kineticwe.enable = true;
+
+  # QEMU 的 virtio-gpu-pci 只有 dumb buffer，没有 virgl —— 强制走 QPainter
+  # 软件合成，否则 KWin 会去试 OpenGL 然后失败回退（能起来，但日志很吵，
+  # 且回退路径不如显式选择可预测）。
   environment.sessionVariables = {
-    WLR_BACKENDS = "headless";
-    WLR_RENDERER = "gles2";
-    WLR_RENDERER_ALLOW_SOFTWARE = "1";
-    WLR_LIBINPUT_NO_DEVICES = "1";
+    KWIN_COMPOSE = "Q";
     LIBGL_ALWAYS_SOFTWARE = "1";
-    XDG_SESSION_TYPE = "wayland";
     NIXOS_OZONE_WL = "1";
   };
 
-  # greetd 负责 PAM / logind 会话 —— 这是 XDG_RUNTIME_DIR、seat 和
-  # dbus 用户总线能正确建立的原因。自己写 systemd system service 跑
-  # 合成器要手工复刻这一整套，不值得。
+  # greetd 负责 PAM / logind 会话 —— XDG_RUNTIME_DIR、seat、dbus 用户总线
+  # 都由它建立。自己写 systemd service 跑合成器要手工复刻这一整套。
+  #
+  # 自动登录：这是一台本地开发 VM，画面经 QEMU 只暴露给宿主的 127.0.0.1，
+  # 不在任何真实网络上。省掉每次改配置后手工输密码。
   services.greetd = {
     enable = true;
     settings = rec {
       initial_session = {
-        command = "${pkgs.hyprland}/bin/Hyprland --config ${hyprlandConf}";
+        command = "${pkgs.kineticwe}/bin/start-kineticwe";
         inherit user;
       };
       default_session = initial_session;
     };
   };
 
-  # noVNC：websockify 同时充当静态文件服务器（-w 指向 novnc 的 web 根）
-  # 和 WebSocket→TCP 代理。一个进程搞定，不需要额外的 nginx。
-  systemd.services.novnc = {
-    description = "noVNC web 前端（浏览器打开 http://localhost:${toString webPort}/vnc.html）";
-    wantedBy = ["multi-user.target"];
-    after = ["greetd.service"];
-    serviceConfig = {
-      ExecStart = lib.concatStringsSep " " [
-        "${pkgs.python3Packages.websockify}/bin/websockify"
-        "--web=${pkgs.novnc}/share/webapps/novnc"
-        "0.0.0.0:${toString webPort}"
-        "127.0.0.1:${toString vncPort}"
-      ];
-      Restart = "always";
-      RestartSec = 3;
-      DynamicUser = true;
-    };
-  };
-
-  # 开发这台机器时会反复用到的东西。刻意保持很小 —— 桌面本身该由
-  # suites 决定，这里只放「看得见、点得动」所必需的。
+  # 开发这个桌面本身会用到的。刻意很小 —— 桌面的内容由 KineticWE 自带的
+  # noctalia 决定，这里只放「看得见、点得动、查得了」所必需的。
   environment.systemPackages = with pkgs; [
-    wayvnc
-    novnc
-    foot # headless 会话里第一个能开出来的窗口
+    foot # 最小的终端，会话起来后第一个能开的窗口
     wl-clipboard
-    wlr-randr # 改虚拟输出分辨率，不用重启合成器
-    grim # 在 guest 内部截图，与 VNC 那条路互为佐证
+    wlr-randr # 改输出分辨率，不必重启合成器
+    grim # guest 内部截图，与 QEMU 那条 VNC 路互为佐证
+    libnotify
   ];
 }

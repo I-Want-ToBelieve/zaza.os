@@ -31,8 +31,9 @@ and `refactor/p1-baseline`, tagged `baseline-p1` (first evaluable state) and `ba
 > Plasma 6, and no replacement has been chosen. Nothing has been deployed, so the tree is safe
 > as it stands, but this must not reach the ten classroom machines until a desktop is picked.
 >
-> The exception is `zaza-vm` — an aarch64 NixOS VM on the macOS host, added specifically as the
-> vehicle for picking one. It is the only host that selects a compositor. See
+> The exception is `zaza-vm` — an aarch64 NixOS VM on the macOS host, and the only host that
+> selects a compositor. **The desktop has been chosen** (KineticWE + Noctalia, see below); the
+> VM is where it gets built before it goes anywhere near a real machine. See
 > [scripts/vm/README.md](scripts/vm/README.md).
 
 **Nothing in this repo has been deployed to any machine.** Every phase so far is code only.
@@ -324,6 +325,47 @@ now `util-linux`. And `networking.nftables.enable` was deliberately **not** flip
 actual iptables→nftables migration, but it moves the path docker/libvirt/waydroid depend on,
 and `networking.firewall.enable = false` makes it a no-win today.
 
+### The desktop: KineticWE + Noctalia (Stellar Shell)
+
+**Write this down before touching desktop code.** The decision was made in conversation, then
+put on hold, and was subsequently lost — a Hyprland-based VM profile got built and had to be
+thrown away. It is recorded here so that cannot happen twice.
+
+The product is **Stellar Shell**:
+
+```
+Linux → Wayland → KineticWE (a KWin fork with native tiling)
+                    → Noctalia v5 (a Quickshell-based shell)
+                      → Stellar: Top Bar / Dock / Launcher / Overview /
+                                 Control Center / Notifications / Design System
+```
+
+Two pieces of original work: **`noctalia-appmenu`** (a KWin AppMenu backend for Noctalia,
+contributed upstream as a PR) and the **Stellar Design System**. The strategy is explicitly
+**not to fork Noctalia** — compose upstream + theme + plugins + config + integration.
+
+**The one decisive constraint: it must be a KWin-family compositor.** The goal is to mimic
+macOS closely, and macOS's defining element is the global menu bar. The Wayland protocol that
+carries it, `kde-appmenu`, is implemented **only by KWin**. Hyprland cannot provide a global
+app menu at all — which is why a Hyprland desktop is not a smaller version of this plan, it is
+a different plan that fails the requirement.
+
+`inputs.kineticwe` is `gitlab:theblackdon/kineticwe`, whose own description is "a KWin window
+environment (KWin fork) bundled with the noctalia shell". Facts worth knowing before editing it:
+
+- It is a proper flake: `nixosModules.default`, `homeModules.default`, `overlays.default`,
+  packages/apps/devShell, and `eachSystem` covers **`aarch64-linux`**. `programs.kineticwe.enable`
+  is the single switch; it registers a real Wayland session via
+  `services.displayManager.sessionPackages` and wires up `xdg-desktop-portal-kde`.
+- Its own `noctalia` input points at `github:noctalia-dev/noctalia`, so "compose upstream rather
+  than fork" is already how upstream builds it.
+- **It has no binary cache** (`nixConfig` is absent) and it is a 624-file C++ KWin fork, so the
+  guest compiles KWin from source. Budget for that, and raise `ZAZA_VM_MEM` for the first build.
+- **`inputs.nixpkgs.follows` is deliberately NOT set.** It pins nixpkgs 2026-06-29 against this
+  repo's 2026-08-26. Unifying them would avoid two Qt/KDE stacks in the closure, but a KWin fork
+  is sensitive to KDE Frameworks versions. Upstream's tested combination comes first; revisit
+  after measuring the closure, and re-verify it builds before changing that line.
+
 ### zaza-vm — the aarch64 development VM
 
 `nixosConfigurations.zaza-vm` is the only non-x86_64 NixOS host, and the only one with a
@@ -335,12 +377,19 @@ Three facts that are not obvious and were each verified rather than assumed:
 - **It is aarch64 because HVF requires matching architecture.** x86_64 would mean TCG
   emulation. The cost is that this VM cannot validate the classroom machines' actual closure —
   only architecture-independent desktop work transfers.
-- **The VM is given no GPU at all.** Homebrew's qemu 9.2.3 and nixpkgs' qemu 11.1.0 both lack
-  `virtio-gpu-gl` and are not linked against virglrenderer (checked directly, on this host).
-  Plain `virtio-gpu-pci` offers only dumb buffers, and Hyprland is GLES-only since it dropped
-  the pixman renderer — so its DRM backend would fail. `profiles/nixos/remote-desktop.nix`
-  sidesteps DRM entirely: wlroots' **headless** backend, llvmpipe for GLES, wayvnc to export
-  the buffer, noVNC so a browser can open it.
+- **The VM gets a 2D-only GPU, and that is enough — because the compositor is KWin.** Homebrew's
+  qemu 9.2.3 and nixpkgs' qemu 11.1.0 both lack `virtio-gpu-gl` and are not linked against
+  virglrenderer (checked directly, on this host), so `virtio-gpu-pci` offers only dumb buffers.
+  KWin still ships a software compositing backend — `src/backends/drm/drm_qpainter_backend.cpp`,
+  selected with `KWIN_COMPOSE=Q` — which is precisely what Hyprland dropped along with pixman.
+  So KWin draws straight to that framebuffer where Hyprland's DRM backend would fail.
+- **The picture leaves via QEMU's own `-vnc`; the guest runs no VNC software.** An earlier
+  version of this used `wayvnc`, which was simply wrong: nixpkgs describes it as a "VNC server
+  for **wlroots based** Wayland compositors", and KWin is not wlroots. QEMU-side VNC also feeds
+  keyboard and pointer through virtio-input for free (use `virtio-tablet`, not `virtio-mouse` —
+  VNC sends absolute coordinates), and it keeps showing the boot console **when the compositor
+  fails to start**, which matters more than fidelity while a desktop is being built. The noVNC
+  bridge therefore runs on the **host**: `scripts/vm/run.sh novnc`.
 - **The runner is deliberately outside the flake.** `scripts/vm/run.sh` is a plain QEMU
   launcher; the guest is a normal `mkHost` machine. Swapping to a runner that _can_ do 3D
   (UTM bundles a patched QEMU with virglrenderer/ANGLE) requires no guest change.

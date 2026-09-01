@@ -424,7 +424,10 @@
       hostFile = ../hosts/virtual/zaza-vm.nix;
       system = "aarch64-linux";
       suites = with nixosSuites; [base vm];
-      users = iwtb (with hmSuites; [base cli shells hyprland]);
+      # 不选 hmSuites.hyprland —— 桌面是 KineticWE（KWin 分支），
+      # 见 profiles/nixos/remote-desktop.nix。那个 suite 是给
+      # xiaoxin-pro16-2021 的 root 用的，与这里无关。
+      users = iwtb (with hmSuites; [base cli shells]);
       # disk-config.nix 由 host 文件自己 import；这里只注入 disks 参数，
       # 让 nixos-anywhere 知道往哪个块设备装。
       disko = {disks = ["/dev/vda"];};

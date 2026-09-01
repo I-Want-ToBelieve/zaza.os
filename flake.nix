@@ -298,7 +298,17 @@
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    # Hyprland is **such** eye candy
+    # KineticWE —— 带原生平铺的 KWin 分支，上游 flake 里已经把 noctalia shell
+    # 一起打包好了（它的 inputs.noctalia 直接指向 noctalia-dev/noctalia）。
+    # 这是 zaza-vm 的桌面。选它而不是 Hyprland 的理由只有一条、但是决定性的：
+    # 要精确模仿 macOS 就要全局菜单栏，而 kde-appmenu 这个 Wayland 协议
+    # 只有 KWin 系实现。
+    #
+    # 刻意**不**加 inputs.nixpkgs.follows：它自己钉的 nixpkgs 是 2026-06-29，
+    # 我们是 2026-08-26。强行统一能避免闭包里出现两套 Qt/KDE，但 KWin 分支对
+    # KDE Frameworks 版本很敏感，先用上游自测过的组合把东西跑通，等量过闭包
+    # 大小再决定。改这一行之前请先确认它还能构建。
+    kineticwe.url = "gitlab:theblackdon/kineticwe";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
