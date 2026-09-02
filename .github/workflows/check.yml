@@ -42,7 +42,8 @@ jobs:
             exit 1
           fi
 
-  # 八台 NixOS 主机都是 x86_64-linux，所以求值放在 Linux runner 上。
+  # x86_64-linux 的 NixOS 主机在 Linux runner 上逐台求值；Apple Silicon 上的
+  # aarch64 `zaza-vm` 不在这个 matrix 里。
   # 只求值、不构建：runner 大约只有 14GB 磁盘，而 nixpkgs 一次 stdenv 变动
   # 就足以让构建整个世界。
   eval-nixos:
@@ -55,6 +56,7 @@ jobs:
           - k99-lite-wsl
           - xiaoxin-pro14-2021
           - xiaoxin-pro16-2021
+          - zaza-vm-windows
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main

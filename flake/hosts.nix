@@ -84,6 +84,9 @@
       # 在 QEMU 的 SLIRP 后面只会添乱，samba / share-via-wifi / android /
       # chromium 对一台开发 VM 无用，而 games 里的 steam 是 x86_64-only。
       vm = [nix locale fonts stylix remote-desktop];
+      # Windows/QEMU 上的串口开发机。只补 flake/Nix 配置；不带字体、输入法、
+      # Stylix 或桌面会话。base 仍负责 SSH 和常用的系统维护工具。
+      vm-tty = [nix];
     };
     home-manager = with profiles.home-manager; {
       base = [packages nix misc fonts stylix];
@@ -430,6 +433,17 @@
       users = iwtb (with hmSuites; [base cli shells]);
       # disk-config.nix 由 host 文件自己 import；这里只注入 disks 参数，
       # 让 nixos-anywhere 知道往哪个块设备装。
+      disko = {disks = ["/dev/vda"];};
+    };
+
+    # Windows 上由 QEMU + WHPX 运行的 x86_64 串口开发 VM。
+    # 它与上面的 Apple Silicon/aarch64 桌面 VM 是两个独立的 guest。
+    zaza-vm-windows = {
+      hostFile = ../hosts/virtual/zaza-vm-windows.nix;
+      suites = with nixosSuites; [base vm-tty];
+      # TTY 阶段没有任何 Stylix 消费者，避免无意义地引入整套主题模块。
+      stylix = false;
+      # host 文件 import disk-config；这里只向它注入安装目标。
       disko = {disks = ["/dev/vda"];};
     };
 

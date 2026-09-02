@@ -1,0 +1,9 @@
+{
+  "release": "26.05",
+  "architecture": "x86_64-linux",
+  "variant": "minimal",
+  "fileName": "nixos-minimal-26.05.8639.c5c4a43b0e80-x86_64-linux.iso",
+  "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.8639.c5c4a43b0e80/nixos-minimal-26.05.8639.c5c4a43b0e80-x86_64-linux.iso",
+  "sha256": "3d4dc6907738e2411196b1b403060220b5964b423dac8b8062f53ef58e85b16a",
+  "sizeBytes": 1707933696
+}

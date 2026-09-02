@@ -1,5 +1,7 @@
 # zaza-vm —— macOS 上的 NixOS 桌面开发机
 
+> Windows 上的 x86_64/WHPX 串口 VM 见 [`windows/README.md`](windows/README.md)。
+
 `nixosConfigurations.zaza-vm`，aarch64-linux，跑在 QEMU + Hypervisor.framework 上。
 桌面选型和 shell 开发在这里做。
 
@@ -8,7 +10,7 @@
 | 决定                                       | 理由                                                                                                                                                                                                                                                                                                                             |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | aarch64 而非 x86_64                        | 宿主是 Apple Silicon，只有同架构才能用 HVF 做 CPU 加速。x86_64 要走 TCG 纯模拟，慢到没法开发桌面。**代价：这台机器验证不了教室机的真实闭包。**                                                                                                                                                                                   |
-| 桌面是 KineticWE（KWin 分支）而非 Hyprland | 目标是精确模仿 macOS，而 macOS 最标志性的是全局菜单栏。承载它的 `kde-appmenu` Wayland 协议**只有 KWin 系实现**。详见 CLAUDE.md 的「The desktop: KineticWE + Noctalia (Stellar Shell)」。                                                                                                                                         |
+| 桌面是 KineticWE（KWin 分支）而非 Hyprland | 目标是精确模仿 macOS，而 macOS 最标志性的是全局菜单栏。承载它的 `kde-appmenu` Wayland 协议**只有 KWin 系实现**。详见 AGENTS.md 的「The desktop: KineticWE + Noctalia (Stellar Shell)」。                                                                                                                                          |
 | 只给 2D 显卡，但够用                       | Homebrew qemu 9.2.3 与 nixpkgs qemu 11.1.0 **都没有** `virtio-gpu-gl`，也没链 virglrenderer（已逐一核实），所以 `virtio-gpu-pci` 只有 dumb buffer。但 KWin 保留了软件合成后端（`src/backends/drm/drm_qpainter_backend.cpp`，`KWIN_COMPOSE=Q` 选它）—— 正是 Hyprland 连同 pixman 一起砍掉的那个。于是 KWin 能直接画在这块显卡上。 |
 | 画面走 **QEMU 侧**的 `-vnc`                | guest 里零 VNC 软件。键鼠由 virtio-input 注入（用 `virtio-tablet` 而非 `virtio-mouse` —— VNC 送的是绝对坐标）。**合成器起不来时照样看得见引导过程**，这在造桌面的阶段比清晰度重要。                                                                                                                                              |
 | noVNC 桥跑在**宿主**                       | 因为 VNC 服务端现在在 QEMU 这侧。`./scripts/vm/run.sh novnc`。                                                                                                                                                                                                                                                                   |
@@ -90,7 +92,7 @@ VNC    127.0.0.1:5910                 （任意 VNC 客户端）
 noVNC  ./scripts/vm/run.sh novnc  →  http://127.0.0.1:6080/vnc.html
 ```
 
-桌面是 **KineticWE + Noctalia**。架构和选它的理由见 CLAUDE.md 的
+桌面是 **KineticWE + Noctalia**。架构和选它的理由见 AGENTS.md 的
 「The desktop: KineticWE + Noctalia (Stellar Shell)」一节。greetd 配了自动登录，
 改完配置 `nixos-rebuild switch` 之后 `systemctl restart greetd` 即可重启会话。
 
