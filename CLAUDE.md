@@ -344,6 +344,9 @@ Two pieces of original work: **`noctalia-appmenu`** (a KWin AppMenu backend for 
 contributed upstream as a PR) and the **Stellar Design System**. The strategy is explicitly
 **not to fork Noctalia** — compose upstream + theme + plugins + config + integration.
 
+The phased plan, and the host matrix for running the dev VM on **either macOS or Windows**,
+live in [docs/stellar-shell.md](docs/stellar-shell.md).
+
 **The one decisive constraint: it must be a KWin-family compositor.** The goal is to mimic
 macOS closely, and macOS's defining element is the global menu bar. The Wayland protocol that
 carries it, `kde-appmenu`, is implemented **only by KWin**. Hyprland cannot provide a global

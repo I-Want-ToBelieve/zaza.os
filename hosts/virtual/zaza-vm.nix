@@ -53,6 +53,4 @@
 
   # 装机后由 nixos-anywhere 落盘，这里只声明期望值。
   hardware.enableRedistributableFirmware = lib.mkDefault true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }
