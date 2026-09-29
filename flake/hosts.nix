@@ -87,6 +87,7 @@
       # Windows/QEMU 上的串口开发机。只补 flake/Nix 配置；不带字体、输入法、
       # Stylix 或桌面会话。base 仍负责 SSH 和常用的系统维护工具。
       vm-tty = [nix];
+      stellar = [nix desktop.kineticwe];
     };
     home-manager = with profiles.home-manager; {
       base = [packages nix misc fonts stylix];
@@ -103,6 +104,7 @@
         chromium.default
       ];
       shells = with shells; [fish zsh nu.default];
+      stellar = [desktop.stellar-shell];
       darwin = with darwin;
         [
           nix
@@ -444,6 +446,19 @@
       # TTY 阶段没有任何 Stylix 消费者，避免无意义地引入整套主题模块。
       stylix = false;
       # host 文件 import disk-config；这里只向它注入安装目标。
+      disko = {disks = ["/dev/vda"];};
+    };
+
+    # 独立的 Windows 图形开发副本；原 zaza-vm-windows 继续提供 TTY。
+    zaza-vm-windows-stellar = {
+      hostFile = ../hosts/virtual/zaza-vm-windows-stellar.nix;
+      suites = with nixosSuites; [base stellar];
+      stylix = false;
+      users."i.want.to.believe" = {
+        suites = [hmSuites.stellar];
+        standardExtras = false;
+        stateVersion = "26.05";
+      };
       disko = {disks = ["/dev/vda"];};
     };
 

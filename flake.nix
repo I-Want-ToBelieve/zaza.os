@@ -115,6 +115,9 @@
           settings.global.excludes = [
             # nvfetcher 生成，绝不可手改（.nix 与 .json 两份）
             "pkgs/_sources/**"
+            # Stellar tokens 生成；由 stellar-assets check 检查漂移。
+            "stellar/noctalia/config.toml"
+            "stellar/palettes/Stellar.json"
             # 上游抄来的窗口管理器配置，不按本仓库风格排版
             "*.js"
             "*.lua"
@@ -136,6 +139,13 @@
         checks.undeclared-inputs = pkgs.runCommand "undeclared-inputs" {} ''
           printf '%s\n' ${nixpkgs.lib.escapeShellArgs (["self"] ++ builtins.attrNames inputs)} > declared.txt
           bash ${self}/scripts/verify/check-undeclared-inputs.sh declared.txt ${self}
+          touch "$out"
+        '';
+
+        checks.stellar-assets = pkgs.runCommand "stellar-assets" {
+          nativeBuildInputs = [pkgs.python3];
+        } ''
+          python ${self}/stellar/generate.py --check
           touch "$out"
         '';
 

@@ -42,8 +42,7 @@ jobs:
             exit 1
           fi
 
-  # x86_64-linux 的 NixOS 主机在 Linux runner 上逐台求值；Apple Silicon 上的
-  # aarch64 `zaza-vm` 不在这个 matrix 里。
+  # Linux 主机逐台求值，包括 aarch64 zaza-vm（求值不需要模拟执行）。
   # 只求值、不构建：runner 大约只有 14GB 磁盘，而 nixpkgs 一次 stdenv 变动
   # 就足以让构建整个世界。
   eval-nixos:
@@ -57,6 +56,8 @@ jobs:
           - xiaoxin-pro14-2021
           - xiaoxin-pro16-2021
           - zaza-vm-windows
+          - zaza-vm-windows-stellar
+          - zaza-vm
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
@@ -64,6 +65,14 @@ jobs:
         run: |
           nix eval --impure $NIX_OPTS --raw \
             ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.drvPath"
+
+  windows-vm-runner:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: runner argument tests
+        shell: pwsh
+        run: ./scripts/vm/windows/run.tests.ps1
 
   # darwin 只能在 macOS runner 上求值。
   eval-darwin:

@@ -347,10 +347,15 @@ The product is **Stellar Shell**:
 
 ```
 Linux → Wayland → KineticWE (a KWin fork with native tiling)
-                    → Noctalia v5 (a Quickshell-based shell)
+                    → Noctalia v5 (native Wayland/GLES, TOML + Luau plugins)
                       → Stellar: Top Bar / Dock / Launcher / Overview /
                                  Control Center / Notifications / Design System
 ```
+
+The locked v5 is the native C++ shell; Quickshell belongs to legacy v4. See
+`stellar/UPSTREAM.md` for the exact pinned configuration and plugin contracts.
+Stellar assets and their generator live in `stellar/`; Home Manager installs them
+through `profiles/home-manager/desktop/stellar-shell.nix`.
 
 Two pieces of original work: **`noctalia-appmenu`** (a KWin AppMenu backend for Noctalia,
 contributed upstream as a PR) and the **Stellar Design System**. The strategy is explicitly
@@ -429,6 +434,22 @@ unavailable rather than silently falling back to TCG. It defaults to a hidden, n
 `virtio-vga` and serial TTY; `Native`/`Angle` explicitly opt into SDL plus `virtio-vga-gl`.
 The TTY configuration does not enable Mesa; add the graphics stack only when a desktop is
 actually introduced. See `scripts/vm/windows/README.md`.
+
+### zaza-vm-windows-stellar — the graphical canary
+
+The separate x86_64 graphical host selects `suites.nixos.stellar` and
+`suites.home-manager.stellar`. Its runner uses `-VmName zaza-vm-windows-stellar`;
+state, qcow2, firmware vars and default SSH port (2223) are independent.
+Use `-Graphics Vnc` (loopback 5911) on the current Windows host: non-GL virtio-vga
+boots with WHPX, while SDL `gl=off` was observed to hang the guest and QMP.
+Software/Native/Angle remain explicit experimental paths.
+
+KWin uses QPainter and Noctalia still needs Mesa software EGL/GLES. The desktop
+profile installs the workspace target missing from the upstream Nix package.
+KineticWE owns the Noctalia process; its Home Manager systemd service stays off.
+The HM profile disables the bundled same-name module before importing the pinned
+upstream module. Graphical boot/build status belongs in `stellar/VALIDATION.md`;
+configuration existing in the repository does not prove a successful desktop boot.
 
 ### Theming
 

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    zaza-vm-windows 的 QEMU/WHPX 启动器。
+    Windows 上 TTY 与 Stellar VM 的 QEMU/WHPX 启动器。
 
 .EXAMPLE
     .\scripts\vm\windows\run.ps1 status
@@ -8,6 +8,8 @@
     .\scripts\vm\windows\run.ps1 create-disk
     .\scripts\vm\windows\run.ps1 install
     .\scripts\vm\windows\run.ps1 run
+    .\scripts\vm\windows\run.ps1 run -VmName zaza-vm-windows-stellar -Graphics Vnc
+    .\scripts\vm\windows\run.ps1 run -VmName zaza-vm-windows-stellar -Graphics Vnc -DryRun
 #>
 [CmdletBinding()]
 param(
@@ -15,8 +17,11 @@ param(
     [ValidateSet('status', 'fetch-iso', 'create-disk', 'install', 'run')]
     [string]$Command,
 
-    # Headless 只使用串口；Native/Angle 显式启用 SDL + VirGL。
-    [ValidateSet('Headless', 'Native', 'Angle')]
+    [ValidateSet('zaza-vm-windows', 'zaza-vm-windows-stellar')]
+    [string]$VmName = 'zaza-vm-windows',
+
+    # Vnc 使用 QEMU 自带显示服务；Software/Native/Angle 显式启用 SDL。
+    [ValidateSet('Headless', 'Vnc', 'Software', 'Native', 'Angle')]
     [string]$Graphics = 'Headless',
 
     [ValidateRange(1, 8)]
@@ -28,7 +33,7 @@ param(
     [ValidateRange(8, 1024)]
     [int]$DiskGiB = 80,
 
-    [string]$State = $(Join-Path $env:LOCALAPPDATA 'zaza-vm-windows'),
+    [string]$State,
 
     # 可直接指向已经下载并校验过的 ISO；省略时使用 State 下的固定文件名。
     [string]$IsoPath,
@@ -38,11 +43,31 @@ param(
 
     # 0 表示关闭。QMP 权限很高，只在本机自动化确实需要时显式打开。
     [ValidateRange(0, 65535)]
-    [int]$QmpPort = 0
+    [int]$QmpPort = 0,
+
+    # 仅 Vnc 模式监听，限制在回环地址；这是 TCP 端口而非 VNC display 编号。
+    [ValidateRange(5900, 65535)]
+    [int]$VncPort = 5910,
+
+    # 仅适用于 run/install：输出结构化启动计划，不创建文件、不启动 QEMU。
+    [switch]$DryRun
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
+
+if ($DryRun -and $Command -notin @('run', 'install')) {
+    throw '-DryRun is supported only for run and install.'
+}
+if ([string]::IsNullOrWhiteSpace($State)) {
+    $State = Join-Path $env:LOCALAPPDATA $VmName
+}
+if (-not $PSBoundParameters.ContainsKey('SshPort') -and $VmName -eq 'zaza-vm-windows-stellar') {
+    $SshPort = 2223
+}
+if (-not $PSBoundParameters.ContainsKey('VncPort') -and $VmName -eq 'zaza-vm-windows-stellar') {
+    $VncPort = 5911
+}
 
 $metadataPath = Join-Path $PSScriptRoot 'nixos-image.json'
 if (-not (Test-Path -LiteralPath $metadataPath -PathType Leaf)) {
@@ -56,8 +81,10 @@ if ([IO.Path]::IsPathRooted($State)) {
     $stateDirectory = [IO.Path]::GetFullPath((Join-Path (Get-Location) $State))
 }
 
-$diskPath = Join-Path $stateDirectory 'zaza-vm-windows.qcow2'
-$firmwareVarsPath = Join-Path $stateDirectory 'edk2-vars.fd'
+$diskPath = Join-Path $stateDirectory "$VmName.qcow2"
+# 保留原 TTY VM 的固件路径；即使显式共用 State，Stellar 也不修改它。
+$firmwareVarsName = if ($VmName -eq 'zaza-vm-windows') { 'edk2-vars.fd' } else { "$VmName-edk2-vars.fd" }
+$firmwareVarsPath = Join-Path $stateDirectory $firmwareVarsName
 $defaultIsoPath = Join-Path $stateDirectory ([string]$image.fileName)
 if ([string]::IsNullOrWhiteSpace($IsoPath)) {
     $effectiveIsoPath = $defaultIsoPath
@@ -208,11 +235,14 @@ function Show-Status {
     }
 
     [PSCustomObject]@{
+        VmName = $VmName
         Qemu = $qemuStatus
         WhpxFeature = $featureStatus
         HypervisorPresent = $hypervisorStatus
         FirmwareVirtualization = $firmwareVirtualization
         State = $stateDirectory
+        Disk = $diskPath
+        SshPort = $SshPort
         DiskExists = Test-Path -LiteralPath $diskPath -PathType Leaf
         UefiVarsExist = Test-Path -LiteralPath $firmwareVarsPath -PathType Leaf
         Iso = $effectiveIsoPath
@@ -290,36 +320,30 @@ function Invoke-CreateDisk {
     Write-Host "已创建 ${DiskGiB} GiB 稀疏磁盘：$diskPath"
 }
 
-function Start-ZazaVm {
-    param([Parameter(Mandatory = $true)][bool]$Installer)
+function New-ZazaLaunchPlan {
+    param(
+        [Parameter(Mandatory = $true)]$QemuInstallation,
+        [Parameter(Mandatory = $true)][bool]$Installer
+    )
 
-    Assert-WhpxReady
     if ($QmpPort -ne 0 -and $QmpPort -eq $SshPort) {
         throw 'QMP and SSH cannot listen on the same host port.'
     }
-    $qemuInstallation = Get-QemuInstallation
-    if (-not (Test-Path -LiteralPath $diskPath -PathType Leaf)) {
-        throw "Disk is missing: $diskPath. Run create-disk first."
+    if ($Graphics -eq 'Vnc' -and ($VncPort -eq $SshPort -or $VncPort -eq $QmpPort)) {
+        throw 'VNC, QMP and SSH must listen on different host ports.'
     }
 
-    if ($Installer) {
-        Assert-Iso -Path $effectiveIsoPath
-    }
-
-    New-Item -ItemType Directory -Path $stateDirectory -Force | Out-Null
-    Initialize-FirmwareVars -QemuInstallation $qemuInstallation
-
-    $firmwareCode = ConvertTo-QemuPath -Path $qemuInstallation.FirmwareCode -Keyval
+    $firmwareCode = ConvertTo-QemuPath -Path $QemuInstallation.FirmwareCode -Keyval
     $firmwareVars = ConvertTo-QemuPath -Path $firmwareVarsPath -Keyval
     $disk = ConvertTo-QemuPath -Path $diskPath -Keyval
-    $videoDevice = if ($Graphics -eq 'Headless') {
+    $videoDevice = if ($Graphics -in @('Headless', 'Vnc', 'Software')) {
         'virtio-vga'
     } else {
         'virtio-vga-gl'
     }
 
     $qemuArguments = @(
-        '-name', 'zaza-vm-windows',
+        '-name', $VmName,
         '-machine', 'q35',
         '-accel', 'whpx',
         '-smp', "sockets=1,cores=$Cpus,threads=1",
@@ -346,25 +370,78 @@ function Start-ZazaVm {
         $qemuArguments += @('-boot', 'order=c,menu=on')
     }
 
+    $environment = @{}
+    $vncEndpoint = $null
+    switch ($Graphics) {
+        'Headless' { $qemuArguments += @('-display', 'none') }
+        'Vnc' {
+            $vncDisplay = $VncPort - 5900
+            $vncEndpoint = "127.0.0.1:$VncPort"
+            $qemuArguments += @('-display', 'none', '-vnc', "127.0.0.1:$vncDisplay")
+        }
+        'Software' { $qemuArguments += @('-display', 'sdl,gl=off') }
+        'Angle' {
+            $environment.SDL_OPENGL_ES_DRIVER = '1'
+            $qemuArguments += @('-display', 'sdl,gl=es')
+        }
+        'Native' {
+            $environment.SDL_OPENGL_ES_DRIVER = '0'
+            $qemuArguments += @('-display', 'sdl,gl=on')
+        }
+    }
+
+    [PSCustomObject]@{
+        VmName = $VmName
+        Qemu = $QemuInstallation.Qemu
+        Arguments = $qemuArguments
+        Environment = $environment
+        State = $stateDirectory
+        Disk = $diskPath
+        FirmwareVars = $firmwareVarsPath
+        Graphics = $Graphics
+        SshPort = $SshPort
+        VncEndpoint = $vncEndpoint
+        Installer = $Installer
+    }
+}
+
+function Start-ZazaVm {
+    param([Parameter(Mandatory = $true)][bool]$Installer)
+
+    $qemuInstallation = Get-QemuInstallation
+    $launchPlan = New-ZazaLaunchPlan -QemuInstallation $qemuInstallation -Installer $Installer
+    if ($DryRun) {
+        return $launchPlan
+    }
+
+    Assert-WhpxReady
+    if (-not (Test-Path -LiteralPath $diskPath -PathType Leaf)) {
+        throw "Disk is missing: $diskPath. Run create-disk -VmName $VmName first."
+    }
+    if ($Installer) {
+        Assert-Iso -Path $effectiveIsoPath
+    }
+    New-Item -ItemType Directory -Path $stateDirectory -Force | Out-Null
+    Initialize-FirmwareVars -QemuInstallation $qemuInstallation
+
+    $qemuArguments = $launchPlan.Arguments
     $hadEsDriver = Test-Path Env:SDL_OPENGL_ES_DRIVER
     $previousEsDriver = $env:SDL_OPENGL_ES_DRIVER
     try {
-        if ($Graphics -eq 'Headless') {
-            $qemuArguments += @('-display', 'none')
-        } elseif ($Graphics -eq 'Angle') {
-            $env:SDL_OPENGL_ES_DRIVER = '1'
-            $qemuArguments += @('-display', 'sdl,gl=es')
-        } else {
-            $env:SDL_OPENGL_ES_DRIVER = '0'
-            $qemuArguments += @('-display', 'sdl,gl=on')
+        if ($launchPlan.Environment.ContainsKey('SDL_OPENGL_ES_DRIVER')) {
+            $env:SDL_OPENGL_ES_DRIVER = $launchPlan.Environment.SDL_OPENGL_ES_DRIVER
         }
 
         $displaySummary = if ($Graphics -eq 'Headless') {
             '串口 headless'
+        } elseif ($Graphics -eq 'Vnc') {
+            "QEMU VNC $($launchPlan.VncEndpoint)（无 SDL/GL）"
+        } elseif ($Graphics -eq 'Software') {
+            'SDL 软件显示（无 GL）'
         } else {
             "VirtIO GL ($Graphics)"
         }
-        $connectionSummary = "启动 zaza-vm-windows：WHPX，$displaySummary，SSH 127.0.0.1:$SshPort"
+        $connectionSummary = "启动 ${VmName}：WHPX，$displaySummary，SSH 127.0.0.1:$SshPort"
         if ($QmpPort -ne 0) {
             $connectionSummary += "，QMP 127.0.0.1:$QmpPort"
         }
@@ -374,7 +451,7 @@ function Start-ZazaVm {
             if ($Graphics -eq 'Headless') {
                 Write-Host 'Headless 安装时，ISO 的 UEFI GRUB 不读取 ttyS0 键盘；按 Ctrl-a c 进入 QEMU monitor，用 sendkey 选择 Serial console，再按 Ctrl-a c 返回串口。'
             } else {
-                Write-Host '在 SDL 的 ISO 引导菜单选择 Serial console (ttyS0, 115200n8)。'
+                Write-Host '在图形控制台的 ISO 引导菜单选择 Serial console (ttyS0, 115200n8)。'
             }
             Write-Host '启动器本身不会自动分区或覆盖磁盘。'
         }
