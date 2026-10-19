@@ -491,7 +491,7 @@ in {
     # 拆进 nixosConfigurations 与 darwinConfigurations（module.nix:95-96）。
     inventory.machines = {
       "k99-lite-darwin".machineClass = "darwin";
-      "dev-mac".machineClass = "darwin";
+      "devtekiMac".machineClass = "darwin";
     };
 
     machines =
@@ -521,12 +521,12 @@ in {
 
         # 另一台 Apple Silicon Mac。用 darwinSuites.base 而不是 misc，
         # 因而不带 profiles/darwin/apps.nix，也就不会被它的
-        # homebrew cleanup = "zap" 波及。详见 hosts/darwin/dev-mac.nix 顶部。
-        "dev-mac" = {
+        # homebrew cleanup = "zap" 波及。详见 hosts/darwin/devtekiMac.nix 顶部。
+        "devtekiMac" = {
           nixpkgs.hostPlatform = "aarch64-darwin";
 
           imports = mkDarwinModules {
-            hostFile = ../hosts/darwin/dev-mac.nix;
+            hostFile = ../hosts/darwin/devtekiMac.nix;
             suites = with darwinSuites; [base];
             userModules = [../users/darwin/dev.nix];
             users.dev = {

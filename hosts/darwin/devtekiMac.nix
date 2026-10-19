@@ -1,12 +1,12 @@
 {pkgs, ...}:
-# dev-mac —— 另一台 Apple Silicon Mac。
+# devtekiMac —— 另一台 Apple Silicon Mac。
 #
 # **刻意与 hosts/darwin/k99-lite-darwin.nix 并列复制，而不是抽共用 profile。**
 # 两台 Mac 的 macOS defaults、键位映射、字体是两组独立决定；并排放着，分歧才
 # 看得见。理由同 CLAUDE.md 的「Duplication that is deliberate」。
 #
 # 与 k99-lite-darwin 的差别只有三处：
-#   1. 主机名 / 计算机名 / NetBIOSName → dev-mac
+#   1. 主机名 / 计算机名 / NetBIOSName → devtekiMac
 #   2. system.primaryUser → dev
 #   3. **不进 darwinSuites.misc**，因而不带 profiles/darwin/apps.nix。
 #      那个 profile 里有 homebrew.onActivation.cleanup = "zap"，它会卸载
@@ -15,13 +15,13 @@
 #      这台机器的 brew 清单要等你在它上面跑过 `brew leaves` / `brew list --cask`
 #      之后再定；在那之前这里根本不启用 homebrew 模块。
 {
-  networking.hostName = "dev-mac";
-  networking.computerName = "dev-mac";
+  networking.hostName = "devtekiMac";
+  networking.computerName = "devtekiMac";
   system = {
     primaryUser = "dev";
 
     defaults = {
-      smb.NetBIOSName = "dev-mac";
+      smb.NetBIOSName = "devtekiMac";
       menuExtraClock.Show24Hour = true; # show 24 hour clock
 
       # customize dock
@@ -182,19 +182,50 @@
       git
     ];
 
-    # nvim，不是 neovim —— 包名叫 neovim，可执行文件叫 nvim。
-    variables.EDITOR = "nvim";
+    variables = {
+      # nvim，不是 neovim —— 包名叫 neovim，可执行文件叫 nvim。
+      EDITOR = "nvim";
+
+      # Homebrew 的国内镜像。这几项原本由 profiles/darwin/apps.nix 提供，
+      # 而这台机器走 darwinSuites.base、不含那个 profile，所以在这里自带。
+      HOMEBREW_API_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api";
+      HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles";
+      HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git";
+      HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git";
+      HOMEBREW_PIP_INDEX_URL = "https://pypi.tuna.tsinghua.edu.cn/simple";
+    };
 
     shells = [pkgs.fish];
   };
 
-  # homebrew 刻意不启用，见文件顶部说明。为这台机器定好清单之后再打开：
-  #   homebrew = {
-  #     enable = true;
-  #     onActivation.cleanup = "none";   # 先 none，确认清单完整后再考虑 zap
-  #     brews = [ … ];
-  #     casks = [ … ];
-  #   };
+  # ── homebrew ──────────────────────────────────────────────────────────
+  # nix-darwin 的 homebrew 模块**不负责安装 Homebrew 本身**，它只生成并执行
+  # 一个 Brewfile。所以这台机器上要先手工装好 brew（https://brew.sh）。
+  #
+  # cleanup 是 "none" 而不是 k99-lite-darwin 用的 "zap"，这一点是刻意的：
+  # zap 会卸载目标机上一切不在下面清单里的 brew 包，而 homebrew **不在**
+  # nix-darwin 的 generation 回滚范围内 —— 卸掉就是卸掉了。
+  #
+  # 要切到 zap，先在这台机器上把清单补全，判据是：
+  #   brew leaves              → 补进 brews（传递依赖不必列，
+  #                              brew bundle cleanup 会保留被声明包依赖的那些）
+  #   brew list --cask         → 补进 casks
+  # 然后确认 `brew bundle cleanup --dry-run` 不会删掉任何你要的东西。
+  homebrew = {
+    enable = true;
+
+    onActivation = {
+      autoUpdate = false;
+      cleanup = "none";
+    };
+
+    taps = [];
+
+    # 待填 —— 见上面的判据。空列表配 cleanup = "none" 意味着 homebrew 受管
+    # 但既不新增也不删除，这是一个安全的起点。
+    brews = [];
+    casks = [];
+  };
 
   # Set your time zone.
   # comment this due to the issue:
