@@ -21,7 +21,9 @@
     git
     skhd
   ];
-  environment.variables.EDITOR = "neovim";
+  # nvim，不是 neovim：包名叫 neovim，可执行文件叫 nvim。
+  # 此前这里是 "neovim"，而本机并不存在该命令，任何读 $EDITOR 的工具都会失败。
+  environment.variables.EDITOR = "nvim";
   environment.shells = [pkgs.fish];
 
   # Homebrew Mirror in China
