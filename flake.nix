@@ -361,31 +361,27 @@
     };
   };
 
+  # 构建**这个 flake 本身**时提供的缓存（需 --accept-flake-config，本仓库到处都带）。
+  # 与机器配置里的 nix.settings.substituters 是两回事，后者在
+  # profiles/nixos/nix.nix，那里是机器上生效的唯一一处。
+  #
+  # 曾经有 11 个，其中 6 个已删 —— 每个够不着的 substituter 都要在每次构建时
+  # 白等一次连接超时：
+  #   nix-gaming / nixpkgs-wayland / helix / hyprland  对应 input 均已在之前的
+  #                                                    清理中删除，缓存随之失去意义
+  #   fortuneteller2k / nrdxp                          他人的个人缓存，无对应 input
   nixConfig = {
     extra-experimental-features = "nix-command flakes";
     extra-substituters = [
-      "https://nix-gaming.cachix.org"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-      "https://cache.nixos.org"
       "https://mirrors.ustc.edu.cn/nix-channels/store"
-
+      "https://cache.nixos.org"
       "https://nix-community.cachix.org"
-      "https://fortuneteller2k.cachix.org"
-      "https://nixpkgs-wayland.cachix.org"
-      "https://helix.cachix.org"
-      "https://hyprland.cachix.org"
-      "https://nrdxp.cachix.org"
-      "https://devenv.cachix.org"
+      "https://devenv.cachix.org" # devenv input 仍在
     ];
     extra-trusted-public-keys = [
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "fortuneteller2k.cachix.org-1:kXXNkMV5yheEQwT0I4XYh1MaCSz+qg72k8XAi2PthJI="
-      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
   };

@@ -59,10 +59,23 @@
       keep-derivations = true;
       keep-outputs = true;
 
+      # 二进制缓存。这是全仓库**唯一**一处 substituters 定义 —— 刻意如此。
+      #
+      # NixOS 的 listOf str 是拼接语义、mkForce 只定优先级不去重，所以任何
+      # 第二处 mkForce 都会与这里叠加（历史上 cachix/default.nix 就有一份
+      # 逐字相同的，导致三个镜像各出现两次）。要加缓存就加在这里。
+      #
+      # mkForce 同时丢掉了 nixpkgs 自己的 `mkAfter ["https://cache.nixos.org/"]`，
+      # 所以上游缓存必须由我们显式列出 —— 它在这里，位置排在国内镜像之后。
+      #
+      # nix-community 的 trusted-public-keys 声明在 cachix/nix-community.nix，
+      # 签名校验因此成立。它在国内可能较慢，但 clan 设了
+      # nix.settings.connect-timeout = 5，连不上会很快跳过。
       substituters = lib.mkForce [
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-        "https://cache.nixos.org/"
         "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://cache.nixos.org/"
+        "https://nix-community.cachix.org"
       ];
     };
   };
