@@ -135,8 +135,10 @@
 
   # 原来的 share.overlays
   commonOverlays = [
-    (_final: prev: {inur = inputs.inur.packages."${prev.system}";})
-    (_final: prev: {inherit (inputs.nvchad4nix.packages."${prev.system}") nvchad;})
+    # prev.system 已被 nixpkgs 标记为改名到 stdenv.hostPlatform.system，
+    # 每次求值都会打一条警告。值相同，只是属性路径变了。
+    (_final: prev: {inur = inputs.inur.packages."${prev.stdenv.hostPlatform.system}";})
+    (_final: prev: {inherit (inputs.nvchad4nix.packages."${prev.stdenv.hostPlatform.system}") nvchad;})
   ];
 
   nixosOverlays =

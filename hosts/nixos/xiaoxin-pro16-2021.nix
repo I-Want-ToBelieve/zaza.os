@@ -83,8 +83,11 @@ in {
     i2c = {enable = true;};
 
     enableRedistributableFirmware = true;
-    pulseaudio.enable = false;
   };
+
+  # hardware.pulseaudio 已改名到 services.pulseaudio —— 换的是命名空间，
+  # 不只是键名，所以它不能留在上面的 hardware 块里。
+  services.pulseaudio.enable = false;
 
   # services.xserver.videoDrivers = ["amdgpu"];
 

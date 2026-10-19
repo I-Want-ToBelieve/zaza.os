@@ -93,8 +93,11 @@ in {
       # my-wpsoffice
     ]
     ++ lib.optionals onX86 [
-      wineWowPackages.fonts
-      wineWowPackages.unstableFull
+      # 上游不再推荐 wineWowPackages。注意这不是纯改名：
+      # wineWowPackages.unstableFull 是 wine-wow，wineWow64Packages.unstableFull
+      # 是 wine-wow64，两者是不同的 derivation。fonts 则两边相同。
+      wineWow64Packages.fonts
+      wineWow64Packages.unstableFull
       winetricks
     ]
     ++ [
@@ -106,7 +109,7 @@ in {
       whitesur-gtk-theme
 
       xh
-      xorg.xhost
+      xhost # 曾是 xorg.xhost；整个 xorg 包集已弃用，二者是同一个 derivation
 
       # yesplaymusic 已从 nixpkgs 移除（上游项目归档），无替代包
       yarn
@@ -125,7 +128,7 @@ in {
     ++ lib.optionals onX86 (with pkgs.inur; [leagueoflegends])
     # xddxdd.dingtalk 已从该 NUR 仓库消失，nixpkgs 顶层也没有，无替代包。
     # 若仍需要钉钉，得自己打包或用其它渠道。
-    ++ (with inputs; [autohide-tdrop.packages.${pkgs.system}.default]);
+    ++ (with inputs; [autohide-tdrop.packages.${pkgs.stdenv.hostPlatform.system}.default]);
 
   programs = {
     eza.enable = true;

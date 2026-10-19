@@ -19,7 +19,7 @@
         enable = true;
         createDirectories = true;
         extraConfig = {
-          XDG_DEVELOPMENT_DIR = "${config.xdg.userDirs.documents}/Dev";
+          DEVELOPMENT = "${config.xdg.userDirs.documents}/Dev";
         };
       };
     };

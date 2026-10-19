@@ -47,7 +47,8 @@
       enable = true;
       createDirectories = true;
       extraConfig = {
-        XDG_DEVELOPMENT_DIR = "${config.xdg.userDirs.documents}/Dev";
+        # 键名不再带 XDG_ 前缀和 _DIR 后缀
+        DEVELOPMENT = "${config.xdg.userDirs.documents}/Dev";
       };
     };
   };
