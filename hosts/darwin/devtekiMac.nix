@@ -200,17 +200,20 @@
 
   # ── homebrew ──────────────────────────────────────────────────────────
   # nix-darwin 的 homebrew 模块**不负责安装 Homebrew 本身**，它只生成并执行
-  # 一个 Brewfile。所以这台机器上要先手工装好 brew（https://brew.sh）。
+  # 一个 Brewfile。brew 不在时激活脚本会打印
+  # "error: Homebrew is not installed, skipping..." 然后跳过，**不会中断部署**
+  # （见 nix-darwin modules/homebrew.nix:1029-1037 的 -f 守卫）。
   #
-  # cleanup 是 "none" 而不是 k99-lite-darwin 用的 "zap"，这一点是刻意的：
-  # zap 会卸载目标机上一切不在下面清单里的 brew 包，而 homebrew **不在**
-  # nix-darwin 的 generation 回滚范围内 —— 卸掉就是卸掉了。
+  # 清单与 k99-lite-darwin 当前内容相同，但**刻意各存一份副本**，不复用
+  # profiles/darwin/apps.nix。理由是 cleanup 的语义：以后给这台机器从清单里
+  # 删掉一个包，如果两台共用一份，那个包会连带被 **zap 掉**另一台机器上的。
+  # 跨机器的 brew 清单是两份独立库存，照 CLAUDE.md 的
+  # 「Duplication that is deliberate」办。
   #
-  # 要切到 zap，先在这台机器上把清单补全，判据是：
-  #   brew leaves              → 补进 brews（传递依赖不必列，
-  #                              brew bundle cleanup 会保留被声明包依赖的那些）
-  #   brew list --cask         → 补进 casks
-  # 然后确认 `brew bundle cleanup --dry-run` 不会删掉任何你要的东西。
+  # cleanup 先用 "none"：这台机器还没装 brew，首次 switch 之后它里面应当只有
+  # 下面声明的这些加上它们的依赖，那时 zap 才是安全的。切换前先确认
+  #   brew bundle cleanup --dry-run
+  # 不会删掉任何你要的东西。
   homebrew = {
     enable = true;
 
@@ -219,12 +222,65 @@
       cleanup = "none";
     };
 
-    taps = [];
+    taps = [
+      "homebrew/services"
+      "v2raya/v2raya"
+      "FelixKratz/formulae"
+      "I-Want-ToBelieve/homebrew-formulae"
+      "LizardByte/homebrew"
+      "jackmordaunt/homebrew-tap"
+      "oven-sh/bun"
+    ];
 
-    # 待填 —— 见上面的判据。空列表配 cleanup = "none" 意味着 homebrew 受管
-    # 但既不新增也不删除，这是一个安全的起点。
-    brews = [];
-    casks = [];
+    brews = [
+      "wget"
+      "curl" # 不要用 nixpkgs 的 curl，在 macOS 上表现不好
+      "v2raya/v2raya/v2raya"
+      "borders"
+      "proxychains-ng"
+      "clang-format"
+      "mas"
+      "rust"
+      "node"
+      "yakite"
+      "yakite-toast"
+      "qemu"
+      "lima"
+      "yazi"
+      "fnm"
+      "pnpm"
+      "icnsify"
+      "act"
+      "rclone"
+      "rsync"
+      "uv"
+      "oven-sh/bun/bun"
+    ];
+
+    casks = [
+      "firefox"
+      "raycast"
+      "alt-tab"
+      "copyq"
+      "monitorcontrol"
+      "easy-move+resize"
+      "phoenix"
+      "hackintool"
+      "kap"
+      "keycastr"
+      "switchhosts"
+      "termius"
+      "zerotier-one"
+      "snipaste"
+      "google-chrome"
+      "maccy"
+      "claude-code"
+      "orbstack"
+      "android-platform-tools"
+      "mitmproxy"
+      "openmtp"
+      "font-maple-mono-nf-cn"
+    ];
   };
 
   # Set your time zone.
