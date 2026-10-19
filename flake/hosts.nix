@@ -113,8 +113,16 @@
       ];
     };
 
-    darwin = with profiles.darwin; {
-      misc = [apps nix services stylix];
+    darwin = with profiles.darwin; rec {
+      # base 不含 apps —— apps.nix 里有 homebrew.onActivation.cleanup = "zap"
+      # 和一份按 k99-lite-darwin 实际安装情况逐项核对出来的 brew 清单。那份清单
+      # 对任何**别的** Mac 都不适用：zap 会把目标机上不在清单里的 brew 包全部
+      # 卸掉，而 homebrew 不在 nix-darwin 的 generation 回滚范围内。
+      base = [nix services stylix];
+
+      # 顺序必须是 [apps nix services stylix] —— darwin 对模块次序敏感
+      # （见 mkDarwinModules 上方的注释），所以写成 [apps] ++ base。
+      misc = [apps] ++ base;
     };
   };
 
@@ -339,6 +347,9 @@
     users ? {},
     stateVersion ? 5, # darwin 是整数，NixOS 是字符串
     modules ? [],
+    # 系统级用户声明。默认值保持 k99-lite-darwin 原有的那一份 —— darwin 对
+    # 模块次序敏感，默认值必须让既有主机逐字不变。
+    userModules ? [../users/darwin/i.want.to.believe.nix],
   }:
   # 顺序照抄原区块：nixpkgs -> {stateVersion} -> suites -> hostFile -> …
     [
@@ -348,7 +359,9 @@
     ++ lib.optional (suites != []) {imports = lib.flatten suites;}
     ++ [
       hostFile
-      ../users/darwin/i.want.to.believe.nix
+    ]
+    ++ userModules
+    ++ [
       # 刻意没有 users/root.nix、没有 agenix、没有 system.autoUpgrade
       inputs.home-manager.darwinModules.home-manager
       inputs.stylix.darwinModules.stylix
@@ -476,7 +489,10 @@ in {
 
     # clan 用 machineClass 分流到 nixosSystem / darwinSystem，并据此把结果
     # 拆进 nixosConfigurations 与 darwinConfigurations（module.nix:95-96）。
-    inventory.machines."k99-lite-darwin".machineClass = "darwin";
+    inventory.machines = {
+      "k99-lite-darwin".machineClass = "darwin";
+      "dev-mac".machineClass = "darwin";
+    };
 
     machines =
       lib.mapAttrs (name: def:
@@ -499,6 +515,23 @@ in {
             users."i.want.to.believe" = {
               suites = with hmSuites; [darwin];
               stateVersion = "24.05"; # 对比每台 Linux 主机的 "26.05"
+            };
+          };
+        };
+
+        # 另一台 Apple Silicon Mac。用 darwinSuites.base 而不是 misc，
+        # 因而不带 profiles/darwin/apps.nix，也就不会被它的
+        # homebrew cleanup = "zap" 波及。详见 hosts/darwin/dev-mac.nix 顶部。
+        "dev-mac" = {
+          nixpkgs.hostPlatform = "aarch64-darwin";
+
+          imports = mkDarwinModules {
+            hostFile = ../hosts/darwin/dev-mac.nix;
+            suites = with darwinSuites; [base];
+            userModules = [../users/darwin/dev.nix];
+            users.dev = {
+              suites = with hmSuites; [darwin];
+              stateVersion = "24.05";
             };
           };
         };
