@@ -251,7 +251,6 @@
     # 二进制缓存命中靠运气，一旦碰上动 stdenv 的提交，十台教室机就要从源码重建世界。
     # nixos-unstable 只比 master 落后几天，但都是 Hydra 实际构建过的 commit。
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";

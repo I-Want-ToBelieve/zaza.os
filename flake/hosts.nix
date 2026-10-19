@@ -149,14 +149,15 @@
       overlaysDefault
     ];
 
-  # darwin 少了 agenix，多一个 karabiner-elements 的 stable 固定。
+  # darwin 与 NixOS 的差别只剩「少了 agenix」。
+  #
+  # 此前这里还有一个把 karabiner-elements 固定到 nixpkgs-stable 的 overlay
+  # （为绕过 nix-darwin#1041）。services.karabiner-elements.enable 一直是
+  # false，没有任何东西引用该包，所以那个 pin 是惰性的死重量；连带它唯一的
+  # 消费者消失后，nixpkgs-stable 这个 input 也一并删除。
   darwinOverlays =
     commonOverlays
     ++ [
-      # https://github.com/LnL7/nix-darwin/issues/1041
-      (_final: prev: {
-        inherit (inputs.nixpkgs-stable.legacyPackages.${prev.system}) karabiner-elements;
-      })
       inputs.nur.overlays.default
       inputs.nvfetcher.overlays.default
       inputs.rust-overlay.overlays.default

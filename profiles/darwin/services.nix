@@ -3,10 +3,6 @@ _: let
   yakite = "yakite";
 in {
   services = {
-    karabiner-elements = {
-      enable = false;
-    };
-
     skhd = {
       enable = true;
       skhdConfig = ''
