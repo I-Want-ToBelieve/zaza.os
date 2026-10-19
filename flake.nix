@@ -81,7 +81,7 @@
                 runtimeInputs = [pkgs.statix pkgs.deadnix];
                 text = ''
                   root=$(git rev-parse --show-toplevel)
-                  exec bash "$root/scripts/verify/lint-ratchet.sh" "$root" 48 0
+                  exec bash "$root/scripts/verify/lint-ratchet.sh" "$root" 18 0
                 '';
               };
             in {
@@ -108,9 +108,11 @@
         treefmt = {
           projectRootFile = "flake.nix";
 
-          programs.alejandra.enable = true;
-          programs.prettier.enable = true;
-          programs.shfmt.enable = true;
+          programs = {
+            alejandra.enable = true;
+            prettier.enable = true;
+            shfmt.enable = true;
+          };
 
           settings.global.excludes = [
             # nvfetcher 生成，绝不可手改（.nix 与 .json 两份）
@@ -151,7 +153,7 @@
           pkgs.runCommand "lint-ratchet" {
             nativeBuildInputs = [pkgs.statix pkgs.deadnix];
           } ''
-            bash ${self}/scripts/verify/lint-ratchet.sh ${self} 48 0
+            bash ${self}/scripts/verify/lint-ratchet.sh ${self} 18 0
             touch "$out"
           '';
 
@@ -269,12 +271,14 @@
     # disko，agenix 也由 clan 的 vars 取代。
     clan-core = {
       url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      # clan 自带一份 nix-darwin。目前两边恰好锁在同一个 rev，但它们是独立节点，
-      # 下次 nix flake update 就会各自漂 —— 而 k99-lite-darwin 现在由 clan 构建，
-      # 用哪一份 nix-darwin 直接决定这台机的结果。
-      inputs.nix-darwin.follows = "nix-darwin";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        # clan 自带一份 nix-darwin。目前两边恰好锁在同一个 rev，但它们是独立节点，
+        # 下次 nix flake update 就会各自漂 —— 而 k99-lite-darwin 现在由 clan 构建，
+        # 用哪一份 nix-darwin 直接决定这台机的结果。
+        nix-darwin.follows = "nix-darwin";
+      };
     };
 
     # 353f738f（2025-10-11 "fix: types"）把 hyprpanel / plasma-manager 从 inputs
@@ -356,8 +360,10 @@
 
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
     };
   };
 

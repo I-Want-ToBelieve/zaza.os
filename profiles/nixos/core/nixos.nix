@@ -76,54 +76,19 @@
     };
   };
 
-  programs.bash = {
-    # Enable starship
-    promptInit = "";
+  programs = {
+    ssh.startAgent = true;
 
-    # Enable direnv, a tool for managing shell environments
-    interactiveShellInit = ''
-      eval "$(${pkgs.direnv}/bin/direnv hook bash)"
-    '';
-  };
+    bash = {
+      # Enable starship
+      promptInit = "";
 
-  # For rage encryption, all hosts need a ssh key pair
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    ports = [22];
-
-    settings = {
-      X11Forwarding = false;
-      PermitRootLogin = lib.mkForce "yes";
-      UseDns = false;
-      PasswordAuthentication = lib.mkForce true;
-      KbdInteractiveAuthentication = false;
+      # Enable direnv, a tool for managing shell environments
+      interactiveShellInit = ''
+        eval "$(${pkgs.direnv}/bin/direnv hook bash)"
+      '';
     };
 
-    hostKeys = [
-      {
-        bits = 4096;
-        path = "/etc/ssh/ssh_host_rsa_key";
-        type = "rsa";
-      }
-      {
-        path = "/etc/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-    ];
-  };
-
-  programs.ssh.startAgent = true;
-
-  # services.gnome.gnome-keyring.enable 会带出 services.gnome.gcr-ssh-agent，
-  # 而它和上面的 programs.ssh.startAgent 互斥（同时只能有一个 ssh agent）。
-  # 关掉新来的那个，保持本仓库既有的 ssh-agent 行为不变。
-  services.gnome.gcr-ssh-agent.enable = false;
-
-  # Service that makes Out of Memory Killer more effective
-  services.earlyoom.enable = true;
-
-  programs = {
     dconf.enable = true;
     nm-applet.enable = true;
     seahorse.enable = true;
@@ -138,6 +103,36 @@
   };
 
   services = {
+    # For rage encryption, all hosts need a ssh key pair
+    openssh = {
+      enable = true;
+      openFirewall = true;
+      ports = [22];
+
+      settings = {
+        X11Forwarding = false;
+        PermitRootLogin = lib.mkForce "yes";
+        UseDns = false;
+        PasswordAuthentication = lib.mkForce true;
+        KbdInteractiveAuthentication = false;
+      };
+
+      hostKeys = [
+        {
+          bits = 4096;
+          path = "/etc/ssh/ssh_host_rsa_key";
+          type = "rsa";
+        }
+        {
+          path = "/etc/ssh/ssh_host_ed25519_key";
+          type = "ed25519";
+        }
+      ];
+    };
+
+    # Service that makes Out of Memory Killer more effective
+    earlyoom.enable = true;
+
     blueman.enable = false;
     fwupd.enable = true;
     gvfs.enable = true;
@@ -166,6 +161,11 @@
     gnome = {
       glib-networking.enable = true;
       gnome-keyring.enable = true;
+
+      # gnome-keyring.enable 会带出 gcr-ssh-agent，而它与上面的
+      # programs.ssh.startAgent 互斥（同时只能有一个 ssh agent）。
+      # 关掉新来的那个，保持本仓库既有的 ssh-agent 行为不变。
+      gcr-ssh-agent.enable = false;
     };
 
     pipewire = {

@@ -16,24 +16,27 @@
   # But on macOS, it's less stable than homebrew.
   #
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
-  environment.systemPackages = with pkgs; [
-    neovim
-    git
-    skhd
-  ];
-  # nvim，不是 neovim：包名叫 neovim，可执行文件叫 nvim。
-  # 此前这里是 "neovim"，而本机并不存在该命令，任何读 $EDITOR 的工具都会失败。
-  environment.variables.EDITOR = "nvim";
-  environment.shells = [pkgs.fish];
+  environment = {
+    systemPackages = with pkgs; [
+      neovim
+      git
+      skhd
+    ];
 
-  # Homebrew Mirror in China
-  # Feel free to remove this if you are not in China.
-  environment.variables = {
-    HOMEBREW_API_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api";
-    HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles";
-    HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git";
-    HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git";
-    HOMEBREW_PIP_INDEX_URL = "https://pypi.tuna.tsinghua.edu.cn/simple";
+    shells = [pkgs.fish];
+
+    variables = {
+      # nvim，不是 neovim：包名叫 neovim，可执行文件叫 nvim。
+      # 此前这里是 "neovim"，而本机并不存在该命令，任何读 $EDITOR 的工具都会失败。
+      EDITOR = "nvim";
+
+      # Homebrew 的国内镜像。不在国内可以整段删掉。
+      HOMEBREW_API_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api";
+      HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles";
+      HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git";
+      HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git";
+      HOMEBREW_PIP_INDEX_URL = "https://pypi.tuna.tsinghua.edu.cn/simple";
+    };
   };
 
   # TODO To make this work, homebrew need to be installed manually, see https://brew.sh

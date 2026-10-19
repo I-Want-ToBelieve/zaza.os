@@ -1,13 +1,13 @@
 _: {
-  home.file.".phoenix.js".source = ./phoenix.js;
-
-  home.file.".hammerspoon/init.lua".source = ./hammerspoon.lua;
-
-  home.file.".proxychains/proxychains.conf".text = ''
-    [ProxyList]
-    socks5  127.0.0.1 20170
-    http    127.0.0.1 20171
-  '';
+  home.file = {
+    ".phoenix.js".source = ./phoenix.js;
+    ".hammerspoon/init.lua".source = ./hammerspoon.lua;
+    ".proxychains/proxychains.conf".text = ''
+      [ProxyList]
+      socks5  127.0.0.1 20170
+      http    127.0.0.1 20171
+    '';
+  };
 
   programs.kitty = {
     # Keys

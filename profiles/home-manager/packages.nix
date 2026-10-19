@@ -13,6 +13,12 @@
   # `paths`，顺序是 derivation 的一部分，挪位置会改掉四台 x86 机器的 drvPath。
   onX86 = pkgs.stdenv.hostPlatform.isx86_64;
 in {
+  # 注意：fd / nodejs / ripgrep / xdg-utils / xz 刻意**不**在这里 ——
+  # 它们已在全部五台机器的 systemPackages 里，再放进 home.packages 只是让
+  # 用户 profile 抢先占 PATH，装两遍同一个包。
+  #
+  # wl-clipboard 则留着：k99-lite-wsl 的 systemPackages 里**没有**它，
+  # 删掉会让 WSL 彻底失去它。判据是逐台核对，不是在一台机器上看重叠。
   home.packages = with pkgs;
     [
       alsa-tools
@@ -62,7 +68,6 @@ in {
       moonlight-qt
 
       netease-cloud-music-gtk
-      nodejs
       neovim
       nix-init
 
@@ -100,9 +105,7 @@ in {
 
       whitesur-gtk-theme
 
-      xdg-utils
       xh
-      xz
       xorg.xhost
 
       # yesplaymusic 已从 nixpkgs 移除（上游项目归档），无替代包
@@ -111,9 +114,7 @@ in {
       catimg
       duf
       dust
-      fd
       file
-      ripgrep
     ]
     ++ [
       lua-language-server

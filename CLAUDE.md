@@ -147,11 +147,11 @@ lives in the `perSystem.treefmt` block in `flake.nix` and the root `treefmt.toml
 with it. devenv's git hooks run alejandra + editorconfig-checker on **staged files only**, plus
 `lint-ratchet` on the whole tree.
 
-`scripts/verify/lint-ratchet.sh` freezes the statix/deadnix counts at **48 / 0** and fails only
-when they rise. The upper bound is not zero because all 48 remaining statix findings are `W20`
-(repeated keys), which statix reports but cannot fix — merging `a.b = …; a.c = …;` into
-`a = { b = …; c = …; };` across two dozen files is churn with no payoff. deadnix is at a hard
-zero outside `pkgs/_sources`. The built-in `statix`/`deadnix` git hooks are deliberately **not**
+`scripts/verify/lint-ratchet.sh` freezes the statix/deadnix counts at **18 / 0** and fails only
+when they rise. All 18 remaining findings are `W20` (repeated keys) and **all 18 are in the three
+laptop host files, six each** — they are left on purpose. The other 30 were merged and the merge
+was proven drvPath-neutral; see "Duplication that is deliberate" below for why the host files are
+different. deadnix is at a hard zero outside `pkgs/_sources`. The built-in `statix`/`deadnix` git hooks are deliberately **not**
 enabled: they demand zero findings, so the 48 would reject every commit. Raising either bound
 means admitting new lint debt; lowering it is the only legitimate edit.
 
@@ -300,6 +300,37 @@ from `nixpkgs-stable`.
 to bare nixpkgs, which read as "skhd is patched here" when it wasn't. The file is kept rather than
 deleted because `flake.overlays.default` is a public output and this is where a local package
 override belongs.
+
+### Duplication that is deliberate
+
+`hosts/nixos/{k99-lite,xiaoxin-pro14-2021,xiaoxin-pro16-2021}.nix` are **~85% identical** —
+244 of pro14's 279 and pro16's 298 lines match byte for byte, and 142 non-comment lines are
+common to all three. Only 33 of those 244 are commented-out; **178 are live config**.
+
+**Do not extract them into a shared profile.** The duplication buys independent blast radius:
+a change meant for one laptop cannot silently reach the other two. It also keeps divergence
+_visible_ — the suspected copy-paste accident in `flake/hosts.nix`'s root-user suites was only
+noticeable because both blocks sit side by side. Nothing in this repo has been deployed in ten
+months, which is the worst possible moment to introduce implicit coupling. The refactor plan
+orders everything by blast radius for the same reason.
+
+Three consequences follow, and all three are intentional:
+
+- Seven of the nine option paths assigned in 3+ files are exactly these three hosts
+  (`services.sunshine.enable`, `services.udev.extraRules`, `boot.blacklistedKernelModules`,
+  `networking.useDHCP`, `xdg.portal`, `users.groups.input.members`, `services.udev.extraRules`).
+  Each is three independent decisions, not one decision repeated.
+- 18 of the repo's statix `W20` findings live there, six per file. The ratchet is set at 18 to
+  hold them, not to invite fixing them.
+- The real differences are genuinely machine-specific: Intel vs AMD (`nixos-hardware` modules,
+  `kvm-intel`/`kvm-amd`, VAAPI drivers), rkvm client vs server, and pro16 additionally running
+  sunshine / zerotierone / jellyfin / openvpn.
+
+Duplication **within one machine** gets no such protection and was removed: five packages
+(`fd`, `nodejs`, `ripgrep`, `xdg-utils`, `xz`) were in both `systemPackages` and
+`home.packages`, so the user profile shadowed the system copy. `wl-clipboard` looked like a
+sixth but is **not** in `k99-lite-wsl`'s `systemPackages` — removing it would have left WSL
+without it. Check every host, not just the one you sampled.
 
 ### Package inventory — decisions that look wrong but aren't
 
@@ -460,11 +491,11 @@ and passes it to dax as a single argv element.
 - **Files on disk ≠ hosts in the flake** is no longer true — the orphans were deleted. Do not
   auto-discover hosts from `hosts/`; the machine list in `flake/hosts.nix` is explicit on
   purpose.
-- **Inert profiles that grep will find but nothing imports.** `profiles/home-manager/desktop/`
-  holds `sxhkd.nix` and `window-managers/niri/default.nix`, neither named by any suite;
-  `display-managers/greetd.nix` and `managed/vscode.nix` likewise. haumea loads them all, so
-  they appear as `profiles.*` attributes and read as live config. Only `window-managers/hyprland`
-  and `mime` are actually selected (by `xiaoxin-pro16-2021`'s **root** user).
+- **`profiles/nixos/cachix/` is imported directly, not via a suite.**
+  `profiles/nixos/core/common.nix:10` has `imports = [../cachix]`, so grepping `flake/hosts.nix`
+  for it finds nothing and it looks inert. It is not. (The four profiles that genuinely were
+  inert — `sxhkd.nix`, `window-managers/niri`, `display-managers/greetd.nix`,
+  `managed/vscode.nix` — have been deleted.)
 - `history.md` is a dumped shell history, not documentation, but it is the best record of which
   commands are actually used against this flake.
 
