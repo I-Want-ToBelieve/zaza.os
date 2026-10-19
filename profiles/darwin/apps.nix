@@ -73,6 +73,7 @@
       "I-Want-ToBelieve/homebrew-formulae"
       "LizardByte/homebrew"
       "jackmordaunt/homebrew-tap"
+      "oven-sh/bun"
     ];
 
     # `brew install`
@@ -96,6 +97,19 @@
       "pnpm"
       "icnsify"
       # "sunshine"
+
+      # 以下是本机实际装着、此前未声明的顶层 formula。
+      # cleanup = "zap" 会卸载一切未声明的东西，所以漏掉它们就等于在下一次
+      # 切换时把它们删掉。判据是 `brew leaves`（不被其它已装包依赖的包）——
+      # 传递依赖不用列，brew bundle cleanup 会保留被声明包依赖的那些。
+      # 例：llvm@19 是 rust 的依赖，因而刻意不在这里。
+      "act"
+      "rclone"
+      "rsync"
+      "uv"
+      # bun 既不是任何已装包的依赖，也不在 brew leaves 里（它是以依赖身份
+      # 装进来的，而那个依赖者已经没了）。不显式声明就会被 zap 清掉。
+      "oven-sh/bun/bun"
     ];
 
     # `brew install --cask`
@@ -107,7 +121,7 @@
       "alt-tab"
       "copyq"
       "monitorcontrol"
-      "easy-move-plus-resize"
+      "easy-move+resize" # 规范 token；easy-move-plus-resize 是它的别名
       "phoenix"
       "hackintool"
       # "docker"
@@ -123,6 +137,16 @@
       # "wave"
       # "iglance" # beautiful system monitor
       # "eudic" # 欧路词典
+
+      # 同上：本机实际装着但此前未声明，不补就会被 zap 卸掉。
+      # claude-code 和 orbstack 尤其要紧 —— 卸掉它们是实打实的损失，
+      # 而且 homebrew 这部分**不在** nix-darwin 的 generation 回滚范围内。
+      "claude-code"
+      "orbstack"
+      "android-platform-tools"
+      "mitmproxy"
+      "openmtp"
+      "font-maple-mono-nf-cn"
     ];
   };
 }
