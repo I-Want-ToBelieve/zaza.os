@@ -179,14 +179,14 @@
       };
     };
 
-    logind = {
-      lidSwitch = "suspend-then-hibernate";
-      lidSwitchExternalPower = "lock";
-      # services.logind.extraConfig 已被移除，改用结构化的 settings.Login
-      settings.Login = {
-        HandlePowerKey = "suspend-then-hibernate";
-        HibernateDelaySec = 3600;
-      };
+    # logind 的三个旧选项都已改名到结构化的 settings.Login 之下。
+    # extraConfig 那次迁移做了，lidSwitch / lidSwitchExternalPower 当时漏了，
+    # 于是每次求值都打两条 renamed 警告。
+    logind.settings.Login = {
+      HandleLidSwitch = "suspend-then-hibernate";
+      HandleLidSwitchExternalPower = "lock";
+      HandlePowerKey = "suspend-then-hibernate";
+      HibernateDelaySec = 3600;
     };
   };
 
