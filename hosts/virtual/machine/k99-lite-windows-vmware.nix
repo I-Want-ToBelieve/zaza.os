@@ -1,8 +1,13 @@
-{ pkgs, config, lib, ... }: {
-  imports = [ ];
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
+  imports = [];
 
   hardware = {
-    opengl = { enable = true; };
+    opengl = {enable = true;};
 
     bluetooth = {
       enable = true;
@@ -14,19 +19,19 @@
   };
 
   boot = {
-    kernelModules = [ ];
+    kernelModules = [];
     extraModprobeConfig = "";
-    extraModulePackages = [ ];
+    extraModulePackages = [];
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [ ];
+    kernelParams = [];
 
-    supportedFilesystems = [ "btrfs" ];
+    supportedFilesystems = ["btrfs"];
 
     initrd = {
       availableKernelModules =
-        [ "xhci_pci" "ehci_pci" "ahci" "nvme_core" "nvme" "usb_storage" ]
+        ["xhci_pci" "ehci_pci" "ahci" "nvme_core" "nvme" "usb_storage"]
         ++ config.boot.initrd.luks.cryptoModules;
-      kernelModules = [ "dm-snapshot" ];
+      kernelModules = ["dm-snapshot"];
       luks.devices.luksroot = {
         device = "/dev/disk/by-label/cryptroot";
         preLVM = true;
@@ -57,27 +62,25 @@
   fileSystems."/" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options =
-      [ "subvol=root" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=root" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options =
-      [ "subvol=home" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=home" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options = [ "subvol=nix" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=nix" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
   };
 
   fileSystems."/var/log" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";
-    options = [ "subvol=log" "compress=zstd" "noatime" "ssd" "space_cache=v2" ];
+    options = ["subvol=log" "compress=zstd" "noatime" "ssd" "space_cache=v2"];
     neededForBoot = true;
   };
 
@@ -86,7 +89,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [{ device = "/dev/disk/by-label/swap"; }];
+  swapDevices = [{device = "/dev/disk/by-label/swap";}];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -102,7 +105,7 @@
 
   virtualisation = {
     spiceUSBRedirection.enable = true;
-    vmware = { guest = { enable = true; }; };
+    vmware = {guest = {enable = true;};};
   };
 
   services = {
@@ -125,7 +128,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = false;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
   environment = {

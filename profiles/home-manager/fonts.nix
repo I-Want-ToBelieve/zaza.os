@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  fonts = { fontconfig = { enable = true; }; };
+{pkgs, ...}: {
+  fonts = {fontconfig = {enable = true;};};
 
-  home.packages = with pkgs; [ dejavu_fonts ];
+  home.packages = with pkgs; [dejavu_fonts];
 }

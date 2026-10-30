@@ -1,1 +1,1 @@
-{ pkgs, ... }: { services.copyq = { enable = true; }; }
+{pkgs, ...}: {services.copyq = {enable = true;};}

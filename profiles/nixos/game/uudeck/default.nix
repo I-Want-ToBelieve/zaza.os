@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # @see uudeck aur
   environment.etc = {
     "uu/uuplugin_monitor.config" = {
@@ -28,9 +28,9 @@
       gzip
       iptables
     ];
-    wants = [ "network-online.target" ];
-    after = [ "network.target" "network-online.target" ];
-    wantedBy = [ "default.target" ];
-    serviceConfig = { ExecStart = "/etc/uu/uuplugin_monitor.sh"; };
+    wants = ["network-online.target"];
+    after = ["network.target" "network-online.target"];
+    wantedBy = ["default.target"];
+    serviceConfig = {ExecStart = "/etc/uu/uuplugin_monitor.sh";};
   };
 }

@@ -1,3 +1,3 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [ libsForQt5.qtstyleplugin-kvantum ];
+{pkgs, ...}: {
+  home.packages = with pkgs; [libsForQt5.qtstyleplugin-kvantum];
 }
