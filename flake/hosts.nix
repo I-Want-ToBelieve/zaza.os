@@ -88,6 +88,7 @@
       # Stylix 或桌面会话。base 仍负责 SSH 和常用的系统维护工具。
       vm-tty = [nix];
       stellar = [nix desktop.kineticwe];
+      plasma-minimal = [nix desktop.plasma-minimal];
     };
     home-manager = with profiles.home-manager; {
       base = [packages nix misc fonts stylix];
@@ -252,6 +253,7 @@
     suites ? [], # nixos suite 列表，会被 flatten
     users ? {}, # 用户名 -> home-manager 用户记录
     modules ? [], # 逐机逃生口（nixos-wsl 走这里）
+    overlays ? nixosOverlays, # 精简主机可不加载 NUR/nvfetcher/Rust 等开发包覆盖。
     # ---- 真正的单机例外 ----
     stylix ? true, # 两个 -minimal 不要
     # 三态：null 不传任何 disko 配置 / {} 什么都不传 / {disks=[…];} 传 disks。
@@ -290,7 +292,7 @@
       }
       ++ [
         (mkNixpkgsModule {
-          overlays = nixosOverlays;
+          inherit overlays;
           hostPlatform = system;
         })
       ]
@@ -315,7 +317,7 @@
 
         {
           home-manager = mkHmBlock {
-            sharedModules = lib.attrValues homeManagerModules; # 目前是 []
+            sharedModules = lib.attrValues homeManagerModules; # 可复用模块默认关闭，由 profile 启用。
             extras = nixosHmExtras;
             inherit users;
           };
@@ -391,7 +393,40 @@
     };
   };
 
+  # 显式选择桌面外观、输入法和平铺模块，不引入大型应用套件。
+  lvlvUsers."i.want.to.believe" = {
+    standardExtras = false;
+    stateVersion = "26.05";
+    # 精简用户不加载 sharedModules，显式注册默认关闭的可复用模块。
+    modules = [
+      homeManagerModules.mactahoe-kde
+      homeManagerModules.mactahoe-gtk
+      homeManagerModules.krohnkite
+      ../profiles/home-manager/desktop/mactahoe.nix
+      ../profiles/home-manager/desktop/krohnkite.nix
+      ../profiles/home-manager/desktop/lvlv-shortcuts.nix
+      ../profiles/home-manager/gui/fcitx5-tahoe.nix
+    ];
+  };
+
   machines = {
+    lvlv = {
+      hostFile = ../hosts/nixos/lvlv;
+      suites = [nixosSuites.plasma-minimal];
+      overlays = [];
+      stylix = false;
+      users = lvlvUsers;
+    };
+
+    lvlv-vm = {
+      hostFile = ../hosts/virtual/lvlv-vm.nix;
+      suites = [nixosSuites.plasma-minimal];
+      overlays = [];
+      stylix = false;
+      users = lvlvUsers;
+      disko = {disks = ["/dev/vda"];};
+    };
+
     k99-lite = {
       hostFile = ../hosts/nixos/k99-lite.nix;
       suites = with nixosSuites; [base misc games];
@@ -482,6 +517,8 @@ in {
   flake = {
     inherit modules nixosModules homeManagerModules profiles suites;
     overlays.default = overlaysDefault;
+    # clan 的机器名不接受点；对外保留用户指定的 flake 构建目标。
+    nixosConfigurations."lvlv.os" = inputs.self.nixosConfigurations.lvlv;
   };
 
   # clan-core 接管 nixosConfigurations。mkHost 返回的就是一个 NixOS module，

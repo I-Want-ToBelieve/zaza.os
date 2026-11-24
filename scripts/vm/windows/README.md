@@ -1,12 +1,17 @@
 # Windows QEMU VM
 
 `nixosConfigurations.zaza-vm-windows` 是 Windows 宿主上的 `x86_64-linux`
-NixOS 开发 VM。当前 guest 没有图形会话，主要通过 TTY 与 SSH 访问；CPU 必须走
-WHPX，QEMU 不会静默回退到 TCG。启动器默认不创建窗口，只使用 PowerShell
+NixOS 开发 VM。当前 guest 没有图形会话，主要通过 TTY 与 SSH 访问；CPU 默认使用
+WHPX，QEMU 不会静默回退到 TCG。需要 CPU 软件模拟时必须显式传入
+`-SoftwareEmulation`。启动器默认不创建窗口，只使用 PowerShell
 中的串口。`zaza-vm-windows-stellar` 是独立的 Stellar 图形开发 VM，使用
 `-VmName zaza-vm-windows-stellar` 选择；它有自己的磁盘、UEFI 变量和 SSH 端口。
+`lvlv-vm` 是 `lvlv.os` 的独立 KDE Plasma 验证 VM，通过 `-VmName lvlv-vm`
+选择，同样隔离磁盘、UEFI 变量和端口。
 当前宿主已验证可启动到 SSH 的图形输出路径是 `-Graphics Vnc`：QEMU 自带 VNC
 服务提供画面和输入，guest 不需要安装 VNC 服务。
+`lvlv-vm` 也已通过 `-Graphics Native` 的 WHPX / VirGL 启动及 KDE 渲染检查；
+此结论不自动扩展到 Stellar guest。
 
 ## 宿主准备
 
@@ -21,7 +26,7 @@ scoop install main/qemu
 ```
 
 如果重启后 `HypervisorPresent` 仍是 `False`，还要在主板 UEFI/BIOS 中启用
-Intel Virtualization Technology（VT-x）。检查状态不需要管理员权限：
+Intel Virtualization Technology（VT-x）或 AMD SVM。检查状态不需要管理员权限：
 
 ```powershell
 .\scripts\vm\windows\run.ps1 status
@@ -33,14 +38,15 @@ Intel Virtualization Technology（VT-x）。检查状态不需要管理员权限
 80 GiB 稀疏 qcow2。各命令互相独立：下载 ISO 和创建磁盘不会因为 WHPX 尚未
 启用或尚未重启而失败。QMP 默认关闭。
 
-| `-VmName` | 默认状态目录 | 磁盘文件 | SSH 端口 |
-| --- | --- | --- | --- |
-| `zaza-vm-windows`（默认） | `%LOCALAPPDATA%\zaza-vm-windows` | `zaza-vm-windows.qcow2` | 2222 |
-| `zaza-vm-windows-stellar` | `%LOCALAPPDATA%\zaza-vm-windows-stellar` | `zaza-vm-windows-stellar.qcow2` | 2223 |
+| `-VmName`                 | 默认状态目录                             | 磁盘文件                        | SSH 端口 |
+| ------------------------- | ---------------------------------------- | ------------------------------- | -------- |
+| `zaza-vm-windows`（默认） | `%LOCALAPPDATA%\zaza-vm-windows`         | `zaza-vm-windows.qcow2`         | 2222     |
+| `zaza-vm-windows-stellar` | `%LOCALAPPDATA%\zaza-vm-windows-stellar` | `zaza-vm-windows-stellar.qcow2` | 2223     |
+| `lvlv-vm`                 | `%LOCALAPPDATA%\lvlv-vm`                 | `lvlv-vm.qcow2`                 | 2224     |
 
 所有命令都接受 `-VmName`。`-State` 和 `-SshPort` 可覆盖默认值；即使显式共用
-`-State`，两个 VM 仍使用不同的 qcow2 和 UEFI vars 文件。不要把已有 TTY 磁盘
-重命名成 Stellar 磁盘，Stellar 应从独立磁盘安装。
+`-State`，三个 VM 仍使用不同的 qcow2 和 UEFI vars 文件。图形 VM 应从独立磁盘
+安装，不要重命名已有 TTY 磁盘。
 
 ```powershell
 .\scripts\vm\windows\run.ps1 fetch-iso
@@ -66,17 +72,19 @@ Intel Virtualization Technology（VT-x）。检查状态不需要管理员权限
 .\scripts\vm\windows\run.ps1 install -Graphics Vnc
 ```
 
-显示模式如下；CPU 在所有模式下都使用 WHPX：
+显示模式如下；CPU 默认使用 WHPX，显式指定 `-SoftwareEmulation` 时使用 TCG。
+CPU 模拟方式与图形模式独立：`-Graphics Software` 只控制 SDL 显示，不启用 TCG。
 
-| `-Graphics` | 虚拟显卡 | QEMU 显示 | 用途 |
-| --- | --- | --- | --- |
-| `Headless`（默认） | `virtio-vga` | `none` | 串口 TTY / SSH |
-| `Vnc` | `virtio-vga` | `none` + QEMU VNC | 当前宿主已验证的启动路径 |
-| `Software` | `virtio-vga` | `sdl,gl=off` | 实验性 SDL 软件显示，当前宿主曾冻结 |
-| `Native` | `virtio-vga-gl` | `sdl,gl=on` | 实验性宿主 OpenGL / VirGL |
-| `Angle` | `virtio-vga-gl` | `sdl,gl=es` | 实验性 SDL/ANGLE 路径 |
+| `-Graphics`        | 虚拟显卡        | QEMU 显示         | 用途                                |
+| ------------------ | --------------- | ----------------- | ----------------------------------- |
+| `Headless`（默认） | `virtio-vga`    | `none`            | 串口 TTY / SSH                      |
+| `Vnc`              | `virtio-vga`    | `none` + QEMU VNC | 当前宿主已验证的启动路径            |
+| `Software`         | `virtio-vga`    | `sdl,gl=off`      | 实验性 SDL 软件显示，当前宿主曾冻结 |
+| `Native`           | `virtio-vga-gl` | `sdl,gl=on`       | lvlv 已验证原生 OpenGL / VirGL      |
+| `Angle`            | `virtio-vga-gl` | `sdl,gl=es`       | 实验性 SDL/ANGLE 路径               |
 
-VNC 仅监听 `127.0.0.1`：TTY VM 默认端口 `5910`，Stellar 默认端口 `5911`。
+VNC 仅监听 `127.0.0.1`：TTY VM 默认端口 `5910`，Stellar 默认端口 `5911`，
+lvlv 默认端口 `5912`。
 用 VNC 客户端连接该 TCP 端口，或使用宿主上的 noVNC 桥接；启动器不会自动打开
 客户端窗口。可通过 `-VncPort` 指定 `5900`–`65535` 的 TCP 端口，启动器自动转换为
 QEMU 的 display 编号。例如 `-VncPort 5911` 生成 `-vnc 127.0.0.1:11`。
@@ -93,8 +101,19 @@ Stellar guest 使用 KWin QPainter 软件合成和 Mesa 软件渲染；`Vnc` 和
 .\scripts\vm\windows\run.ps1 install -Graphics Angle
 ```
 
-`Native` 和 `Angle` 的可用性取决于宿主驱动和 QEMU 构建，曾出现冻结，不能作为
-Stellar 基线。`-Graphics` 只决定 QEMU 如何显示；minimal ISO 及 TTY guest 不会
+SDL 模式（Software / Native / Angle）现使用 PS/2 鼠标，省略 USB tablet。
+在此 Windows 10 / Scoop QEMU 11.1.0 上，tablet 会使整个 VM 与 QMP 在启动时
+失去响应；Native 省略它后正常启动。按 `Ctrl+Alt+G` 捕获或释放输入。
+VNC/headless 保留 USB tablet。相关上游分支也记录了 Windows SDL 鼠标模式切换
+冻结的修复：[WINQ-EMU QEMU](https://github.com/cmspam/winq-emu-qemu)。本次未安装该分支。
+
+Native 模式在一次来宾原地重启中仍卡在关闭完成后的 WHPX/GL 重置阶段。
+`-no-reboot` 试验同样未解决，已撤除。重新启动 QEMU 进程的冷启动已通过；
+不要把该结果视为原地重启稳定。VNC 模式保持原先重启行为。
+
+`Native` 和 `Angle` 的可用性取决于宿主驱动和 QEMU 构建；Angle 尚未通过当前
+宿主的完整启动检查。Stellar 继续使用其 VNC 基线。
+`-Graphics` 只决定 QEMU 如何显示；minimal ISO 及 TTY guest 不会
 因为启用图形输出而拥有桌面。
 
 ## 独立 Stellar VM
@@ -117,6 +136,48 @@ $isoPath = Join-Path $env:LOCALAPPDATA "zaza-vm-windows\$isoName"
 ssh -p 2223 i.want.to.believe@127.0.0.1
 ```
 
+## 独立 lvlv Plasma VM
+
+`lvlv-vm` 用于先验证 `lvlv.os` 共用的精简 Plasma 桌面。它使用虚拟硬件，
+验证结果不替代对实体机 GPU、网卡和磁盘布局的检查。
+
+首次创建并安装时可以复用已有 ISO：
+
+```powershell
+$isoName = (Get-Content .\scripts\vm\windows\nixos-image.json -Raw | ConvertFrom-Json).fileName
+$isoPath = Join-Path $env:LOCALAPPDATA "zaza-vm-windows\$isoName"
+.\scripts\vm\windows\run.ps1 create-disk -VmName lvlv-vm
+.\scripts\vm\windows\run.ps1 install -VmName lvlv-vm -Graphics Vnc -IsoPath $isoPath
+```
+
+如果尚未下载 ISO，先运行 `fetch-iso -VmName lvlv-vm`，安装命令即可省略
+`-IsoPath`。按下文 flake 安装流程操作，将 SSH 端口改为 `2224`、flake 目标改为
+`/path/to/zaza.os#lvlv-vm`。安装完成后启动：
+
+```powershell
+.\scripts\vm\windows\run.ps1 run -VmName lvlv-vm -Graphics Native -MemoryMiB 6144 -Cpus 4
+ssh -p 2224 i.want.to.believe@127.0.0.1
+```
+
+该模式直接打开 SDL 窗口，不监听 VNC。KWin 应报告 `virgl` 及宿主 GPU，
+`llvmpipe` 仍表示软件渲染。VM 默认不强制 QPainter 或全局 Mesa 软件渲染。
+需要恢复非 GL 图形路径时，可用 `-Graphics Vnc` 并选择 NixOS 引导菜单中的
+`software-rendering` specialisation；其 QPainter 曾有交互崩溃，不能作为稳定性验收。
+默认终端现为 kitty 0.49.0，Dock 和字体 / 浅色配置由 Home Manager 管理。
+VNC 客户端连接 `127.0.0.1:5912`。该 VM 的固件变量文件为
+`%LOCALAPPDATA%\lvlv-vm\lvlv-vm-edk2-vars.fd`。启动器参数测试与真实桌面启动
+验证分开进行；仅生成配置或通过 `-DryRun` 不代表 Plasma 已成功运行。
+
+尚未启用 WHPX 时，可以显式选择较慢的 CPU 软件模拟进行验证：
+
+```powershell
+.\scripts\vm\windows\run.ps1 run -VmName lvlv-vm -Graphics Vnc -SoftwareEmulation -MemoryMiB 2048 -Cpus 2
+```
+
+`install` 同样接受 `-SoftwareEmulation`。该开关使用 `-accel tcg,thread=multi`
+和 `-cpu max`，并跳过 WHPX 状态检查；省略它仍要求 WHPX 就绪，失败即退出。
+它不会修改 Windows 功能，也不会在启动失败后自动切换加速模式。
+
 ## 检查启动计划
 
 `run` 和 `install` 支持 `-DryRun`，返回可供脚本检查的对象。该模式只读取 QEMU
@@ -126,11 +187,13 @@ SDL 环境变量。它跳过 WHPX、磁盘存在性和 ISO 内容校验，因此
 
 ```powershell
 .\scripts\vm\windows\run.ps1 run -VmName zaza-vm-windows-stellar -Graphics Vnc -DryRun | ConvertTo-Json -Depth 4
+.\scripts\vm\windows\run.ps1 run -VmName lvlv-vm -Graphics Vnc -DryRun | ConvertTo-Json -Depth 4
 .\scripts\vm\windows\run.tests.ps1
 ```
 
-返回对象的 `VncEndpoint` 为 VNC 的实际 TCP 端点，非 VNC 模式为 `null`。测试覆盖
-默认 TTY、独立 Stellar 状态、五种显示模式、SSH/QMP/VNC 冲突、VNC 端口转换和
+返回对象的 `Acceleration` 为 `whpx` 或 `tcg`；`VncEndpoint` 为 VNC 的实际 TCP
+端点，非 VNC 模式为 `null`。测试覆盖默认 WHPX、显式 TCG 和 CPU 参数，
+默认 TTY、独立 Stellar/lvlv 状态、五种显示模式、SSH/QMP/VNC 冲突、VNC 端口转换和
 包含空格或逗号的路径，并验证 dry-run 不创建状态或更改 SDL 环境。
 `run.tests.ps1` 自行创建并清理临时 QEMU/固件占位文件，以测试作用域内的 Scoop
 函数提供安装路径；无需安装 QEMU、Scoop 或启用 WHPX，不执行占位程序，也不修改

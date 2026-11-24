@@ -1,0 +1,7 @@
+node_modules/
+.pnpm-store/
+.workcache/
+.nx/
+dist/
+coverage/
+*.tsbuildinfo

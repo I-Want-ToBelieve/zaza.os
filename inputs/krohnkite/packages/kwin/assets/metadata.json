@@ -1,0 +1,22 @@
+{
+  "KPackageStructure": "KWin/Script",
+  "KPlugin": {
+    "Name": "Krohnkite",
+    "Description": "Dynamic KWin tiling with Effect 4",
+    "Icon": "dialog-tile-clones",
+    "Authors": [
+      { "Name": "Eon S. Jeon", "Email": "esjeon@hyunmu.am" },
+      { "Name": "Vjatcheslav V. Kolchkov", "Email": "akl334@protonmail.ch" },
+      { "Name": "Krohnkite contributors" }
+    ],
+    "Id": "krohnkite",
+    "Version": "1.0.0",
+    "License": "MIT",
+    "Website": "https://codeberg.org/anametologin/Krohnkite"
+  },
+  "X-Plasma-API": "declarativescript",
+  "X-Plasma-API-Minimum-Version": "6.0",
+  "X-Plasma-MainScript": "ui/main.qml",
+  "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
+  "X-KWin-Config-TranslationDomain": "krohnkite"
+}

@@ -1,0 +1,32 @@
+Krohnkite Effect rewrite
+
+Derived from Krohnkite by Eon S. Jeon and Vjatcheslav V. Kolchkov.
+The original MIT copyright and permission notice is retained in LICENSE.
+The upstream source is pinned at .repo/krohnkite, as recorded in upstreams.json.
+
+KWin runtime resources and settings retain upstream code and attribution:
+res/popup.qml, dbus.qml, dragpreview.qml, config.ui, and config.xml are copied
+without modification into packages/kwin/assets. res/shortcuts.qml retains all
+39 handlers, action names, labels, and SPDX notices; only its 25 nonempty default
+bindings are adjusted to Meta plus one key, with the other 14 left unbound.
+The main QML entry and package metadata are adapted for the Effect runtime.
+Original SPDX notices
+remain in copied QML files, including the 2026 Krohnkite contributors notice in
+dragpreview.qml.
+
+docs/images/screenshot.png and docs/images/conf.png are unchanged copies of
+the upstream img/ files referenced by its README. They are historical upstream
+documentation examples. The repository's original MIT notice is retained in
+LICENSE; no separate image license is declared upstream. RESOURCE-MIGRATION.md
+records the source revision, resource mappings, hashes, and distribution use.
+
+This distribution bundles Effect 4.0.0 by Effectful Technologies Inc.
+Effect is licensed under MIT. Its license is included in release packages.
+The current v4 source is pinned at .repo/effect. The archived effect-smol
+repository is not the canonical v4 source.
+
+The Qt bundle includes generator state-machine helpers from @babel/helpers
+8.0.5. These helpers are licensed under MIT, copyright 2014-present Sebastian
+McKenzie and other contributors; the regenerator helpers are also copyright
+2014-present Facebook, Inc. The complete notice is included at
+licenses/Babel-helpers-LICENSE.txt in the installed KWin package.

@@ -1,0 +1,8 @@
+[submodule ".repo/effect"]
+	path = .repo/effect
+	url = https://github.com/Effect-TS/effect.git
+	branch = main
+[submodule ".repo/krohnkite"]
+	path = .repo/krohnkite
+	url = https://codeberg.org/anametologin/Krohnkite.git
+	branch = master

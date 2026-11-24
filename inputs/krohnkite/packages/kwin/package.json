@@ -1,0 +1,25 @@
+{
+  "name": "@krohnkite/kwin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsdown --config ../../tsdown.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --config ../../vitest.config.ts --project @krohnkite/kwin"
+  },
+  "dependencies": {
+    "@krohnkite/config": "workspace:*",
+    "@krohnkite/core": "workspace:*",
+    "@krohnkite/kwinscript-api": "workspace:*",
+    "@krohnkite/runtime": "workspace:*",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "vitest": "catalog:"
+  }
+}

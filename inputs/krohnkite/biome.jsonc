@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["ultracite/biome/core"],
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": [
+      "!!.repo",
+      "!!.workcache",
+      "!!.pnpm-store",
+      "!!.nx",
+      "!!**/dist"
+    ]
+  },
+  "linter": {
+    "rules": {
+      "performance": { "noBarrelFile": "off", "noNamespaceImport": "off" },
+      "style": { "useConsistentTypeDefinitions": "off" }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["scripts/**"],
+      "linter": {
+        "rules": {
+          "suspicious": { "noConsole": "off" },
+          "performance": { "noAwaitInLoops": "off" }
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Windows 上 TTY 与 Stellar VM 的 QEMU/WHPX 启动器。
+    Windows 上 TTY、Stellar 与 lvlv Plasma VM 的 QEMU/WHPX 启动器。
 
 .EXAMPLE
     .\scripts\vm\windows\run.ps1 status
@@ -10,6 +10,8 @@
     .\scripts\vm\windows\run.ps1 run
     .\scripts\vm\windows\run.ps1 run -VmName zaza-vm-windows-stellar -Graphics Vnc
     .\scripts\vm\windows\run.ps1 run -VmName zaza-vm-windows-stellar -Graphics Vnc -DryRun
+    .\scripts\vm\windows\run.ps1 run -VmName lvlv-vm -Graphics Vnc
+    .\scripts\vm\windows\run.ps1 run -VmName lvlv-vm -Graphics Vnc -SoftwareEmulation -MemoryMiB 2048 -Cpus 2
 #>
 [CmdletBinding()]
 param(
@@ -17,7 +19,7 @@ param(
     [ValidateSet('status', 'fetch-iso', 'create-disk', 'install', 'run')]
     [string]$Command,
 
-    [ValidateSet('zaza-vm-windows', 'zaza-vm-windows-stellar')]
+    [ValidateSet('zaza-vm-windows', 'zaza-vm-windows-stellar', 'lvlv-vm')]
     [string]$VmName = 'zaza-vm-windows',
 
     # Vnc 使用 QEMU 自带显示服务；Software/Native/Angle 显式启用 SDL。
@@ -49,6 +51,9 @@ param(
     [ValidateRange(5900, 65535)]
     [int]$VncPort = 5910,
 
+    # 显式选择较慢的 TCG CPU 软件模拟；默认仍要求 WHPX，绝不自动回退。
+    [switch]$SoftwareEmulation,
+
     # 仅适用于 run/install：输出结构化启动计划，不创建文件、不启动 QEMU。
     [switch]$DryRun
 )
@@ -64,9 +69,13 @@ if ([string]::IsNullOrWhiteSpace($State)) {
 }
 if (-not $PSBoundParameters.ContainsKey('SshPort') -and $VmName -eq 'zaza-vm-windows-stellar') {
     $SshPort = 2223
+} elseif (-not $PSBoundParameters.ContainsKey('SshPort') -and $VmName -eq 'lvlv-vm') {
+    $SshPort = 2224
 }
 if (-not $PSBoundParameters.ContainsKey('VncPort') -and $VmName -eq 'zaza-vm-windows-stellar') {
     $VncPort = 5911
+} elseif (-not $PSBoundParameters.ContainsKey('VncPort') -and $VmName -eq 'lvlv-vm') {
+    $VncPort = 5912
 }
 
 $metadataPath = Join-Path $PSScriptRoot 'nixos-image.json'
@@ -82,7 +91,7 @@ if ([IO.Path]::IsPathRooted($State)) {
 }
 
 $diskPath = Join-Path $stateDirectory "$VmName.qcow2"
-# 保留原 TTY VM 的固件路径；即使显式共用 State，Stellar 也不修改它。
+# 保留原 TTY VM 的固件路径；即使显式共用 State，各图形 VM 也不修改它。
 $firmwareVarsName = if ($VmName -eq 'zaza-vm-windows') { 'edk2-vars.fd' } else { "$VmName-edk2-vars.fd" }
 $firmwareVarsPath = Join-Path $stateDirectory $firmwareVarsName
 $defaultIsoPath = Join-Path $stateDirectory ([string]$image.fileName)
@@ -342,10 +351,12 @@ function New-ZazaLaunchPlan {
         'virtio-vga-gl'
     }
 
+    $acceleration = if ($SoftwareEmulation) { 'tcg' } else { 'whpx' }
+    $acceleratorOption = if ($SoftwareEmulation) { 'tcg,thread=multi' } else { 'whpx' }
     $qemuArguments = @(
         '-name', $VmName,
         '-machine', 'q35',
-        '-accel', 'whpx',
+        '-accel', $acceleratorOption,
         '-smp', "sockets=1,cores=$Cpus,threads=1",
         '-m', ([string]$MemoryMiB),
         '-drive', "if=pflash,format=raw,readonly=on,file=$firmwareCode",
@@ -353,12 +364,21 @@ function New-ZazaLaunchPlan {
         '-device', 'virtio-rng-pci',
         '-device', $videoDevice,
         '-device', 'qemu-xhci',
-        '-device', 'usb-tablet',
         '-drive', "file=$disk,format=qcow2,if=virtio,discard=unmap,detect-zeroes=unmap",
         '-netdev', "user,id=net0,hostfwd=tcp:127.0.0.1:$SshPort-:22",
         '-device', 'virtio-net-pci,netdev=net0',
         '-serial', 'mon:stdio'
     )
+
+    # Windows SDL froze during usb-tablet mouse-mode transitions on this host.
+    # Keep absolute input for VNC/headless; SDL uses the standard PS/2 mouse.
+    if ($Graphics -in @('Headless', 'Vnc')) {
+        $qemuArguments += @('-device', 'usb-tablet')
+    }
+
+    if ($SoftwareEmulation) {
+        $qemuArguments += @('-cpu', 'max')
+    }
 
     if ($QmpPort -ne 0) {
         $qemuArguments += @('-qmp', "tcp:127.0.0.1:$QmpPort,server=on,wait=off")
@@ -399,6 +419,7 @@ function New-ZazaLaunchPlan {
         Disk = $diskPath
         FirmwareVars = $firmwareVarsPath
         Graphics = $Graphics
+        Acceleration = $acceleration
         SshPort = $SshPort
         VncEndpoint = $vncEndpoint
         Installer = $Installer
@@ -414,7 +435,9 @@ function Start-ZazaVm {
         return $launchPlan
     }
 
-    Assert-WhpxReady
+    if (-not $SoftwareEmulation) {
+        Assert-WhpxReady
+    }
     if (-not (Test-Path -LiteralPath $diskPath -PathType Leaf)) {
         throw "Disk is missing: $diskPath. Run create-disk -VmName $VmName first."
     }
@@ -441,12 +464,19 @@ function Start-ZazaVm {
         } else {
             "VirtIO GL ($Graphics)"
         }
-        $connectionSummary = "启动 ${VmName}：WHPX，$displaySummary，SSH 127.0.0.1:$SshPort"
+        $accelerationSummary = if ($SoftwareEmulation) { 'TCG 软件模拟（显式启用）' } else { 'WHPX' }
+        $connectionSummary = "启动 ${VmName}：$accelerationSummary，$displaySummary，SSH 127.0.0.1:$SshPort"
         if ($QmpPort -ne 0) {
             $connectionSummary += "，QMP 127.0.0.1:$QmpPort"
         }
         Write-Host "$connectionSummary。"
-        Write-Host '串口切换到 QEMU monitor：Ctrl-a c；退出：Ctrl-a x。不会自动回退到 TCG。'
+        Write-Host '串口切换到 QEMU monitor：Ctrl-a c；退出：Ctrl-a x。不会自动切换 CPU 加速模式。'
+        if ($Graphics -in @('Software', 'Native', 'Angle')) {
+            Write-Host 'SDL 使用 PS/2 鼠标，避免 Windows USB tablet 卡死；Ctrl+Alt+G 捕获或释放输入。'
+        }
+        if ($Graphics -in @('Native', 'Angle')) {
+            Write-Host '此宿主 GL 模式的来宾原地重启尚有卡死问题，优先关机后重新启动 QEMU。'
+        }
         if ($Installer) {
             if ($Graphics -eq 'Headless') {
                 Write-Host 'Headless 安装时，ISO 的 UEFI GRUB 不读取 ttyS0 键盘；按 Ctrl-a c 进入 QEMU monitor，用 sendkey 选择 Serial console，再按 Ctrl-a c 返回串口。'
@@ -467,7 +497,7 @@ function Start-ZazaVm {
     }
 
     if ($qemuExitCode -ne 0) {
-        throw "QEMU failed (exit $qemuExitCode). Hardware acceleration was not replaced by TCG."
+        throw "QEMU failed (exit $qemuExitCode; acceleration $($launchPlan.Acceleration)). No automatic acceleration fallback was used."
     }
 }
 

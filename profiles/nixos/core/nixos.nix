@@ -160,7 +160,7 @@
 
     dbus = {
       enable = true;
-      packages = with pkgs; [dconf gcr];
+      packages = with pkgs; [dconf gcr_3];
     };
 
     gnome = {

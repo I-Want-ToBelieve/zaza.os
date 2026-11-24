@@ -135,35 +135,46 @@
           ];
         };
 
-        # 未声明 input 的护栏。名单在 eval 期从 `inputs` 取，所以沙箱内也能跑。
-        checks.undeclared-inputs = pkgs.runCommand "undeclared-inputs" {} ''
-          printf '%s\n' ${nixpkgs.lib.escapeShellArgs (["self"] ++ builtins.attrNames inputs)} > declared.txt
-          bash ${self}/scripts/verify/check-undeclared-inputs.sh declared.txt ${self}
-          touch "$out"
-        '';
-
-        checks.stellar-assets = pkgs.runCommand "stellar-assets" {
-          nativeBuildInputs = [pkgs.python3];
-        } ''
-          python ${self}/stellar/generate.py --check
-          touch "$out"
-        '';
-
-        # lint 棘轮：statix / deadnix 的发现数只允许下降。
-        #
-        # 上限不是零，因为 statix 剩下的 48 条全是 W20（重复 key），它只报不修 ——
-        # 需要人工把 a.b = …; a.c = …; 合并成 a = { b = …; c = …; };。那是代码形态
-        # 偏好而不是缺陷，为它改二十几个文件属于零收益的 churn。
-        # deadnix 一侧已清到 0（生成文件之外），所以那边就是硬零。
-        #
-        # 改这两个数字的唯一正当理由是**调低**。调高等于承认新引入了 lint 债。
-        checks.lint-ratchet =
-          pkgs.runCommand "lint-ratchet" {
-            nativeBuildInputs = [pkgs.statix pkgs.deadnix];
-          } ''
-            bash ${self}/scripts/verify/lint-ratchet.sh ${self} 48 0
+        checks = {
+          # 未声明 input 的护栏。名单在 eval 期从 `inputs` 取，所以沙箱内也能跑。
+          undeclared-inputs = pkgs.runCommand "undeclared-inputs" {} ''
+            printf '%s\n' ${nixpkgs.lib.escapeShellArgs (["self"] ++ builtins.attrNames inputs)} > declared.txt
+            bash ${self}/scripts/verify/check-undeclared-inputs.sh declared.txt ${self}
             touch "$out"
           '';
+
+          stellar-assets =
+            pkgs.runCommand "stellar-assets" {
+              nativeBuildInputs = [pkgs.python3];
+            } ''
+              python ${self}/stellar/generate.py --check
+              touch "$out"
+            '';
+
+          krohnkite-source =
+            pkgs.runCommand "krohnkite-source" {
+              nativeBuildInputs = [pkgs.python3];
+            } ''
+              python ${self}/scripts/update-krohnkite-source.py --check
+              touch "$out"
+            '';
+
+          # lint 棘轮：statix / deadnix 的发现数只允许下降。
+          #
+          # 上限不是零，因为 statix 剩下的 48 条全是 W20（重复 key），它只报不修 ——
+          # 需要人工把 a.b = …; a.c = …; 合并成 a = { b = …; c = …; };。那是代码形态
+          # 偏好而不是缺陷，为它改二十几个文件属于零收益的 churn。
+          # deadnix 一侧已清到 0（生成文件之外），所以那边就是硬零。
+          #
+          # 改这两个数字的唯一正当理由是**调低**。调高等于承认新引入了 lint 债。
+          lint-ratchet =
+            pkgs.runCommand "lint-ratchet" {
+              nativeBuildInputs = [pkgs.statix pkgs.deadnix];
+            } ''
+              bash ${self}/scripts/verify/lint-ratchet.sh ${self} 48 0
+              touch "$out"
+            '';
+        };
 
         # ISO 只在 x86_64-linux 上有意义。此前它在所有 system 上求值，
         # 而它引用的 nixpkgs 路径已不存在，导致 `nix flake check`
@@ -292,16 +303,40 @@
     # 里删掉了，却只修了 darwin 配置的引用，导致全部 8 个 nixosConfigurations
     # 无法求值十个月。
     #
-    # 两者都不恢复：
+    # hyprpanel 不恢复；plasma-manager 现仅用于 lvlv 的 MacTahoe 桌面：
     #   - hyprpanel 已被 nixpkgs 打包（pkgs.hyprpanel），上游 flake 的 overlay 现在
     #     只是个废弃桩，求值时会打印 "Overlay has been removed, ...". 8 处引用已删。
-    #   - plasma-manager 随 KDE 一起弃用，见下方 KDE 移除说明。
     # 同理 greetd.nix 改用 pkgs.hyprland，省掉一个带 submodule 的重型 git input。
 
     haumea.url = "github:nix-community/haumea";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Public source snapshot of the local Effect v4 rewrite; update with
+    # scripts/update-krohnkite-source.py before changing its locked input.
+    krohnkite = {
+      url = "path:./inputs/krohnkite";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+    mactahoe-kde = {
+      url = "github:vinceliuice/MacTahoe-kde";
+      flake = false;
+    };
+    mactahoe-gtk = {
+      url = "github:vinceliuice/MacTahoe-gtk-theme";
+      flake = false;
+    };
+    mactahoe-icons = {
+      url = "github:vinceliuice/MacTahoe-icon-theme";
+      flake = false;
+    };
 
     nvfetcher.url = "github:berberman/nvfetcher";
     nvfetcher.inputs.nixpkgs.follows = "nixpkgs";

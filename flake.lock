@@ -736,6 +736,22 @@
         "type": "gitlab"
       }
     },
+    "krohnkite": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./inputs/krohnkite",
+        "type": "path"
+      },
+      "original": {
+        "path": "./inputs/krohnkite",
+        "type": "path"
+      },
+      "parent": []
+    },
     "lowdown-src": {
       "flake": false,
       "locked": {
@@ -749,6 +765,54 @@
       "original": {
         "owner": "kristapsdz",
         "repo": "lowdown",
+        "type": "github"
+      }
+    },
+    "mactahoe-gtk": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790557324,
+        "narHash": "sha256-6a42HU49N4ChSm4AyW7i6FYAIENZzDogpZzM51muCbg=",
+        "owner": "vinceliuice",
+        "repo": "MacTahoe-gtk-theme",
+        "rev": "1e45e19f510edb8cde18fa84d6cd5319f60b086b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vinceliuice",
+        "repo": "MacTahoe-gtk-theme",
+        "type": "github"
+      }
+    },
+    "mactahoe-icons": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789030862,
+        "narHash": "sha256-NAahlBOYub0QlqkYStamoCbyWh+H5JG/iFm4Ws9EU3A=",
+        "owner": "vinceliuice",
+        "repo": "MacTahoe-icon-theme",
+        "rev": "839848b9a8a38a92a6936e30c4abe35cc6f2546d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vinceliuice",
+        "repo": "MacTahoe-icon-theme",
+        "type": "github"
+      }
+    },
+    "mactahoe-kde": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786859737,
+        "narHash": "sha256-atdHgr9pCfg/VE8GGWF+4MZu6nRmVCz9TiylVATAwzs=",
+        "owner": "vinceliuice",
+        "repo": "MacTahoe-kde",
+        "rev": "cbf6a1f71b591d143184855d62f6272ce533e7c3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vinceliuice",
+        "repo": "MacTahoe-kde",
         "type": "github"
       }
     },
@@ -1251,11 +1315,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1787736819,
-        "narHash": "sha256-cV5xEJJK3BvhU8rEd4mC9UsmDi5qscv/kzGPhBRC5WA=",
+        "lastModified": 1790578696,
+        "narHash": "sha256-ZoxIApko70jCdbH3l20HWXOBaT2HZd87orzd2yJ9dVE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9fbb54b33e91ee4ca368e35a78e0613c720600b3",
+        "rev": "7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f",
         "type": "github"
       },
       "original": {
@@ -1460,6 +1524,29 @@
         "type": "github"
       }
     },
+    "plasma-manager": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785762349,
+        "narHash": "sha256-jZhZkzAwc7f3exzcTDJWP2WCAchCv0iNC3UF/QsahdQ=",
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "rev": "a19a2a029fa180911bd89c554dca1616e10f4c1d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": [
@@ -1500,6 +1587,10 @@
         "home-manager": "home-manager",
         "inur": "inur",
         "kineticwe": "kineticwe",
+        "krohnkite": "krohnkite",
+        "mactahoe-gtk": "mactahoe-gtk",
+        "mactahoe-icons": "mactahoe-icons",
+        "mactahoe-kde": "mactahoe-kde",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
         "nix-on-droid": "nix-on-droid",
@@ -1511,6 +1602,7 @@
         "nur": "nur",
         "nvchad4nix": "nvchad4nix",
         "nvfetcher": "nvfetcher",
+        "plasma-manager": "plasma-manager",
         "rust-overlay": "rust-overlay_2",
         "stylix": "stylix",
         "treefmt-nix": "treefmt-nix_4"

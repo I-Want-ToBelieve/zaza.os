@@ -17,6 +17,107 @@ plumbing, **haumea** for directory-to-attrset loading, **clan-core** for the Nix
 
 ## Current state (verified 2026-08-29)
 
+### lvlv.os addition (2026-09-29)
+
+The new `lvlv.os` physical host and `lvlv-vm` QEMU canary explicitly use minimal
+upstream KDE Plasma, per the owner's current request. They share
+`profiles/nixos/desktop/plasma-minimal.nix` and `hosts/nixos/lvlv/common.nix`;
+the earlier Stellar decision below still applies to its existing hosts.
+Neither new host selects the broad `base`, `misc`, or Home Manager application
+suites. Both pass `overlays = []` to `mkHost`; existing machines retain the default
+overlay list. `lvlv.os` is the flake target alias; its Clan ID and short hostname are
+`lvlv`, domain `os` (Clan CLI machine IDs cannot contain dots).
+Physical mount labels are a documented plan, not a Windows-discovered Linux
+layout. Do not deploy to the physical NVMe without a live-ISO hardware/mount scan.
+Hardware inventory and validation evidence live in `hosts/nixos/lvlv/`.
+The approved applications and common CLI/TUI tools live in this host's
+`applications.nix`, `terminal-tools.nix`, and `APPLICATIONS.md`; keep that selection explicit.
+MacTahoe appearance is now managed by Home Manager + plasma-manager, scoped to
+the normal user on these two hosts. See `profiles/home-manager/desktop/mactahoe.nix`,
+`pkgs/mactahoe/default.nix`, and `hosts/nixos/lvlv/THEME.md`. Theme sources are locked
+flake inputs; do not run upstream installers against a live home directory.
+MacTahoe KDE and GTK are independent, default-disabled Home Manager modules in
+`modules/home-manager/mactahoe-{kde,gtk}.nix`, using `appearance.mactahoe.{kde,gtk}`.
+The lvlv profile enables both; GTK defaults to the light solid variant and leaves
+GTK4/libadwaita CSS opt-in. Resource packages are split into `pkgs/mactahoe/{kde,gtk,icons}.nix`.
+`scripts/verify/mactahoe.nix` checks independent enable flags and both color modes.
+Krohnkite tiling is a separate default-disabled Home Manager module in
+`modules/home-manager/krohnkite.nix`, using `programs.krohnkite`. The module keeps
+`pkgs.kdePackages.krohnkite` as its default; the two lvlv hosts' shared profile now
+selects `inputs.krohnkite.packages.${pkgs.stdenv.hostPlatform.system}.krohnkite`,
+built from the separate Effect v4 / TypeScript monorepo, version 1.0.0.
+The input is `path:./inputs/krohnkite`; its public snapshot is fixed by this OS
+repository's Git commit and the per-file SHA-256 inventory in `SOURCE.json`.
+The relative-path lock node records its path and dependency relationships, without
+a content `narHash`. Original Codeberg and Effect sources remain submodules in
+the independent project. Both lvlv users explicitly register the module and
+select `profiles/home-manager/desktop/krohnkite.nix`; other hosts leave it disabled.
+As of 2026-10-04, the final source passes Windows `pnpm check`, local release-asset
+validation and the Linux Nix build's 329 tests. Its 350477-byte bundle has SHA-256
+`4ce08863b5a109973b3753c80f3547e594b70eff78d941404b0fdd03794850b2`, identical
+in Windows and Linux. The final k32brf86... package passes installed-package Qt
+6.11.2 checks for partial maximization, internal-window filtering and the full
+39-shortcut/12-native-window lifecycle. The sacpcjp2... VM system completed
+dry-activate/test/profile/boot and a single clean Plasma login. The final live
+canary passed default Tile, Monocle, return to Tile and native file reload from
+8 to 16px gaps. Wrapper PID 25422 and actual compositor PID 25426 stayed the same,
+with NRestarts=0 and no cleanup errors or failed system units. This proves the
+tested session, not a cold boot of the final system or physical-host deployment.
+The Meta-only shortcut update at source commit 120ef47 is now activated in the
+6jd0q95m... VM system with the 3gzrqf3b... package. All 39 action registrations
+match the shared profile: 25 unique Meta-only bindings and 14 unbound actions.
+Plasma QuickTile/EditTiles conflicts are cleared; desktop selection retains
+Ctrl+F1 through Ctrl+F4. Real QMP Meta+M/T events passed the geometry canary;
+wrapper PID 34802 and native compositor PID 34807 stayed unchanged, with no
+cleanup errors or failed units. This was Native session validation. The later
+user-requested visible Native startup stalled at NetworkManager; VNC mode then
+cold-booted the same 6jd0q95m... system successfully, with KWin/Shell PIDs 886/1016,
+no failed user units, and two preview terminals tiled. Do not treat the VNC
+cold boot as proof that visible Native startup works. TigerVNC is currently open.
+The current public source snapshot contains 96 files; refresh its SOURCE.json
+inventory after source commits rather than hardcoding a stale source revision.
+The historical 318-test hfga package and its j5kn1a1h... VM system built, but its
+native-generator pressure check failed with SIGSEGV and that system was not
+activated. Its isolated KWin file-configuration smoke passed. The initial
+312-test package passed the two-window Qt check and the second activation;
+the earlier `81qy1459...` system is now a historical baseline. Earlier
+activation attempts conflicted and rolled back. After an explicit login restart,
+the manager lacked display variables while Qt/KWin had published display sockets;
+a complete manager shutdown and a single login restored the environment. This is
+consistent with overlapping startup/cleanup, whose full timing was not traced.
+Do not claim a proven sole cause, a clean crash history for this entire boot, or
+a cold boot of the final system from test/boot activation. The older stable-package checks
+are historical evidence.
+The original QEMU process later exited unexpectedly for an unknown reason. A
+cold restart of the same disk restored the earlier `81qy1459...` baseline, with
+KWin wrapper / Plasma PIDs 884 / 998. This recovery boot does not validate the
+unactivated j5kn1a1h... system or the final package. The intermediate
+327-test/691f121f... bundle passed Qt but later exposed partial-maximize restoration
+and internal notification windows being tiled. The final version fixes both.
+A diagnostic probe also crashed KWin by reading a destroyed InternalWindow's
+minSize; probes now filter owned canary windows before metadata and use isolated
+file caches. Final health compares the actual compositor PID, not only its wrapper.
+Keep these incidents separate from the final passing session and other desktop
+acceptance records. See the final receipt and geometry in the validation document.
+Settings use the native user `kwinrc` group `[Script-krohnkite]`; call KWin's
+`reconfigure` after file changes. Replacing the script package requires a fresh
+Plasma session, whereas supported settings reload in the existing session.
+The original shortcut/popup/DBus/drag-preview QML and configuration resources are
+runtime assets; upstream screenshots are historical documentation images in the
+Krohnkite project's `docs/images/`. Its `RESOURCE-MIGRATION.md` and `NOTICE` track
+their source and attribution. See `hosts/nixos/lvlv/TILING.md`,
+`hosts/nixos/lvlv/VALIDATION.md` and `scripts/verify/krohnkite.nix`.
+The isolated `lvlv-vm` has now booted Plasma 6.7.5 under QEMU/WHPX with native SDL
+OpenGL, and KWin reports `virgl (AMD Radeon RX 6750 XT)`. Windows SDL must omit
+`usb-tablet` on the tested QEMU build to avoid a boot-time freeze; use PS/2 input.
+VNC retains the tablet. The VM's `software-rendering` specialisation preserves
+the earlier QPainter recovery path. Native guest warm reboot still froze after
+shutdown; `-no-reboot` did not fix it and was removed. Cold boot is verified;
+do not describe warm reboot as stable.
+The owner replaced Ghostty with kitty; keep the default terminal and Dock in sync.
+See `hosts/nixos/lvlv/VALIDATION.md` for
+historical TCG failures, current checks, and the physical-host validation scope.
+
 All configurations that predate `zaza-vm-windows`, plus
 `darwinConfigurations.k99-lite-darwin`, evaluate; `nix flake check --impure` exits 0 on
 darwin. This was not true between 2025-10-11 and
@@ -254,8 +355,10 @@ Add a file and the attribute appears automatically — but it is inert until a s
 
 - **`modules/`** — reusable options. Every machine imports `attrValues nixosModules`
   _unconditionally_, so anything here must be self-gating with its own `enable` option.
-  `modules/nixos/gpupass.nix` is the only one. `modules/home-manager/` is empty, so
-  `homeManagerModules` is `{}`.
+  `modules/nixos/gpupass.nix` is the only NixOS one. `modules/home-manager/` contains
+  the gated MacTahoe KDE / GTK and Krohnkite modules. Standard HM users receive them through
+  `sharedModules`; minimal users such as `lvlvUsers` register them explicitly.
+  Enable them only in the selected desktop profile.
 - **`profiles/`** — opinionated config fragments, imported only when a suite names them.
 
 `profiles/nixos/cachix/default.nix` auto-imports its siblings via `builtins.readDir`, so

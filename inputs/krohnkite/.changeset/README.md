@@ -1,0 +1,3 @@
+Run `pnpm changeset` to describe a user-visible change. The four private workspace packages use one fixed version. `pnpm version:packages` consumes changesets, updates their changelogs, and refreshes the lockfile. Packages are distributed as KWin assets rather than through npm.
+
+After merging the version pull request, run `pnpm release:tag` and push the `@krohnkite/kwin@VERSION` tag. The release workflow verifies the tag matches the package version and creates a GitHub release containing the installable `.kwinscript`, an offline source archive, the JavaScript bundle and source map, provenance, and SHA-256 checksums. A matching `vVERSION` tag is also accepted.

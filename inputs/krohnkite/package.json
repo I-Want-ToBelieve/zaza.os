@@ -1,0 +1,63 @@
+{
+  "name": "krohnkite-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Effect v4 tiling for KDE Plasma, built as a modular KWin script",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.22.0",
+      "onFail": "error"
+    }
+  },
+  "engines": {
+    "node": "^24.11.0 || >=26.0.0"
+  },
+  "scripts": {
+    "postinstall": "effect-tsgo patch",
+    "build": "nx run-many -t build",
+    "typecheck": "tsc --noEmit -p tsconfig.json && nx run-many -t typecheck",
+    "test": "nx run-many -t test",
+    "test:all": "vitest run",
+    "test:watch": "vitest",
+    "lint": "ultracite check",
+    "format": "ultracite fix",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm package",
+    "package": "tsx scripts/package.ts && tsx scripts/verify-artifacts.ts && tsx scripts/verify-offline-source.ts",
+    "graph": "nx graph",
+    "changeset": "changeset",
+    "version:packages": "changeset version && pnpm install --lockfile-only",
+    "release:tag": "changeset tag",
+    "release:assets": "pnpm build && pnpm package",
+    "deps:check": "taze -r",
+    "deps:update": "taze -r -w"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@babel/helpers": "catalog:",
+    "@babel/plugin-transform-block-scoping": "catalog:",
+    "@babel/plugin-transform-destructuring": "catalog:",
+    "@babel/plugin-transform-for-of": "catalog:",
+    "@babel/plugin-transform-regenerator": "catalog:",
+    "@biomejs/biome": "catalog:",
+    "@changesets/cli": "catalog:",
+    "@effect/tsgo": "0.43.0",
+    "@effect/vitest": "catalog:",
+    "@types/node": "catalog:",
+    "@typescript/native": "catalog:typescript",
+    "acorn": "catalog:",
+    "effect": "catalog:",
+    "fflate": "catalog:",
+    "nx": "catalog:",
+    "taze": "catalog:",
+    "tsdown": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:typescript",
+    "ultracite": "7.9.4",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

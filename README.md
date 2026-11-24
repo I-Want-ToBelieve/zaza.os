@@ -2,6 +2,10 @@
 
 This repository is home to the nix code that builds my systems.
 
+lvlv 桌面：[集成验收](hosts/nixos/lvlv/DESKTOP-ACCEPTANCE.md)、
+[快捷键](hosts/nixos/lvlv/SHORTCUTS.md)、[输入法](hosts/nixos/lvlv/INPUT-METHOD.md)、
+[平铺](hosts/nixos/lvlv/TILING.md)。
+
 ## Why Nix?
 
 Nix allows for easy to manage, collaborative, reproducible deployments. This means that once something is setup and configured once, it works forever. If someone else shares their configuration, anyone can make use of it.

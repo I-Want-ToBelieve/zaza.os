@@ -1,0 +1,25 @@
+# Merge these groups/keys into your existing kwinrc; do not replace the file.
+# Run: busctl --user call org.kde.KWin /KWin org.kde.KWin reconfigure
+
+[Plugins]
+krohnkiteEnabled=true
+
+[Script-krohnkite]
+screenGapLeft=8
+screenGapRight=8
+screenGapTop=8
+screenGapBottom=8
+screenGapBetween=8
+layoutPerDesktop=true
+layoutPerActivity=true
+noTileBorder=false
+monocleMaximize=true
+monocleMinimizeRest=false
+floatingClass=org.kde.systemsettings,pavucontrol
+floatingTitle=Picture-in-Picture
+notificationDuration=1000
+
+# Optional examples. Replace output names/window classes before enabling them.
+# gapsOverrideConfig=DP-1:left=12,right=12,between=8\nHDMI-A-1:between=6
+# floatConfig=org.kde.systemsettings:width=60,height=70\npavucontrol:width=40,height=60
+# shortcutConf=FocusNextSC:ma=FocusNext,ra=SetMonocleLayout\nFocusLeftSC,FocusRightSC:ma=ToggleFloatAll,st=450

@@ -51,6 +51,8 @@ jobs:
       fail-fast: false
       matrix:
         host:
+          - lvlv.os
+          - lvlv-vm
           - k99-lite
           - k99-lite-wsl
           - xiaoxin-pro14-2021
@@ -64,7 +66,7 @@ jobs:
       - name: evaluate ${{ matrix.host }}
         run: |
           nix eval --impure $NIX_OPTS --raw \
-            ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.drvPath"
+            ".#nixosConfigurations.\"${{ matrix.host }}\".config.system.build.toplevel.drvPath"
 
   windows-vm-runner:
     runs-on: windows-latest

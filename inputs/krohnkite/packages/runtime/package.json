@@ -1,0 +1,23 @@
+{
+  "name": "@krohnkite/runtime",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsdown --config ../../tsdown.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --config ../../vitest.config.ts --project @krohnkite/runtime"
+  },
+  "dependencies": {
+    "@krohnkite/config": "workspace:*",
+    "@krohnkite/core": "workspace:*",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "vitest": "catalog:"
+  }
+}

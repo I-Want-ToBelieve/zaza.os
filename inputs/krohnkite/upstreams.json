@@ -1,0 +1,15 @@
+{
+  "krohnkite": {
+    "path": ".repo/krohnkite",
+    "url": "https://codeberg.org/anametologin/Krohnkite",
+    "branch": "master",
+    "revision": "ade1de7488cd84185f6f14efd4fba8e8b0db7ddb"
+  },
+  "effect": {
+    "path": ".repo/effect",
+    "url": "https://github.com/Effect-TS/effect",
+    "branch": "main",
+    "revision": "f84f41e866fa2f5740edb74275facf25d9abf9e4",
+    "version": "4.0.0"
+  }
+}
